@@ -1,0 +1,3 @@
+---
+psick::openssh::tp::options_hash:
+  PermitTunnel: yes

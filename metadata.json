@@ -1,0 +1,69 @@
+{
+  "name": "example42-hieradata",
+  "version": "0.0.1",
+  "author": "Example42",
+  "summary": "Sample hieradata for PSICK control-repo.",
+  "description": "A hieradata module, with yaml data, and files, to show sample and defaulf configuration for PSICK control-repo",
+  "license": "Apache-2.0",
+  "source": "https://github.com/example42/psick-hieradata",
+  "project_page": "https://github.com/example42/psick",
+  "dependencies": [
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "SLES",
+      "operatingsystemrelease": [
+        "11 SP1",
+        "12"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "16.04"
+      ]
+    },
+    {
+      "operatingsystem": "Windows",
+      "operatingsystemrelease": [
+        "Server 2012",
+        "Server 2012 R2",
+        "Server 2016",
+        "Server 2017 R2"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.5.0 < 6.0.0"
+    }
+  ]
+}

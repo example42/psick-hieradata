@@ -20,7 +20,10 @@ psick::docker::allowed_users:
 
 # Enable and configure scm-sync plugin
 psick::jenkins::scm_sync_repository_url: git@github.com:alvagante/jenkins.foss.psick.io-scmsync.git
+
+# Disable initial setup wizard and set admin password (hiera-encrypt on real servers)
 psick::jenkins::disable_setup_wizard: true
+psick::jenkins::admin_password: 'example42'
 
 # SSH keys for jenkins to access (read & write) to the scm_sync_repository_url
 # Set ssh_keys_generate to true to automatically generate a new ssh keypair

@@ -35,8 +35,13 @@ psick::jenkins::ssh_keys_generate: false
 # or specify content and then encrypt it ith hiera eyaml
 # psick::jenkins::ssh_private_key_content: ENC[...]
 # Here to automate sample setup we ship keys as files in the same hieradata module
-psick::jenkins::ssh_private_key_source: puppet:///modules/hieradata/jenkins/id_rsa-jenkins.foss.psick.io
-psick::jenkins::ssh_public_key_source: puppet:///modules/hieradata/jenkins/id_rsa.pub-jenkins.foss.psick.io
+# psick::jenkins::ssh_private_key_source: puppet:///modules/hieradata/jenkins/id_rsa-jenkins.foss.psick.io
+# psick::jenkins::ssh_public_key_source: puppet:///modules/hieradata/jenkins/id_rsa.pub-jenkins.foss.psick.io
+psick::openssh::keypairs_hash:
+  jenkins:
+    public_key_source: 'puppet:///modules/hieradata/jenkins/id_rsa.pub-jenkins.foss.psick.io'
+    private_key_source: 'puppet:///modules/hieradata/jenkins/id_rsa-jenkins.foss.psick.io'
+    dir_path: /var/lib/jenkins/.ssh
 
 # Plugins installation.
 # Check psick/manifests/jenkins/plugin.pp for parameters

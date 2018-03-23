@@ -15,6 +15,9 @@ psick::profiles::linux_classes:
   danger: psick::ci::danger
   puppet_autosign: psick::puppet::autosign
 
+# Avoid duplicated tp::repo epel resource
+psick::repo::use_defaults: false
+
 psick::puppet::pe_server::remove_global_hiera_yaml: true
 
 psick::puppet::autosign::autosign: 'on'

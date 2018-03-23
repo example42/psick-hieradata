@@ -2,5 +2,16 @@
 psick::profiles::linux_classes:
   gitlab: psick::gitlab
 
-psick::gitlab::template: 'psick/gitlab/gitlab.rb.erb'
+# Manage GitLab installation (via tp)
 psick::gitlab::manage_installation: true
+
+# Template based on upstream gitlab.rb (to parametrise) 
+# psick::gitlab::template: 'psick/gitlab/gitlab.rb.erb'
+
+# Generic template where are set only keys defined in the options_hash + defaults
+psick::gitlab::template: 'psick/gitlab/gitlab.rb-generic.erb'
+psick::gitlab::options_hash:
+  gitlab_rails['enable_jemalloc']: false # https://gitlab.com/gitlab-org/omnibus-gitlab/issues/3313
+  pages_external_url: "http://pages.%{::domain}/"
+  gitlab_pages['enable']: true
+  pages_nginx['enable']: true

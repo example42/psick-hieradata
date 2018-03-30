@@ -1,0 +1,5 @@
+---
+psick::profiles::linux_classes:
+  grafana: psick::grafana::tp
+  influxdb: psick::influxdb::tp
+

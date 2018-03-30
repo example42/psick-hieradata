@@ -86,8 +86,10 @@ psick::postfix::tp::options_hash:
 psick::sysctl::settings_hash:
   net.ipv4.conf.all.forwarding: 0
 
-# Disable auto_prerequites installation psick wide. Default: true
-# Can solve cases of "Error while evaluating a Resource Statement, Duplicate declaration"
+# Manage automatic management of prerequites installation psick wide. Default: true
+# Set to false to try to solve cases of "Error while evaluating a Resource Statement, Duplicate declaration"
 # Psick profiles usually have a local auto_prereq parameter which uses ::psick::auto_prereq as default.
-psick::auto_prereq: false
-#psick::repo::use_defaults: false
+psick::auto_prereq: true
+
+# Do not install default repos (such as EPEL on RH) on nodes:
+psick::repo::use_defaults: false

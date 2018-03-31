@@ -1,5 +1,10 @@
 ---
 psick::profiles::linux_classes:
-  grafana: psick::grafana::tp
+  grafana: psick::grafana
   influxdb: psick::influxdb::tp
+
+psick::grafana::plugins_hash:
+  cloudflare-app: {}
+  raintank-worldping-app:
+    ensure: absent
 

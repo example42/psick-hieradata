@@ -4,5 +4,6 @@ psick::profiles::linux_classes:
   openvpn: psick::openvpn::tp
   docker: psick::docker
   rclocal: rclocal
+  grafana: psick::grafana
 
 psick::puppet::pe_agent::manage_environment: true

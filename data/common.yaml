@@ -89,5 +89,5 @@ psick::sysctl::settings_hash:
 # Disable auto_prerequites installation psick wide. Default: true
 # Can solve cases of "Error while evaluating a Resource Statement, Duplicate declaration"
 # Psick profiles usually have a local auto_prereq parameter which uses ::psick::auto_prereq as default.
-psick::auto_prereq: false
-#psick::repo::use_defaults: false
+# psick::auto_prereq: false
+# psick::repo::use_defaults: false

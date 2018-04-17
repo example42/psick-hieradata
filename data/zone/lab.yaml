@@ -13,6 +13,9 @@ psick::base::linux_classes:
   puppet_postrun: psick::puppet::postrun
   packages: psick::packages
 
+# Avoid epel repo duplicated resource
+psick::monitor::nagiosplugins::auto_prereq: false
+
 ### Noop management
 # Noop configuration on PE clients
 psick::puppet::pe_agent::manage_noop: true
@@ -217,3 +220,25 @@ psick::bolt::ssh_user: bolt
 # Enable package data collection on Puppet Enterprise
 puppet_enterprise::profile::agent::package_inventory_enabled: true
 
+# Servers endpoints
+psick::servers:
+  grafana:
+    host: grafana.lab.psick.io
+    port: 3000
+    users:
+      admin:
+        password: admin
+    scheme: http
+  influxdb:
+    host: grafana.lab.psick.io
+    port: 8086
+    scheme: http
+    databases:
+      icinga:
+        user: icinga
+    users:
+      icinga:
+        password: icinga
+  icinga:
+    host: icinga.lab.psick.io
+    port: 5665

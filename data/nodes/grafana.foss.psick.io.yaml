@@ -16,3 +16,13 @@ psick::grafana::datasources_hash:
     user: grafana
     password: grafana
     url: http://localhost:8086
+
+psick::grafana::dashboards_hash:
+  default:
+    ensure: present
+    type: 'file'
+    org_id: '1'
+    editable: 'false'
+    disable_deletion: 'true'
+    options:
+      path: '/var/lib/grafana/dashboards'

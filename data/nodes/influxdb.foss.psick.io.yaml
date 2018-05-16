@@ -1,0 +1,5 @@
+---
+psick::profiles::linux_classes:
+  influxdb: psick::influxdb
+
+

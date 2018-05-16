@@ -7,7 +7,7 @@ psick::grafana::plugins_hash:
     version: '1.2.0'
 
 psick::grafana::datasources_hash:
-  InfluxDB:                                                           
+  InfluxDB:
     ensure: present
     type: influxdb
     org_id: '1'

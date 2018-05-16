@@ -2,4 +2,9 @@
 psick::profiles::linux_classes:
   influxdb: psick::influxdb
 
-
+psick::influxdb::databases_hash:
+  example42:
+    ensure: present
+  example43:
+    ensure: absent
+  example44: {}

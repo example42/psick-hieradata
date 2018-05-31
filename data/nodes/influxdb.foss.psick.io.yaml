@@ -7,4 +7,23 @@ psick::influxdb::databases_hash:
     ensure: present
   example43:
     ensure: absent
-  example44: {}
+
+psick::influxdb::users_hash:
+  example42:
+    ensure: present
+    password: s3cwr3
+    database: example42
+  example43:
+    ensure: absent
+    password: s3cwr3
+    database: example42
+
+psick::influxdb::grants_hash:
+  example42_example42:
+    ensure: present
+    database: example42
+    user: example42
+  example43_example42:
+    ensure: absent
+    database: example42
+    user: example43

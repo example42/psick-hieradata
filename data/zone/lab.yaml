@@ -217,3 +217,19 @@ psick::bolt::ssh_user: bolt
 # Enable package data collection on Puppet Enterprise
 puppet_enterprise::profile::agent::package_inventory_enabled: true
 
+# Test network settings
+network::routes_hash:
+  lo:
+    ipaddress:
+      - 10.242.0.0
+      - 10.243.0.0
+    netmask:
+      - 255.255.255.0
+      - 255.255.255.0
+    gateway:
+      - lo
+      - 10.244.0.1
+#    family:
+#      - inet4
+#      - inet6
+

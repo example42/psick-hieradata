@@ -242,3 +242,20 @@ psick::servers:
   icinga:
     host: icinga.lab.psick.io
     port: 5665
+
+# Test network settings
+network::routes_hash:
+  lo:
+    ipaddress:
+      - 10.242.0.0
+      - 10.243.0.0
+    netmask:
+      - 255.255.255.0
+      - 255.255.255.0
+    gateway:
+      - lo
+      - 10.244.0.1
+#    family:
+#      - inet4
+#      - inet6
+

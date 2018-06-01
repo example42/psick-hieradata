@@ -1,17 +1,20 @@
 ---
 # We need jenkins class in base classes to avoid dependency loops
+psick::pre::linux_classes:
+  rubybuild: psick::ruby::buildgems
 psick::base::linux_classes:
-  jenkins: psick::jenkins
+        #  jenkins: psick::jenkins
   docker: psick::docker
 psick::profiles::linux_classes:
   jenkins: ''
-# Needed for tests in Puppet CI
-  rubybuild: psick::ruby::buildgems
   pdk: psick::puppet::pdk
   vagrant: psick::vagrant
   git: psick::git
   puppet_pdk: psick::puppet::pdk
   puppet_ci: psick::puppet::ci
+
+#:noop_mode: true
+psick::postfix::tp::no_noop: true
 
 psick::vagrant::default_plugins:
   - vagrant-cachier
@@ -40,17 +43,11 @@ psick::jenkins::ssh_keys_generate: false
 # psick::jenkins::ssh_public_key_source: puppet:///modules/hieradata/jenkins/id_rsa.pub-jenkins.lab.psick.io
 
 # Or with a more generic and flexible approach via the psick::openssh profile: 
-psick::openssh::keypairs_hash:
+apsick::openssh::keypairs_hash:
   jenkins:
     public_key_source: 'puppet:///modules/hieradata/jenkins/id_rsa.pub-jenkins.lab.psick.io'
     private_key_source: 'puppet:///modules/hieradata/jenkins/id_rsa-jenkins.lab.psick.io'
     dir_path: /var/lib/jenkins/.ssh
-  jenkins_foss:
-    public_key_source: 'puppet:///modules/hieradata/jenkins/id_rsa.pub-jenkins.foss.psick.io'
-    private_key_source: 'puppet:///modules/hieradata/jenkins/id_rsa-jenkins.foss.psick.io'    
-    dir_path: /var/lib/jenkins/.ssh
-    key_name: id_rsa_foss
-    user: jenkins
 
 # Plugins installation.
 # Check psick/manifests/jenkins/plugin.pp for parameters
@@ -74,6 +71,7 @@ psick::jenkins::plugins:
 psick::puppet::gems::default_set: integration
 psick::puppet::gems::install_puppet_gems: true
 psick::puppet::gems::install_system_gems: false
+psick::puppet::gems::install_chruby_gems: false
 
 # This forces overwrites of puppet and facter binaries (from package)
 # installing the relevant gems.

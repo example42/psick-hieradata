@@ -253,9 +253,8 @@ network::routes_hash:
       - 255.255.255.0
       - 255.255.255.0
     gateway:
-      - lo
-      - 10.244.0.1
-#    family:
-#      - inet4
-#      - inet6
-
+      - 10.42.43.1
+      - 10.42.43.1
+    mtu:
+      - 1500
+network::config_file_per_interface: false

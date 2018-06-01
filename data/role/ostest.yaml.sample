@@ -11,9 +11,8 @@
 # Add profiles to the list below to test whole profiles
 
 psick::profiles::linux_classes:
-  - '::psick::ostest'
+  ostest: '::psick::ostest'
 
-# For quicker tests we don't want to include all the
-# base psick classes which are by default added to 
-# all the roles.
-psick::base::manage: false
+# Set to false if you don't want to manage base
+# profiles (for quicker tests) added to all roles.
+psick::base::manage: true

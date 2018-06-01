@@ -20,6 +20,8 @@ psick::docker::allowed_users:
 
 # Enable and configure scm-sync plugin
 psick::jenkins::scm_sync_repository_url: git@github.com:alvagante/jenkins.foss.psick.io-scmsync.git
+# Run psick::openssk::keyscan github.com before cloning
+psick::jenkins::scm_sync_repository_host: github.com
 
 # Disable initial setup wizard and set admin password (hiera-encrypt on real servers)
 psick::jenkins::disable_setup_wizard: true
@@ -93,7 +95,8 @@ psick::puppet::ci::options:
     - lamp.foss.psick.io
     - puppet.foss.psick.io
 
-psick::openssh::configs_hash:
+# Not necessary when psick::openssh::keyscan is used 
+DISABLEpsick::openssh::configs_hash:
   jenkins:
     path: /var/lib/jenkins/.ssh/config
     create_ssh_dir: false

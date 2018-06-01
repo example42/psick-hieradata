@@ -6,7 +6,7 @@ psick::base::linux_classes:
   dns: '' # In lab we leave DNS unmanaged
 
 psick::puppet::gems::install_system_gems: false
-psick::puppet::gems::install_gems:
+DISABLEDpsick::puppet::gems::install_gems:
   - msgpack
 
 # Disabled updating host entry by psick::hostname

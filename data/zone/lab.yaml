@@ -244,6 +244,7 @@ psick::servers:
     port: 5665
 
 # Test network settings
+network::routes_legacy: true
 network::routes_hash:
   lo:
     ipaddress:

@@ -1,4 +1,28 @@
 ---
 psick::profiles::linux_classes:
-  - grafanadash::dev
+  grafana: psick::grafana
 
+psick::grafana::plugins_hash:
+  grafana-piechart-panel:
+    version: '1.2.0'
+
+psick::grafana::datasources_hash:
+  InfluxDB:
+    ensure: present
+    type: influxdb
+    org_id: '1'
+    access: proxy
+    database: site
+    user: grafana
+    password: grafana
+    url: http://localhost:8086
+
+psick::grafana::dashboards_hash:
+  default:
+    ensure: present
+    type: 'file'
+    org_id: '1'
+    editable: 'false'
+    disable_deletion: 'true'
+    options:
+      path: '/var/lib/grafana/dashboards'

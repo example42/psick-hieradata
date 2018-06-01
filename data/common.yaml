@@ -1,13 +1,34 @@
 ---
-# Noop mode. Uncomment to enable server side noop mode globally
+## Server side Noop mode.
+# Uncomment to enable server side noop mode globally
 # noop_mode: true
 
-# General psick settings. These are the default values.
+## General settings for psick module.
+# These are the default values.
+# If to actually manage the resource of a class
+# IF false, psick class (and the profile that honour
+# this default) is included but does nothing.
 psick::manage: true
+
+# What autoconfiguration defaults to use
+# This feature require more sample hieradata in psick module
+# to be more effective. Current possible values:
+# none - No autoconf settings added
+# hardened - Hardened settings for some profiles
 psick::auto_conf: none
+
+# Manage automatic management of prerequites installation psick wide. Default: true
+# Set to false to try to solve cases of "Error while evaluating a Resource Statement, Duplicate declaration"
+# Psick profiles usually have a local auto_prereq parameter which uses ::psick::auto_prereq as default.
+# psick::auto_prereq: false
+# psick::repo::use_defaults: false
 psick::auto_prereq: true
 
-# Tiny Puppet settings in psick module
+# Do not install default repos (such as EPEL on RH) on nodes:
+# Default is true. Here false to avoid duplicated resources with epel
+psick::repo::use_defaults: false
+
+## Tiny Puppet settings in psick module
 # By default tp integrations are not enabled. We want to install the tp cli
 # command and add tp test entries wherever possible. The default tinydata module
 # is used as data source for tp defines.
@@ -86,10 +107,3 @@ psick::postfix::tp::options_hash:
 psick::sysctl::settings_hash:
   net.ipv4.conf.all.forwarding: 0
 
-# Manage automatic management of prerequites installation psick wide. Default: true
-# Set to false to try to solve cases of "Error while evaluating a Resource Statement, Duplicate declaration"
-# Psick profiles usually have a local auto_prereq parameter which uses ::psick::auto_prereq as default.
-psick::auto_prereq: true
-
-# Do not install default repos (such as EPEL on RH) on nodes:
-psick::repo::use_defaults: false

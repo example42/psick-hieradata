@@ -19,8 +19,10 @@ psick::packages::resource_default_arguments:
 
 psick::reboot::apply: immediately
 psick::reboot::when: refreshed
-psick::reboot::schedule: weekend
-psick::reboot::subscribe_anchor: true
+# psick::reboot::schedule_name: weekend
+psick::reboot::refresh_reboot: false
+#psick::reboot::retries: 1
+#psick::reboot::retries_interval: 24
 psick::schedule::repeat: 2
 psick::packages::packages_list:
   - "chocolatey"

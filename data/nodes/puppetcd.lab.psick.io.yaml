@@ -1,0 +1,23 @@
+---
+psick::profiles::linux_classes:
+  docker: psick::docker
+  mysql: psick::mysql
+  docker_host: psick::docker::host
+
+psick::docker::username: example42
+psick::docker::host::instances:
+  puppetcd:
+    ensure: present
+    image: 'puppet/continuous-delivery-for-puppet-enterprise:latest'
+
+psick::mysql::tp::auto_prereq: true
+psick::mysql::tp::install_hash:
+  repo: mysql80-community
+
+psick::mysql::user_hash:
+  cdpe:
+    password: cdpesecret
+psick::mariadb::grant_hash:
+  cdpe:
+    password: cdpesecret
+    db: cdpe

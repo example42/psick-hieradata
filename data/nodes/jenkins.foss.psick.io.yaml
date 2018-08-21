@@ -69,7 +69,7 @@ psick::jenkins::plugins:
 psick::puppet::gems::default_set: integration
 psick::puppet::gems::install_puppet_gems: false
 psick::puppet::gems::install_system_gems: false
-psick::puppet::gems::install_rbenv_gems: true
+psick::puppet::gems::install_rbenv_gems: false
 
 # This forces overwrites of puppet and facter binaries (from package)
 # installing the relevant gems.

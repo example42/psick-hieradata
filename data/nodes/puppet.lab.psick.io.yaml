@@ -1,5 +1,5 @@
 ---
-psick::base::linux_classes:
+psick::pre::linux_classes:
   buildgems: psick::ruby::buildgems
 psick::profiles::linux_classes:
   git: psick::git

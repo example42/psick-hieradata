@@ -41,9 +41,10 @@ psick::puppet::postrun::ensure: absent
 psick::puppet::postrun::template: 'psick/puppet/postrun_command_rerun.erb'
 psick::puppet::postrun::path: '/usr/local/sbin/puppet_postrun'
 psick::puppet::postrun::command: '/usr/local/sbin/puppet_postrun'
+#psick::puppet::gems::auto_prereq: true
 psick::puppet::gems::install_system_gems: false
-psick::puppet::gems::install_gems:
-  - msgpack
+#psick::puppet::gems::install_gems:
+#  - msgpack
 
 # Disabled updating host entry by psick::hostname
 psick::hostname::update_host_entry: false

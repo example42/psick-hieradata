@@ -14,6 +14,7 @@ psick::profiles::linux_classes:
   octocatalog: psick::ci::octocatalog
   danger: psick::ci::danger
   puppet_autosign: psick::puppet::autosign
+  choria_broker: choria::broker
 
 # Avoid duplicated tp::repo epel resource
 psick::repo::use_defaults: false
@@ -119,3 +120,20 @@ psick::git::configs_hash:
     options_hash:
       http:
         sslVerify: false
+
+# Choria
+choria::broker::network_broker: true
+mcollective::client: true
+choria::broker::adapters:
+  discover:
+    stream:
+      type: "natsstream"
+      clusterid: prod_stream
+      topic: discovery
+      workers: 10
+      servers:
+        - puppet.lab.psick.io:4222
+    ingest:
+      topic: mcollective.broadcast.agent.discovery
+      protocol: request
+      workers: 10

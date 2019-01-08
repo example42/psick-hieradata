@@ -7,11 +7,16 @@ psick::base::linux_classes:
   icinga: psick::icinga2
   monitor_plugins: psick::monitor::nagiosplugins
 #  sensu: psick::sensu
-  ansible: psick::ansible
+#  ansible: psick::ansible
   bolt: psick::bolt
   dns: '' # In lab we leave DNS unmanaged
   puppet_postrun: psick::puppet::postrun
   packages: psick::packages
+  puppet_ca: psick::puppet::install_ca
+  choria: choria
+#  mcollective: mcollective
+#  mcollective_choria: mcollective_choria
+#  puppetagent: puppet_agent
 
 # Avoid epel repo duplicated resource
 psick::monitor::nagiosplugins::auto_prereq: false
@@ -189,15 +194,15 @@ psick::puppet::pe_agent::manage_environment: true
 # Users
 # psick::users::root_pw: hash_as_in_etc_shadow
 psick::users::delete_unmanaged: false
-psick::users::module: 'user'
+psick::users::module: 'psick'
 psick::users::users_hash:
   al:
     ensure: present
     comment: 'Al'
     groups:
       - users
-#    ssh_authorized_keys:
-#      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC93uOkdIrvcA1ij6wxtL0wDKch7E2gFqID2xR1LnEVQRSP9OFmNQV+4B7fM/fAVpFs939qBDeDRabft1ZAP2hUIeKWxweNQ6wxxV3YhJbxt+g6RAqm37BI+/ynZnZ4vrQp3XHfxNFYGFqiaowiiQ3/0QLh8PHliDJroOUU7h2YNwKBWiqdgufLCrPgnalSZ3kfKa2Yd5sM+iyAYJ102sXcGIFjAXCmQU1y7aJXjrzXzPuugnHvVFPzAUjsvu0FAiE+m8EhfBiyy1+SjnMB838G3EwrqNW+sEZ6lXh637xensB2WJuH0lPooCgaeG6WCmYjVK9rblcOb3B0Pp8Vbhp5 al@lab.psick.io'
+    ssh_authorized_keys:
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC93uOkdIrvcA1ij6wxtL0wDKch7E2gFqID2xR1LnEVQRSP9OFmNQV+4B7fM/fAVpFs939qBDeDRabft1ZAP2hUIeKWxweNQ6wxxV3YhJbxt+g6RAqm37BI+/ynZnZ4vrQp3XHfxNFYGFqiaowiiQ3/0QLh8PHliDJroOUU7h2YNwKBWiqdgufLCrPgnalSZ3kfKa2Yd5sM+iyAYJ102sXcGIFjAXCmQU1y7aJXjrzXzPuugnHvVFPzAUjsvu0FAiE+m8EhfBiyy1+SjnMB838G3EwrqNW+sEZ6lXh637xensB2WJuH0lPooCgaeG6WCmYjVK9rblcOb3B0Pp8Vbhp5 al@lab.psick.io'
 
 # OpenSSH
 psick::openssh::tp::resources_hash:
@@ -245,8 +250,8 @@ psick::servers:
     port: 5665
 
 # Test network settings
-network::routes_legacy: true
-network::routes_hash:
+DISnetwork::routes_legacy: true
+DISnetwork::routes_hash:
   lo:
     ipaddress:
       - 10.242.0.0
@@ -259,4 +264,21 @@ network::routes_hash:
       - 10.42.43.1
     mtu:
       - 1500
-network::config_file_per_interface: false
+DISnetwork::mroutes_hash:
+  lo:
+    routes:
+      '99.99.228.0/24': 'lo'
+      '100.100.244.0/22': ['10.42.43.12', '10.0.2.24']
+
+DISnetwork::config_file_per_interface: false
+
+# Choria
+choria::manage_package_repo: true
+choria::server: true
+mcollective::client: false
+mcollective::server: false
+mcollective_choria::client: false
+mcollective_choria::server: true
+mcollective_choria::config:
+  security.serializer: "json"
+

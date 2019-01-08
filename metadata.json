@@ -1,6 +1,6 @@
 {
   "name": "example42-hieradata",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Example42",
   "summary": "Sample hieradata for PSICK control-repo.",
   "description": "A hieradata module, with yaml data, and files, to show sample and defaulf configuration for PSICK control-repo",

@@ -12,7 +12,10 @@
 
 psick::profiles::linux_classes:
   ostest: '::psick::ostest'
+psick::base::linux_classes:
+  time: '::timezone'
 
+timezone::timezone: 'Europe/Berlin'
 # Set to false if you don't want to manage base
 # profiles (for quicker tests) added to all roles.
 psick::base::manage: true

@@ -5,9 +5,12 @@ psick::profiles::linux_classes:
   vagrant: vagrant
   git: psick::git
   docker: psick::docker
-
+  puppet_pdk: psick::puppet::pdk
+  puppet_ci: psick::puppet::ci
+  buildgems: ''
+  jenkins: 'psick::jenkins'
 # Explicit list of required gems for CI runners for puppet testing
-psick::puppet::gems::install_puppet_gems: true
+psick::puppet::gems::install_puppet_gems: false
 psick::puppet::gems::install_system_gems: false
 psick::puppet::gems::default_set: integration
 
@@ -34,6 +37,7 @@ psick::gitlab::runner::runners:
 # Integration tests via docker
 psick::docker::allowed_users:
   - gitlab-runner
+  - jenkins
 psick::sysctl::settings_hash:
   net.ipv4.conf.all.forwarding: 1
 
@@ -52,3 +56,8 @@ psick::git::configs_hash:
     options_hash:
       http:
         sslVerify: false
+
+# Jenkins
+psick::jenkins::disable_setup_wizard: true
+psick::jenkins::admin_password: 'example42'
+psick::jenkins::module: jenkins

@@ -7,7 +7,10 @@ psick::profiles::linux_classes:
   'mysql': psick::mariadb
 
 # This node runs in noop mode by default
-psick::puppet::pe_agent::noop_mode: true
+psick::puppet::pe_agent::noop_mode: false
+
+psick::git::extra_packages_list:
+  - git-lfs
 
 psick::apache::tp::resources_hash:
   tp::conf:
@@ -24,11 +27,30 @@ psick::apache::tp::resources_hash:
     apache::deny_git.conf:
       base_dir: conf
       source: puppet:///modules/psick/apache/deny_git.conf
+    apache::abnormalia.com.conf:
+      base_dir: conf
+      template: psick/apache/vhost.conf.erb
+      options_hash:
+        ServerName: abnormalia.com
+        ServerAlias:
+          - www.abnormalia.com
+        AddDefaultCharset: ISO-8859-1
+        extra:
+          ErrorDocument: '404 /index.php'
+#          RewriteEngine: 'on'
+#          RewriteCond: "%{literal('%')}{REQUEST_URI} !abnomini"
+#          RewriteCond: "%{literal('%')}{REQUEST_URI} !/route.php"
+#          RewriteRule: '^(.*)$ /route.php?url=$1 [L]'
   tp::dir:
     apache::openskills.info:
       vcsrepo: git
       source: git@bitbucket.org:alvagante/openskills.info.git
       path: /var/www/html/openskills.info
+    apache::abnormalia.com:
+      ensure: latest
+      vcsrepo: git
+      source: git@bitbucket.org:alvagante/abnormalia.com.git
+      path: /var/www/html/abnormalia.com
 
 psick::php::module_hash:
   mysql: {}

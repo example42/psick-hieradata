@@ -5,6 +5,7 @@ psick::pre::linux_classes:
   rubybuild: psick::ruby::buildgems
 psick::base::linux_classes:
   jenkins: psick::jenkins
+  jenkins_jcasc: psick::jenkins::jcasc
   docker: psick::docker
   pdk: psick::puppet::pdk
   vagrant: psick::vagrant
@@ -19,7 +20,7 @@ psick::docker::allowed_users:
   - jenkins
 
 # Enable and configure scm-sync plugin
-psick::jenkins::scm_sync_repository_url: git@github.com:alvagante/jenkins.foss.psick.io-scmsync.git
+DISABLEDpsick::jenkins::scm_sync_repository_url: git@github.com:alvagante/jenkins.foss.psick.io-scmsync.git
 # Run psick::openssk::keyscan github.com before cloning
 psick::jenkins::scm_sync_repository_host: github.com
 
@@ -60,8 +61,11 @@ psick::jenkins::plugins:
     enable: true
   blueocean:
     enable: true
-  scm-sync-configuration:
-    enable: true
+
+# Jenkins configuration as code pluugin template and options
+#psick::jenkins::jcasc::config_template: 'profile/jenkins/jcasc/jenkins.yaml.erb'
+#  psick::jenkins::jcasc::options_hash:
+#    privateKey: 'crypted_data'
 
 # Install gems needed for Ci tests only in Puppet environment.
 # Use a default set of gems for integration tests

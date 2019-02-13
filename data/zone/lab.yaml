@@ -12,9 +12,8 @@ psick::base::linux_classes:
   dns: '' # In lab we leave DNS unmanaged
   puppet_postrun: psick::puppet::postrun
   packages: psick::packages
-  puppet_ca: psick::puppet::install_ca
   choria: choria
-#  mcollective: mcollective
+# mcollective: mcollective
 #  mcollective_choria: mcollective_choria
 #  puppetagent: puppet_agent
 
@@ -275,10 +274,10 @@ DISnetwork::config_file_per_interface: false
 # Choria
 choria::manage_package_repo: true
 choria::server: true
-mcollective::client: false
-mcollective::server: false
-mcollective_choria::client: false
-mcollective_choria::server: true
-mcollective_choria::config:
-  security.serializer: "json"
+amcollective::client: false
+amcollective::server: false
+amcollective_choria::client: false
+amcollective_choria::server: true
+amcollective_choria::config:
+        #  security.serializer: "json"
 

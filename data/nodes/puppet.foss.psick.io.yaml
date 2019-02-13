@@ -1,7 +1,9 @@
 ---
 psick::base::linux_classes:
-  # puppetdb: psick::puppetdb
-  puppetserver: psick::puppetserver
+        # puppetdb: psick::puppetdb
+# psick::puppetserver is alternative tp psick::foss_master: don't use both at the same time
+  puppetserver: psick::puppet::foss_master
+  # puppetserver: psick::puppetserver
   puppetautosign: psick::puppet::autosign
 
 psick::puppet::gems::install_gems: []
@@ -11,6 +13,7 @@ psick::puppet::gems::install_system_gems: false
 psick::puppet::autosign::autosign: 'on'
 psick::puppet::autosign::autosign_match: '*.foss.psick.io'
 
+psick::puppet::foss_master::enable_puppetdb_sslsetup: true
 psick::puppet::foss_server_metrics::graphite_server: 'grafana.foss.psick.io'
 
 psick::puppetserver::r10k_remote_repo: https://github.com/example42/psick.git
@@ -18,5 +21,7 @@ psick::puppetserver::r10k_configure_webhook: false
 # psick::puppetserver::git_remote_repo: https://github.com/example42/psick.git
 psick::puppetserver::dns_alt_names: "puppet, puppet.%{::domain}"
 psick::puppetserver::remove_global_hiera_yaml: true
+
+
 
 psick::puppetdb::postgresql_class: 'psick::postgresql::tp'

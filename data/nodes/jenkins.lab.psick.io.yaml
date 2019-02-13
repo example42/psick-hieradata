@@ -40,8 +40,8 @@ psick::jenkins::ssh_keys_generate: false
 # Here to automate sample setup we ship keys as files in the same hieradata module
 
 # This can be done either with something like:  
-psick::jenkins::ssh_private_key_source: puppet:///modules/hieradata/jenkins/id_rsa-jenkins.lab.psick.io
-psick::jenkins::ssh_public_key_source: puppet:///modules/hieradata/jenkins/id_rsa.pub-jenkins.lab.psick.io
+apsick::jenkins::ssh_private_key_source: puppet:///modules/hieradata/jenkins/id_rsa-jenkins.lab.psick.io
+apsick::jenkins::ssh_public_key_source: puppet:///modules/hieradata/jenkins/id_rsa.pub-jenkins.lab.psick.io
 
 # Or with a more generic and flexible approach via the psick::openssh profile: 
 apsick::openssh::keypairs_hash:
@@ -64,7 +64,7 @@ apsick::jenkins::plugins:
   ec2:
     enable: true
   blueocean:
-    enable: true
+    enable: false
 
 # Install gems needed for Ci tests only in Puppet environment.
 # Use a default set of gems for integration tests

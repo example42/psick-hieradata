@@ -1,0 +1,7 @@
+---
+network::interfaces_hash:
+  'eth0':
+    enable_dhcp: true
+  'eth1':
+    ipaddress: '10.42.43.107'
+    netmask: '255.255.255.0'

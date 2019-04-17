@@ -37,6 +37,9 @@ psick::tp:
   test_enable: true
   data_module: tinydata
 
+# We want to purge unmanageged files for tp
+tp::purge_dirs: true
+
 # First run optional settings. Here first run mode is disabled
 psick::enable_firstrun: false
 psick::firstrun::linux_classes:

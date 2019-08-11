@@ -1,0 +1,18 @@
+---
+
+psick::profiles::linux_classes:
+  monit: monit
+
+
+psick::network::interfaces:
+  enp0s8:
+    ipaddress:: 10.42.43.123
+
+
+# Override lab defaults. On Ubuntu 1804 wheel group is admin
+psick::users::users_hash:
+  al:
+    groups:
+      - users
+      - admin
+      - --wheel

@@ -1,7 +1,7 @@
 ---
 ### Classification
 psick::pre::linux_classes:
-  puppet: psick::puppet::pe_agent
+  puppet: psick::puppet
   hosts: psick::hosts::file
 psick::base::linux_classes:
   icinga: psick::icinga2
@@ -12,7 +12,7 @@ psick::base::linux_classes:
   dns: '' # In lab we leave DNS unmanaged
   puppet_postrun: psick::puppet::postrun
   packages: psick::packages
-  choria: choria
+#  choria: choria
 # mcollective: mcollective
 #  mcollective_choria: mcollective_choria
 #  puppetagent: puppet_agent
@@ -40,6 +40,8 @@ psick::puppet::pe_agent::no_noop: true
 
 ### Puppet
 psick::puppet::pe_agent::manage_environment: true
+psick::puppet::pe_agent::manage_service: true
+
 # Postrun command management
 psick::puppet::postrun::ensure: absent
 psick::puppet::postrun::template: 'psick/puppet/postrun_command_rerun.erb'
@@ -49,6 +51,13 @@ psick::puppet::postrun::command: '/usr/local/sbin/puppet_postrun'
 psick::puppet::gems::install_system_gems: false
 #psick::puppet::gems::install_gems:
 #  - msgpack
+
+# External facts:
+psick::puppet::external_facts:
+  zone:
+    value: lab
+  datacenter:
+    value: hetzner
 
 # Disabled updating host entry by psick::hostname
 psick::hostname::update_host_entry: false
@@ -205,6 +214,11 @@ psick::users::users_hash:
       - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC93uOkdIrvcA1ij6wxtL0wDKch7E2gFqID2xR1LnEVQRSP9OFmNQV+4B7fM/fAVpFs939qBDeDRabft1ZAP2hUIeKWxweNQ6wxxV3YhJbxt+g6RAqm37BI+/ynZnZ4vrQp3XHfxNFYGFqiaowiiQ3/0QLh8PHliDJroOUU7h2YNwKBWiqdgufLCrPgnalSZ3kfKa2Yd5sM+iyAYJ102sXcGIFjAXCmQU1y7aJXjrzXzPuugnHvVFPzAUjsvu0FAiE+m8EhfBiyy1+SjnMB838G3EwrqNW+sEZ6lXh637xensB2WJuH0lPooCgaeG6WCmYjVK9rblcOb3B0Pp8Vbhp5 al@lab.psick.io'
       - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCrsr0FKUXVE46b1q9grcuNkWZ2BpGN1UhazO2MGFmS8AMQGIJ6Hubh9vjVe3BgBu05vUQGAIHUnfizh6gTVKSfWsTW4dQdwEsikoAahHN45Z4rP3PkCq8z+onn/Mo2S6HCpShp0uifW9uOZKXx9iLjlBDvuIwXjPiUDfWfTvhiSwxGdjHd16EKAbF3QZ4PFvMnDkJlvdCi/4CN8hiwDyCMN7BlF4xH899OjRxe9ThfuiBa3Gm63K5rr7Qn7FRiVHqmzvsaSIOdCdJZrHqdz2RoutFqC7HV1UxMFWvrNNx3XM8QsL+FMmPIebva518kxFSgM0bGzHa5lOiGEH9mQEGqKyI85ADQRKdZSLOKZ1zmWh3cVCk3r2lIFPFrhl3iLc/lwwq+QTFU+OxZUa3FcpEAlsokv0ktct+VBBxqbt33z6fowoPNqkYhjOl/D9Td8b3nViD1K3hrF6QY5x37hAmzRAJrgt1OrsLIfIQSoe+NgITi3t4Zt3sQnl9SsfgJlM9XhZpWhIaLurPWWEC57FRKL6yHVin9xNlfwIYPrtP+y4/yySMFCAaiUANr0D6Hb3DxTYobYpvz5sgI7SIwFNhQ1g2cOSxiFOgQ5SRBf+BD5ie4B/nn6nV9cQ6UilsWC/PqyxScQaMXNIgNbwrICh0ppUYeF7qW6a1Y/sOff12PTw== al@example42.com'
 
+# Passwordless sudopowers for al on lab
+psick::sudo::directives:
+  al:
+    content: 'al ALL=(ALL) NOPASSWD:ALL'
+
 # OpenSSH
 psick::openssh::tp::resources_hash:
   tp::conf:
@@ -250,12 +264,19 @@ psick::servers:
     host: icinga.lab.psick.io
     port: 5665
 
-# Test network settings
-DISnetwork::routes_legacy: true
-DISnetwork::routes_hash:
-  lo:
+
+# network settings tests
+psick::network::routes:
+  enp0s8:
+    routes:
+      10.42.100.0/24: 10.42.43.1
+
+network::routes_legacy: true
+network::interfaces_legacy: true
+DISpsick::network::routes:
+  enp0s8:
     ipaddress:
-      - 10.242.0.0
+      - 10.42.100.0
       - 10.243.0.0
     netmask:
       - 255.255.255.0
@@ -265,11 +286,13 @@ DISnetwork::routes_hash:
       - 10.42.43.1
     mtu:
       - 1500
+
 DISnetwork::mroutes_hash:
-  lo:
+  eth1:
     routes:
-      '99.99.228.0/24': 'lo'
-      '100.100.244.0/22': ['10.42.43.12', '10.0.2.24']
+      '10.42.50.0/24': '10.42.43.1'
+      '10.42.100.0/24': '10.42.43.1'
+      '10.42.251.0/24': '10.42.43.1'
 
 DISnetwork::config_file_per_interface: false
 

@@ -68,7 +68,7 @@ psick::base::linux_classes:
   update: psick::update
   motd: psick::motd
   profile: psick::profile
-  network: network
+  #network: psick::network
   systat: psick::monitor::sar
 
 # PSICK classification for Windows nodes

@@ -1,0 +1,257 @@
+---
+psick::profiles::linux_classes:
+#  web: psick::nginx::tp
+#  ipsec: psick::openswan
+  firewall: psick::firewall::iptables
+  #  docker: psick::docker
+  # vagrant: psick::vagrant
+  # virtualbox: psick::virtualbox
+  pdk: psick::puppet::pdk
+  openvpn: psick::openvpn
+
+# On debian wheel group doesn't exist. Overriding it here 
+psick::users::users_hash:
+  al:
+    groups:
+      - users
+      - --wheel
+
+# This node runs in noop mode by default
+psick::puppet::pe_agent::noop_mode: true
+
+# On lob, Debain 9 openswan packages are missing
+psick::openswan::setup_template: ''
+psick::openswan::tp::manage: false
+psick::openswan::setup_options:
+  plutodebug: none
+  virtual_private: '%v4:10.0.0.0/8,%v4:192.168.0.0/16,%v4:172.16.0.0/12,%v4:!10.42.0.0/16'
+  protostack: netkey
+
+psick::openswan::connections:
+  roadwarrior:
+    ensure: present
+    tp_options:
+      config_file_notify: false
+      config_file_require: false
+    secret: ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEAPb89kWCxNGeU7m7Mzx2vZRZKSatJ6gLI15pGpxPevwUBYm3ORHe+kTeKJlyIDbJDnL9L6ekd572S+ltIZ9aEkdF1IniF212RUFvAhswoVKIsPSiLsSLHnAjbS7biqaNYe17A8H4SomdeNs33XI2ygPLRWHr5Khd2LKakDoMvyQHxsuUdeYE6Fz6AUMsqJ15x5ir6vjXezJnTXeNGqThQ6jpZucp+B5uXV6hlMOwDwpFwOD61kHsTwtpD/C2bxnMcFBGagWrKBEqfofahBAJDwSM54I/lOuPkdhKxAoTtQcAwM1kH0f/fszMjz0GIsIigeEBVIUjRHUzyzdqvD9hMqDBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBAcZQUh5U8xaJuPWcdIWo0UgCBtTUf0blOn7wXOfear6cc9VGDmWMVKsxNihe6OYzfXKg==] 
+    options:
+      authby: secret
+      xauthby: pam
+      pfs: no
+      auto: add
+      rekey: no
+      left: '%defaultroute'
+      leftsubnet: 0.0.0.0/0
+      rightaddresspool: 10.42.260.10-10.42.260.254
+      right: '%any'
+      # make cisco clients happy
+      cisco-unity: 'yes'
+      # address of your internal DNS server
+      modecfgdns1: 8.8.8.8
+      leftxauthserver: 'yes'
+      rightxauthclient: 'yes'
+      leftmodecfgserver: 'yes'
+      rightmodecfgclient: 'yes'
+      modecfgpull: 'yes'
+      #configure pam via /etc/pam.d/pluto
+      xauthby: pam
+      # xauthby: alwaysok MUST NOT be used with PSK
+      # Can be played with below
+      #dpddelay: 30
+      #dpdtimeout: 120
+      #dpdaction: clear
+      # xauthfail: soft
+      ike-frag: 'yes'
+      ikev2: never
+  lob:
+    ensure: present
+    tp_options:
+      config_file_notify: false
+      config_file_require: false
+    secret: ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEAPb89kWCxNGeU7m7Mzx2vZRZKSatJ6gLI15pGpxPevwUBYm3ORHe+kTeKJlyIDbJDnL9L6ekd572S+ltIZ9aEkdF1IniF212RUFvAhswoVKIsPSiLsSLHnAjbS7biqaNYe17A8H4SomdeNs33XI2ygPLRWHr5Khd2LKakDoMvyQHxsuUdeYE6Fz6AUMsqJ15x5ir6vjXezJnTXeNGqThQ6jpZucp+B5uXV6hlMOwDwpFwOD61kHsTwtpD/C2bxnMcFBGagWrKBEqfofahBAJDwSM54I/lOuPkdhKxAoTtQcAwM1kH0f/fszMjz0GIsIigeEBVIUjRHUzyzdqvD9hMqDBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBAcZQUh5U8xaJuPWcdIWo0UgCBtTUf0blOn7wXOfear6cc9VGDmWMVKsxNihe6OYzfXKg==]
+    options:
+      auto: start
+      type: tunnel
+      rekey: 'yes'
+      aggressive: 'no'
+      compress: 'no'
+      authby: secret
+      ike: aes256-sha256-modp2048
+      phase2: esp
+      phase2alg: aes256-sha256;modp2048
+      ikev2: 'no'
+      keylife: 1h
+      ikelifetime: 1440m
+      left: 88.99.137.168
+      leftid: 88.99.137.168
+      leftsubnet: 10.42.43.0/24
+      leftsourceip: 10.42.43.1
+      right: 95.216.65.138
+      rightid: 95.216.65.138
+      # rightid: 10.208.194.50
+      # rightsourceip: 10.208.194.50
+      # rightprotoport: 'tcp/3022'
+      # rightsubnet: '10.90.178.2/32'
+      rightsubnets: '{ 10.42.50.0/24 , 10.42.51.0/24 }'
+      pfs: 'yes'
+      vti-interface: vti02
+      mark: '5/0xffffffff'
+      vti-routing: 'yes'
+      leftvti: 10.42.43.1/32
+
+# Source: https://github.com/xelerance/Openswan/blob/master/programs/examples/sysctl.conf.in
+psick::sysctl::settings_hash:
+  net.ipv4.ip_forward: 1
+  net.ipv4.conf.default.rp_filter: 0
+  net.ipv4.conf.all.rp_filter: 0
+  net.ipv4.conf.all.send_redirects: 0
+  net.ipv4.conf.default.send_redirects: 0
+  net.ipv4.icmp_ignore_bogus_error_responses: 1
+  net.ipv4.conf.default.log_martians: 0
+  net.ipv4.conf.all.log_martians: 0
+  net.ipv4.conf.default.accept_source_route: 0
+  net.ipv4.conf.all.accept_redirects: 0
+  net.ipv4.conf.default.accept_redirects: 0
+  net.ipv4.neigh.default.gc_thresh1: 1024
+  net.ipv4.neigh.default.gc_thresh2: 2048
+  net.ipv4.neigh.default.gc_thresh3: 4096
+
+# Firewalling
+psick::firewall::iptables::nat_rules:
+  - '-A POSTROUTING ! -d 10.42.0.0/16 -j SNAT --to 95.216.65.138'
+
+apsick::firewall::iptables::mangle_rules:
+  - '-A FORWARD -o vti01 -p tcp -m tcp --tcp-flags SYN,RST SYN -m tcpmss --mss 1361:1536 -j TCPMSS --set-mss 1360'
+
+psick::firewall::iptables::extra_rules:
+  - '-A INPUT -p esp -j ACCEPT'
+  - '-A INPUT -p ah -j ACCEPT'
+
+psick::firewall::iptables::allow_tcp_ports:
+  - 42424
+  - 11142 # openvpn
+
+psick::firewall::iptables::allow_udp_ports:
+  - 500
+  - 4500
+  - 11142 # openvpn
+
+psick::firewall::iptables::allow_ips:
+  - 2.34.117.121 # al
+  - 88.99.137.168 # lab.psick.io
+  - 95.216.65.138 # lob.psick.io
+
+# OpenSSH
+psick::openssh::tp::resources_hash:
+  tp::conf:
+    openssh:
+      template: profile/openssh/sshd_config.erb
+
+# Nginx
+psick::nginx::tp::resources_hash:
+  tp::conf:
+#    nginx::ssl.conf:
+#      template: profile/nginx/ssl.conf.erb
+    nginx::lob.conf:
+      template: profile/nginx/lob.conf.erb
+      base_dir: conf
+
+# OpenVPN
+psick::openvpn::module: 'openvpn'
+openvpn::client_defaults:
+  port: '11142'
+  server: 'lob.psick.io'
+  remote_host: "lob.psick.io"
+openvpn::client_specific_configs:
+  lab:
+    server: lob.psick.io
+    route:
+      - '10.42.50.0 255.255.255.0 10.42.251.1'
+      - '10.42.100.0 255.255.255.0 10.42.251.3'
+    iroute:
+      - '10.42.40.0 255.255.255.0'
+      - '10.42.41.0 255.255.255.0'
+      - '10.42.42.0 255.255.255.0'
+      - '10.42.43.0 255.255.255.0'
+      - '10.42.44.0 255.255.255.0'
+      - '10.42.45.0 255.255.255.0'
+      - '10.42.46.0 255.255.255.0'
+      - '10.42.47.0 255.255.255.0'
+      - '10.42.48.0 255.255.255.0'
+      - '10.42.49.0 255.255.255.0'
+    ifconfig: '10.42.251.2 255.255.255.0' 
+  busto:
+    server: lob.psick.io
+    route:
+      - '10.42.50.0 255.255.255.0 10.42.251.1'
+      - '10.42.40.0 255.255.255.0 10.42.251.2'
+      - '10.42.41.0 255.255.255.0 10.42.251.2'
+      - '10.42.42.0 255.255.255.0 10.42.251.2'
+      - '10.42.43.0 255.255.255.0 10.42.251.2'
+      - '10.42.44.0 255.255.255.0 10.42.251.2'
+      - '10.42.45.0 255.255.255.0 10.42.251.2'
+      - '10.42.46.0 255.255.255.0 10.42.251.2'
+      - '10.42.47.0 255.255.255.0 10.42.251.2'
+      - '10.42.48.0 255.255.255.0 10.42.251.2'
+      - '10.42.49.0 255.255.255.0 10.42.251.2'
+    iroute:
+      - '10.42.100.0 255.255.255.0'
+    ifconfig: '10.42.251.3 255.255.255.0' 
+  al:
+    server: lob.psick.io
+    ifconfig: '10.42.251.10 255.255.255.0' 
+    route:
+      - '10.42.50.0 255.255.255.0 10.42.251.1'
+      - '10.42.100.0 255.255.255.0 10.42.251.3'
+      - '10.42.40.0 255.255.255.0 10.42.251.2'
+      - '10.42.41.0 255.255.255.0 10.42.251.2'
+      - '10.42.42.0 255.255.255.0 10.42.251.2'
+      - '10.42.43.0 255.255.255.0 10.42.251.2'
+      - '10.42.44.0 255.255.255.0 10.42.251.2'
+      - '10.42.45.0 255.255.255.0 10.42.251.2'
+      - '10.42.46.0 255.255.255.0 10.42.251.2'
+      - '10.42.47.0 255.255.255.0 10.42.251.2'
+      - '10.42.48.0 255.255.255.0 10.42.251.2'
+      - '10.42.49.0 255.255.255.0 10.42.251.2'
+
+openvpn::servers:
+  'lob.psick.io':
+    country: 'DE'
+    province: 'Berlin'
+    city: 'Berlin'
+    organization: 'Example42 GmbH'
+    key_cn: 'Example42 GmbH'
+    key_name: 'Example42 GmbH'
+    key_ou: 'Example42 GmbH'
+#    crl_days: 3650
+    email: 'noreply@example42.com'
+    server: "10.42.251.0 255.255.255.0"
+    local: "95.216.65.138"
+    persist_key: true
+    persist_tun: true
+    tcp_nodelay: true
+    c2c: true
+    topology: 'subnet'
+    port: '11142'
+    route:
+      - '10.42.40.0 255.255.255.0'
+      - '10.42.41.0 255.255.255.0'
+      - '10.42.42.0 255.255.255.0'
+      - '10.42.43.0 255.255.255.0'
+      - '10.42.44.0 255.255.255.0'
+      - '10.42.45.0 255.255.255.0'
+      - '10.42.46.0 255.255.255.0'
+      - '10.42.47.0 255.255.255.0'
+      - '10.42.48.0 255.255.255.0'
+      - '10.42.49.0 255.255.255.0'
+      - '10.42.100.0 255.255.255.0'
+    logfile: "/var/log/openvpn.log"
+    custom_options:
+      ifconfig: '10.42.251.1 255.255.255.0'
+      route-gateway: '10.42.251.1'
+
+openvpn::clients:
+  'al': {}
+  'lab': {}
+  'busto': {}
+

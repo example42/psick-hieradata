@@ -1,0 +1,162 @@
+---
+psick::profiles::linux_classes:
+  web: psick::nginx::tp
+  ipsec: psick::openswan
+  firewall: psick::firewall::iptables
+  openvpn: psick::openvpn
+
+# This node runs in noop mode by default
+psick::puppet::pe_agent::noop_mode: true
+
+psick::openswan::setup_options:
+  plutodebug: none
+  virtual_private: '%v4:10.0.0.0/8,%v4:192.168.0.0/16,%v4:172.16.0.0/12,%v4:!10.42.0.0/16'
+  protostack: netkey
+
+psick::openswan::connections:
+  dtt:
+    ensure: present
+    secret: ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEAm1n0QP69guthZGyBIWtgn61yGz7VqskP6ILCFSj9zb6g+ejMs+k2zpQ7ftP3huDVGnDTSxfzpRE0ZQDPdW7+K5BwAkn9xp+Ef9lb/RoAWvpLp3vba9tq4ZMdabQkDUGhKcrcip684m+rYv9LIZyceMhsgKVgWfy5xM8MmcJvPWOEIN0rdo8zp8bUT8YmWYpx3MQWr1idNafgkvDmNEpvj3DNPkKRH9N420vg2lMH+99Kt+mrzd5uDDh4zThp/UA8vWH18/+iwb9JXzyfS/S2dCvXJbWUVJkDRY0iylRW7xOWztYmQFE1vdoi8G70+Xa3DrwOH98Os3u69Yy1tmAN2zBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBCoRMd0Yr+GU+3xqgpesbmGgCCIdGaGrQdbPXspzQSp5ACWI6Mb57kh5MvFPtJZiA6CrA==] 
+    options:
+      auto: start
+      type: tunnel
+      rekey: 'yes'
+      aggressive: 'no'
+      compress: 'no'
+      authby: secret
+      ike: aes256-sha256-modp2048
+      phase2: esp
+      phase2alg: aes256-sha256;modp2048
+      ikev2: 'no'
+      keylife: 1h
+      ikelifetime: 1440m
+      left: 88.99.137.168
+      leftid: 88.99.137.168
+      leftsubnet: 10.0.0.12/32
+      leftsourceip: 10.0.0.12
+      # leftsourceip: 88.99.137.168
+      right: 217.7.16.126
+      rightid: 217.7.16.126
+      # rightid: 10.208.194.50
+      # rightsourceip: 10.208.194.50
+      # rightprotoport: 'tcp/3022'
+      # rightsubnet: '10.90.178.2/32'
+      rightsubnets: '{ 10.90.178.2/32 , 10.102.222.220/32 }'
+      pfs: 'yes'
+      vti-interface: vti01
+      mark: '5/0xffffffff'
+      vti-routing: 'yes'
+      leftvti: 10.0.0.12/32
+  roadwarrior:
+    ensure: present
+    secret: ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEAPb89kWCxNGeU7m7Mzx2vZRZKSatJ6gLI15pGpxPevwUBYm3ORHe+kTeKJlyIDbJDnL9L6ekd572S+ltIZ9aEkdF1IniF212RUFvAhswoVKIsPSiLsSLHnAjbS7biqaNYe17A8H4SomdeNs33XI2ygPLRWHr5Khd2LKakDoMvyQHxsuUdeYE6Fz6AUMsqJ15x5ir6vjXezJnTXeNGqThQ6jpZucp+B5uXV6hlMOwDwpFwOD61kHsTwtpD/C2bxnMcFBGagWrKBEqfofahBAJDwSM54I/lOuPkdhKxAoTtQcAwM1kH0f/fszMjz0GIsIigeEBVIUjRHUzyzdqvD9hMqDBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBAcZQUh5U8xaJuPWcdIWo0UgCBtTUf0blOn7wXOfear6cc9VGDmWMVKsxNihe6OYzfXKg==] 
+    options:
+      authby: secret
+      xauthby: pam
+      pfs: no
+      auto: add
+      rekey: no
+      left: '%defaultroute'
+      leftsubnet: 0.0.0.0/0
+      rightaddresspool: 10.42.250.10-10.42.250.254
+      right: '%any'
+      # make cisco clients happy
+      cisco-unity: 'yes'
+      # address of your internal DNS server
+      modecfgdns1: 8.8.8.8
+      leftxauthserver: 'yes'
+      rightxauthclient: 'yes'
+      leftmodecfgserver: 'yes'
+      rightmodecfgclient: 'yes'
+      modecfgpull: 'yes'
+      #configure pam via /etc/pam.d/pluto
+      xauthby: pam
+      # xauthby: alwaysok MUST NOT be used with PSK
+      # Can be played with below
+      #dpddelay: 30
+      #dpdtimeout: 120
+      #dpdaction: clear
+      # xauthfail: soft
+      ike-frag: 'yes'
+      ikev2: never
+      ike: aes256-sha2_512;modp2048,aes128-sha2_512;modp2048,aes256-sha1;modp1024,aes128-sha1;modp1024
+
+# Source: https://github.com/xelerance/Openswan/blob/master/programs/examples/sysctl.conf.in
+psick::sysctl::settings_hash:
+  net.ipv4.ip_forward: 1
+  net.ipv4.conf.default.rp_filter: 0
+  net.ipv4.conf.all.rp_filter: 0
+  net.ipv4.conf.vti01.rp_filter: 0
+  net.ipv4.conf.all.send_redirects: 0
+  net.ipv4.conf.default.send_redirects: 0
+  net.ipv4.icmp_ignore_bogus_error_responses: 1
+  net.ipv4.conf.default.log_martians: 0
+  net.ipv4.conf.all.log_martians: 0
+  net.ipv4.conf.default.accept_source_route: 0
+  net.ipv4.conf.all.accept_redirects: 0
+  net.ipv4.conf.default.accept_redirects: 0
+  net.ipv4.neigh.default.gc_thresh1: 1024
+  net.ipv4.neigh.default.gc_thresh2: 2048
+  net.ipv4.neigh.default.gc_thresh3: 4096
+
+# Firewalling
+psick::firewall::iptables::nat_rules:
+  - '-A POSTROUTING -d 10.102.222.220/32 -o vti01 -s 10.42.250.0/24 -j SNAT --to 10.0.0.12'
+  - '-A POSTROUTING -d 10.90.178.2/32 -o vti01 -s 10.42.250.0/24 -j SNAT --to 10.0.0.12'
+  - '-A POSTROUTING ! -d 10.42.0.0/16 -j SNAT --to 88.99.137.168'
+
+psick::firewall::iptables::mangle_rules:
+  - '-A FORWARD -o vti01 -p tcp -m tcp --tcp-flags SYN,RST SYN -m tcpmss --mss 1361:1536 -j TCPMSS --set-mss 1360'
+
+psick::firewall::iptables::extra_rules:
+  - '-A INPUT -p esp -j ACCEPT'
+  - '-A INPUT -p ah -j ACCEPT'
+
+psick::firewall::iptables::allow_tcp_ports:
+  - 80
+  - 443
+  - 42424
+
+psick::firewall::iptables::allow_udp_ports:
+  - 500
+  - 4500
+
+psick::firewall::iptables::allow_ips:
+  - 217.7.16.126 # DTT
+  - 93.40.189.160 # AL
+  - 95.216.65.138 # lob.psick.io
+
+# OpenSSH
+Apsick::openssh::tp::resources_hash:
+  tp::conf:
+    openssh:
+      template: profile/openssh/sshd_config.erb
+
+# Nginx
+psick::nginx::tp::resources_hash:
+  tp::conf:
+    nginx::ssl.conf:
+      template: profile/nginx/ssl.conf.erb
+    nginx::lab.conf:
+      template: profile/nginx/lab.conf.erb
+      base_dir: conf
+    nginx::demo.conf:
+      template: profile/nginx/demo.conf.erb
+      base_dir: conf
+    nginx::psick.conf:
+      template: profile/nginx/psick.conf.erb
+      base_dir: conf
+    nginx::openskills.conf:
+      template: profile/nginx/openskills.conf.erb
+      base_dir: conf
+    nginx::foss.conf:
+      template: profile/nginx/foss.conf.erb
+      base_dir: conf
+  tp::dir:
+    nginx::psick.io:
+      vcsrepo: git
+      source: git@github.com:/example42/psick.io.git
+      path: /usr/share/nginx/psick.io
+
+# OpenVPN
+

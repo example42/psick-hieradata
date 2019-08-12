@@ -306,3 +306,12 @@ amcollective_choria::server: true
 amcollective_choria::config:
         #  security.serializer: "json"
 
+# Disable ipv6
+psick::sysctl::settings_hash:
+  net.ipv6.conf.all.disable_ipv6: 1
+  net.ipv6.conf.default.disable_ipv6: 1
+
+# Extra packages
+tp::install_hash:
+  sysdig:
+    ensure: present

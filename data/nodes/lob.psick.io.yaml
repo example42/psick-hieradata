@@ -19,7 +19,7 @@ psick::users::users_hash:
 # This node runs in noop mode by default
 psick::puppet::pe_agent::noop_mode: true
 
-# On lob, Debain 9 openswan packages are missing
+# On lob, Debian 9 openswan packages are missing
 psick::openswan::setup_template: ''
 psick::openswan::tp::manage: false
 psick::openswan::setup_options:
@@ -140,6 +140,7 @@ psick::firewall::iptables::allow_ips:
   - 2.34.117.121 # al
   - 88.99.137.168 # lab.psick.io
   - 95.216.65.138 # lob.psick.io
+  - 10.42.43.0/24 # lob.psick.io
 
 # OpenSSH
 psick::openssh::tp::resources_hash:
@@ -254,4 +255,8 @@ openvpn::clients:
   'al': {}
   'lab': {}
   'busto': {}
+
+
+# Selinux disabled here:
+psick::selinux::state: disabled
 

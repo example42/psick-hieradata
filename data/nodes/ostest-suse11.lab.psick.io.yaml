@@ -4,6 +4,7 @@ network::interfaces_hash:
   'eth0':
     ipv4_dhcp: true
   'eth1':
-    ipv4_address: '10.42.43.125'
+    ipv4_address: '10.42.43.129'
     ipv4_netmask: '255.255.255.0'
 
+network::hostname: ostest-suse11.lab.psick.io

@@ -53,9 +53,17 @@ psick::git::configs_hash:
       http:
         sslVerify: false
 
-network::interfaces_hash:
+# Network configs
+OLDnetwork::interfaces_hash:
   'eth0':
     enable_dhcp: true
   'eth1':
-    ipaddress: '10.42.43.103'
+    ipaddress: '10.42.43.104'
     netmask: '255.255.255.0'
+
+network::interfaces_hash:
+  'eth0':
+    ipv4_dhcp: true
+  'eth1':
+    ipv4_address: '10.42.43.104'
+    ipv4_netmask: '255.255.255.0'

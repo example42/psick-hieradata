@@ -1,6 +1,32 @@
 ---
-psick::profiles::linux_classes:
-  icinga: psick::icingaweb2
+psick::base::linux_classes:
+  icingaweb: psick::icingaweb2
 
+psick::icinga2::module: 'icinga'
+psick::icingaweb2::module: 'icinga'
+psick::icingaweb2::auto_prereq: true
+# Configurations with psick::icinga2::module: 'psick'
 psick::icinga2::is_server: true
 
+#icinga2::globals::service_reload: 'icinga2 daemon -C && service icinga2 reload'
+icinga2::confd: true
+icinga2::feature::api::accept_config: false
+aicinga2::feature::api::endpoints:
+  'icinga.lab.psick.io':
+    host: 'icinga.lab.psick.io'
+aicinga2::feature::api::zones:
+  master:
+    endpoints:
+      - 'icinga.lab.psick.io'
+  global-templates:
+    global: true
+  director-global:
+    global: true
+
+# Configurations with psick::icingaweb2::module: 'icinga'
+icinga2::manage_repo: true
+icingaweb2::manage_repo: false
+
+# Selinux management for icinga is not idempotent.
+# We just leave it in permission mode
+psick::selinux::state: permissive

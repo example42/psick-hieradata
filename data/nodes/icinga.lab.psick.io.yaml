@@ -1,0 +1,47 @@
+---
+psick::icinga2::puppetdb_hosts_override_hash:
+  'lab.psick.io':
+    address: 10.42.43.1
+    vars:
+      ssh_port: 42424
+      disk_wfree: '10%'
+      disk_cfree: '5%'
+  'lob.psick.io':
+    address: 10.42.251.1
+    vars:
+      ssh_port: 42424
+  'puppetcd.lab.psick.io':
+    ensure: absent
+
+psick::icinga2::puppetdb_zones_override_hash:
+  'puppetcd.lab.psick.io':
+    ensure: absent
+psick::icinga2::puppetdb_endpoints_override_hash:
+  'puppetcd.lab.psick.io':
+    ensure: absent
+
+psick::icinga2::user_hash:
+  icingaadmin:
+    display_name: "Icinga2 Admin"
+    email: al@example42.com
+    groups:
+      - icingaadmins
+  al:
+    display_name: "Alessandro Franceschi"
+    email: al@example42.com
+    groups:
+      - icingaadmins
+  ma:
+    display_name: "Martin Alfke"
+    email: ma@example42.com
+
+psick::icinga2::service_hash:
+  mysql:
+    apply: true
+    check_command: mysql
+    command_endpoint: host.vars.client_endpoint
+    assign:
+      - host.vars.role == lamp
+      - host.vars.role == icinga
+    vars:
+      mysql_hostname: 127.0.0.1

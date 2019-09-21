@@ -2,10 +2,14 @@
 ### Classification
 psick::pre::linux_classes:
   puppet: psick::puppet
-  hosts: psick::hosts::file
+  hosts: psick::hosts::puppetdb
 psick::base::linux_classes:
+  mail: psick::postfix::tp
   icinga: psick::icinga2
   monitor_plugins: psick::monitor::nagiosplugins
+  network: network
+  selinux: psick::selinux
+
 #  sensu: psick::sensu
 #  ansible: psick::ansible
   bolt: psick::bolt
@@ -61,6 +65,12 @@ psick::puppet::external_facts:
 
 # Disabled updating host entry by psick::hostname
 psick::hostname::update_host_entry: false
+
+        
+# Hosts file managed via Puppetdb query         
+psick::hosts::puppetdb::puppetdb_fact_address: 'networking.interfaces.eth1.ip'
+psick::hosts::puppetdb::puppethost: '10.42.43.101       puppet  puppet.lab.psick.io'
+
 # Hosts file managed via file resource
 psick::hosts::file::extra_hosts:
   - '10.42.43.101 puppet puppet.lab.psick.io'
@@ -70,9 +80,10 @@ psick::hosts::file::extra_hosts:
   - '10.42.43.105 rundeck rundeck.lab.psick.io'
   - '10.42.43.106 build build.lab.psick.io'
   - '10.42.43.107 docker docker.lab.psick.io'
-  - '10.42.43.116 lamp lamp.lab.psick.io'
+  - '10.42.43.110 puppetcd puppetcd.lab.psick.io'
+  - '10.42.43.119 lamp lamp.lab.psick.io'
   - '10.42.43.111 sensu sensu.lab.psick.io'
-  - '10.42.43.119 jenkins jenkins.lab.psick.io'
+  - '10.42.43.123 ostest-ubuntu1804 ostest-ubuntu1804.lab.psick.io'
 
 # Enable automatic updates on lab nodes and set schedule:
 psick::update::cron_schedule: '42 4 * * *'
@@ -81,10 +92,43 @@ psick::update::cron_schedule: '42 4 * * *'
 psick::monitor:
   interface: 'eth1'
 
+psick::monitor::nagiosplugins::auto_prereq: true
+psick::icinga2::module: 'icinga'
+# Icinga configuration with psick::icinga2::module: 'psick'
 psick::icinga2::master: 'icinga.lab.psick.io'
 psick::icinga2::is_client: true
 psick::icinga2::install_cli: true
 
+# Icinga configuration with psick::icinga2::module: 'icinga'
+psick::icinga2::puppetdb_fact_address: 'networking.interfaces.eth1.ip'
+psick::icinga2::puppetdb_fact_network: 'networking.interfaces.eth1.network'
+icinga2::confd: false
+icinga2::manage_repo: true
+icinga2::globals::constants:
+  ZoneName: 'lab'
+icinga2::feature::api::pki: 'puppet'
+icinga2::feature::api::accept_config: true
+icinga2::feature::api::accept_commands: true
+aicinga2::feature::api::endpoints:
+  "%{fqdn}": {}
+  'icinga.lab.psick.io':
+    host: 'icinga.lab.psick.io'
+aicinga2::feature::api::zones:
+  "%{fqdn}":
+    endpoints:
+      - "%{fqdn}"
+    parent: master
+  master:
+    endpoints:
+      - 'icinga.lab.psick.io'
+  global-templates:
+    global: true
+  director-global:
+    global: true
+
+
+
+# Sensu
 psick::sensu::is_client: true
 psick::sensu::rabbitmq_host: 'sensu.lab.psick.io'
 psick::sensu::rabbitmq_password: 'hiera_encrypt_in_the_real_world'
@@ -228,7 +272,9 @@ psick::openssh::tp::resources_hash:
         Protocol: 2
         PermitRootLogin: 'no'
         Subsystem: 'sftp /usr/libexec/openssh/sftp-server'
-
+        UsePAM: 'yes'
+        TCPKeepAlive: 'yes'
+        PermitRootLogin: 'without-password'
 # Ansible
 psick::ansible::master: puppet.lab.psick.io
 psick::ansible::keyshare_method: storeconfigs
@@ -266,28 +312,13 @@ psick::servers:
 
 
 # network settings tests
-psick::network::routes:
-  enp0s8:
-    routes:
-      10.42.100.0/24: 10.42.43.1
+network::routes_legacy: false
+network::interfaces_legacy: false
+network::rules_legacy: false
+network::tables_legacy: false
+network::routing_tables_legacy: false
 
-network::routes_legacy: true
-network::interfaces_legacy: true
-DISpsick::network::routes:
-  enp0s8:
-    ipaddress:
-      - 10.42.100.0
-      - 10.243.0.0
-    netmask:
-      - 255.255.255.0
-      - 255.255.255.0
-    gateway:
-      - 10.42.43.1
-      - 10.42.43.1
-    mtu:
-      - 1500
-
-DISnetwork::mroutes_hash:
+network::routes_hash:
   eth1:
     routes:
       '10.42.50.0/24': '10.42.43.1'
@@ -315,3 +346,28 @@ psick::sysctl::settings_hash:
 tp::install_hash:
   sysdig:
     ensure: present
+    auto_prereq: true
+psick::packages::packages_osfamily_hash:
+  RedHat:
+    - net-tools
+    - telnet
+    - wget
+  Debian:
+    - net-tools
+    - telnet
+    - wget
+
+# General postfix configuration
+psick::postfix::tp::resources_hash:
+  tp::conf:
+    postfix:
+      template: 'psick/postfix/main.cf.erb'
+psick::postfix::tp::options_hash:
+  'mydomain': "%{facts.domain}"
+  'myhostname': "%{facts.hostname}"
+  'inet_interfaces': '127.0.0.1'
+  'inet_protocols': 'all'
+  'my_destination': '$myhostname, localhost.$mydomain, localhost'
+
+# We keep selinux enabled by default
+psick::selinux::state: enforcing

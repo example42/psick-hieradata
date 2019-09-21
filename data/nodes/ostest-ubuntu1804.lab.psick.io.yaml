@@ -1,13 +1,14 @@
 ---
-
 psick::profiles::linux_classes:
   monit: monit
 
-
-psick::network::interfaces:
-  enp0s8:
-    ipaddress:: 10.42.43.123
-
+# Network configs
+network::interfaces_hash:
+  'eth0s3':
+    ipv4_dhcp: true
+  'enp0s8':
+    ipv4_address: '10.42.43.123'
+    ipv4_netmask: '255.255.255.0'
 
 # Override lab defaults. On Ubuntu 1804 wheel group is admin
 psick::users::users_hash:

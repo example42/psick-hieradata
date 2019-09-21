@@ -28,6 +28,7 @@ puppet_enterprise::profile::puppetdb::whitelisted_certnames:
   - cirunner.lab.psick.io
   - git.lab.psick.io
   - puppet.lab.psick.io
+  - icinga.lab.psick.io
 puppet_enterprise::profile::console::whitelisted_certnames:
   - cirunner.lab.psick.io
   - git.lab.psick.io
@@ -139,8 +140,8 @@ mcollective::client: true
 #      workers: 10
 network::interfaces_hash:
   'eth0':
-    enable_dhcp: true
+    ipv4_dhcp: true
   'eth1':
-    ipaddress: '10.42.43.101'
-    netmask: '255.255.255.0'
+    ipv4_ipaddress: '10.42.43.101'
+    ipv4_netmask: '255.255.255.0'
 

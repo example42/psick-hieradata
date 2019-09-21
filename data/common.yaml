@@ -59,7 +59,6 @@ psick::pre::linux_classes:
   repo: psick::repo
   users: psick::users
 psick::base::linux_classes:
-  mail: psick::postfix::tp
   ssh: psick::openssh
   sudo: psick::sudo
   logs: psick::logs::rsyslog
@@ -68,7 +67,6 @@ psick::base::linux_classes:
   update: psick::update
   motd: psick::motd
   profile: psick::profile
-  #network: psick::network
   systat: psick::monitor::sar
 
 # PSICK classification for Windows nodes
@@ -93,18 +91,6 @@ psick::timezone: UTC
 
 # Hostname and network settings
 psick::hostname::update_network_entry: false # Avoid resource duplication when psick::network is used
-
-# General postfix configuration
-psick::postfix::tp::resources_hash:
-  tp::conf:
-    postfix:
-      template: 'psick/postfix/main.cf.erb'
-psick::postfix::tp::options_hash:
-  'mydomain': "%{facts.domain}"
-  'myhostname': "%{facts.hostname}"
-  'inet_interfaces': '127.0.0.1'
-  'inet_protocols': 'all'
-  'my_destination': '$myhostname, localhost.$mydomain, localhost'
 
 # Sample sysctl settings
 psick::sysctl::settings_hash:

@@ -3,7 +3,6 @@ psick::profiles::linux_classes:
   web: psick::nginx::tp
   ipsec: psick::openswan
   firewall: psick::firewall::iptables
-  openvpn: psick::openvpn
 
 psick::users::users_hash:
   al:
@@ -163,5 +162,6 @@ psick::nginx::tp::resources_hash:
       source: git@github.com:/example42/psick.io.git
       path: /usr/share/nginx/psick.io
 
-# OpenVPN
+# Selinux disabled here:
+psick::selinux::state: disabled
 

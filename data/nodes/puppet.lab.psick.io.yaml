@@ -142,6 +142,6 @@ network::interfaces_hash:
   'eth0':
     ipv4_dhcp: true
   'eth1':
-    ipv4_ipaddress: '10.42.43.101'
+    ipv4_address: '10.42.43.101'
     ipv4_netmask: '255.255.255.0'
 

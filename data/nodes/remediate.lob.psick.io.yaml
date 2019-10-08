@@ -1,0 +1,12 @@
+---
+psick::base::linux_classes:
+  remediate: psick::remediate
+
+psick::remediate::silence_notify: true
+psick::docker::install_class: tp_profile::docker
+
+network::interfaces_hash:
+  'eth0':
+    ipv4_address: '10.42.50.11'
+    ipv4_netmask: '255.255.255.0'
+    ipv4_gateway: '10.42.50.1'

@@ -1,32 +1,9 @@
 ---
 network::interfaces_hash:
   'eth0':
-    enable_dhcp: true
+    ipv4_dhcp: true
   'eth1':
-    ipaddress: '10.42.43.110'
-    netmask: '255.255.255.0'
+    ipv4_address: '10.42.43.110'
+    ipv4_netmask: '255.255.255.0'
 
 
-
-Apsick::profiles::linux_classes:
-  docker: psick::docker
-  mysql: psick::mysql
-  docker_host: psick::docker::host
-
-Apsick::docker::username: example42
-Apsick::docker::host::instances:
-  puppetcd:
-    ensure: present
-    image: 'puppet/continuous-delivery-for-puppet-enterprise:latest'
-
-Apsick::mysql::tp::auto_prereq: true
-Apsick::mysql::tp::install_hash:
-  repo: mysql80-community
-
-Apsick::mysql::user_hash:
-  cdpe:
-    password: cdpesecret
-Apsick::mariadb::grant_hash:
-  cdpe:
-    password: cdpesecret
-    db: cdpe

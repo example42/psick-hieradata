@@ -15,7 +15,7 @@ psick::profiles::linux_classes:
   puppet_ci: psick::puppet::ci
 
 #:noop_mode: true
-psick::postfix::tp::no_noop: true
+tp_profile::postfix::no_noop: true
 
 psick::vagrant::default_plugins:
   - vagrant-cachier
@@ -113,3 +113,10 @@ psick::openssh::configs_hash:
         StrictHostKeyChecking: no
         UserKnownHostsFile: /dev/null
 
+# Pork around for sudo al on Ubuntu
+tp_profile::postfix::manage: false
+psick::users::users_hash:
+  al:
+    groups:
+      - admin
+      - --wheel

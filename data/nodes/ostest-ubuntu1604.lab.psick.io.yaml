@@ -6,4 +6,10 @@ network::interfaces_hash:
   'eth1':
     ipv4_address: '10.42.43.125'
     ipv4_netmask: '255.255.255.0'
-
+# Override lab defaults. On Ubuntu wheel group is admin
+psick::users::users_hash:
+  al:
+    groups:
+      - users
+      - admin
+      - --wheel

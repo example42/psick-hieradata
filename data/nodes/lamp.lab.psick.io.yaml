@@ -2,18 +2,18 @@
 psick::base::linux_classes:
   'git': psick::git
 psick::profiles::linux_classes:
-  'apache': psick::apache::tp
+  'apache': tp_profile::apache
   'php': psick::php
   'mysql': psick::mariadb
 
 # This node runs in noop mode by default
 psick::puppet::pe_agent::noop_mode: true
-psick::apache::tp::no_noop: true
+tp_profile::apache::no_noop: true
 
 psick::git::extra_packages_list:
   - git-lfs
 
-psick::apache::tp::resources_hash:
+tp_profile::apache::resources:
   tp::conf:
     apache::openkills.info.conf:
       base_dir: conf
@@ -66,7 +66,7 @@ psick::mariadb::grant_hash:
     db: openskills
     db_init_query_file: /root/openskills-data/openskills.sql
     require: 'Tp::Dir[mariadb::openskills-data]'
-psick::mariadb::tp::resources_hash:
+tp_profile::mariadb::resources:
   tp::dir:
     mariadb::openskills-data:
       vcsrepo: git

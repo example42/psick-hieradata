@@ -4,8 +4,8 @@ psick::profiles::linux_classes:
 #  ipsec: psick::openswan
   firewall: psick::firewall::iptables
   #  docker: psick::docker
-  # vagrant: psick::vagrant
-  # virtualbox: psick::virtualbox
+  vagrant: psick::vagrant
+  virtualbox: psick::virtualbox
   pdk: psick::puppet::pdk
   openvpn: psick::openvpn
 
@@ -22,6 +22,7 @@ psick::puppet::pe_agent::noop_mode: true
 # On lob, Debian 9 openswan packages are missing
 psick::openswan::setup_template: ''
 psick::openswan::tp::manage: false
+tp_profile::openswan::manage: false
 psick::openswan::setup_options:
   plutodebug: none
   virtual_private: '%v4:10.0.0.0/8,%v4:192.168.0.0/16,%v4:172.16.0.0/12,%v4:!10.42.0.0/16'
@@ -124,6 +125,8 @@ apsick::firewall::iptables::mangle_rules:
   - '-A FORWARD -o vti01 -p tcp -m tcp --tcp-flags SYN,RST SYN -m tcpmss --mss 1361:1536 -j TCPMSS --set-mss 1360'
 
 psick::firewall::iptables::extra_rules:
+  - '-A INPUT -i vmbr0 -p udp -m udp --dport 67 -j ACCEPT'
+  - '-A INPUT -i vmbr0 -p udp -m udp --dport 55784 -j ACCEPT'
   - '-A INPUT -p esp -j ACCEPT'
   - '-A INPUT -p ah -j ACCEPT'
 
@@ -143,13 +146,13 @@ psick::firewall::iptables::allow_ips:
   - 10.42.43.0/24 # lob.psick.io
 
 # OpenSSH
-psick::openssh::tp::resources_hash:
+tp_profile::openssh::resources:
   tp::conf:
     openssh:
       template: profile/openssh/sshd_config.erb
 
 # Nginx
-psick::nginx::tp::resources_hash:
+tp_profile::nginx::resources:
   tp::conf:
 #    nginx::ssl.conf:
 #      template: profile/nginx/ssl.conf.erb

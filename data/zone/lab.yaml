@@ -4,7 +4,7 @@ psick::pre::linux_classes:
   puppet: psick::puppet
   hosts: psick::hosts::puppetdb
 psick::base::linux_classes:
-  mail: psick::postfix::tp
+  mail: tp_profile::postfix
   icinga: psick::icinga2
   monitor_plugins: psick::monitor::nagiosplugins
   network: network
@@ -70,6 +70,8 @@ psick::hostname::update_host_entry: false
 # Hosts file managed via Puppetdb query         
 psick::hosts::puppetdb::puppetdb_fact_address: 'networking.interfaces.eth1.ip'
 psick::hosts::puppetdb::puppethost: '10.42.43.101       puppet  puppet.lab.psick.io'
+psick::hosts::puppetdb::extra_hosts:
+  - '10.42.43.123       ostest-ubuntu1804 ostest-ubuntu1804.lab.psick.io'
 
 # Hosts file managed via file resource
 psick::hosts::file::extra_hosts:
@@ -102,7 +104,7 @@ psick::icinga2::install_cli: true
 # Icinga configuration with psick::icinga2::module: 'icinga'
 psick::icinga2::puppetdb_fact_address: 'networking.interfaces.eth1.ip'
 psick::icinga2::puppetdb_fact_network: 'networking.interfaces.eth1.network'
-icinga2::confd: false
+# icinga2::confd: false
 icinga2::manage_repo: true
 icinga2::globals::constants:
   ZoneName: 'lab'
@@ -263,8 +265,13 @@ psick::sudo::directives:
   al:
     content: 'al ALL=(ALL) NOPASSWD:ALL'
 
+# Docker tp profile when used
+psick::docker::install_class: 'tp_profile::docker'
+
 # OpenSSH
-psick::openssh::tp::resources_hash:
+psick::openssh::module: 'tp_profile'
+
+tp_profile::openssh::resources:
   tp::conf:
     openssh:
       template: 'psick/generic/spaced.erb'
@@ -358,11 +365,11 @@ psick::packages::packages_osfamily_hash:
     - wget
 
 # General postfix configuration
-psick::postfix::tp::resources_hash:
+tp_profile::postfix::resources:
   tp::conf:
     postfix:
       template: 'psick/postfix/main.cf.erb'
-psick::postfix::tp::options_hash:
+tp_profile::postfix::options:
   'mydomain': "%{facts.domain}"
   'myhostname': "%{facts.hostname}"
   'inet_interfaces': '127.0.0.1'

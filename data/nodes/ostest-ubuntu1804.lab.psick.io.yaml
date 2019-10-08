@@ -10,6 +10,7 @@ network::interfaces_hash:
     ipv4_address: '10.42.43.123'
     ipv4_netmask: '255.255.255.0'
 
+
 # Override lab defaults. On Ubuntu 1804 wheel group is admin
 psick::users::users_hash:
   al:

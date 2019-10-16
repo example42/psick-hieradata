@@ -1,17 +1,20 @@
 ---
 # Network configs
-nonetwork::interfaces:
-  'eth0':
-    ipv4_dhcp: true
-  'eth1':
-    ipv4_address: '10.42.43.125'
-    ipv4_netmask: '255.255.255.0'
+# Network v3 format
 network::interfaces_hash:
   'eth0':
     enable_dhcp: true
   'eth1':
     ipaddress: '10.42.43.125'
     netmask: '255.255.255.0'
+# Network v4 format
+nonetwork::interfaces:
+  'eth0':
+    ipv4_dhcp: true
+  'eth1':
+    ipv4_address: '10.42.43.125'
+    ipv4_netmask: '255.255.255.0'
+
 # Override lab defaults. On Ubuntu wheel group is admin
 psick::users::users_hash:
   al:

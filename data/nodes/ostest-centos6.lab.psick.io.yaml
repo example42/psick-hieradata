@@ -1,4 +1,11 @@
 ---
+# Sysdig not installable here
+tp::install_hash:
+  sysdig:
+    ensure: absent
+    auto_prereq: false
+
+# Network v3 format
 network::interfaces_hash:
   'eth0':
     enable_dhcp: true

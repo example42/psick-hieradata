@@ -4,7 +4,7 @@ psick::profiles::linux_classes:
 #  ipsec: psick::openswan
   firewall: psick::firewall::iptables
   #  docker: psick::docker
-  vagrant: psick::vagrant
+  #  vagrant: psick::vagrant
   virtualbox: psick::virtualbox
   pdk: psick::puppet::pdk
   openvpn: psick::openvpn

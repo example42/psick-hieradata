@@ -81,7 +81,7 @@ psick::puppet::gems::install_chruby_gems: false
 psick::puppet::gems::install_options:
   - --force
 
-psick::bolt::is_master: true
+psick::bolt::is_master: false
 psick::bolt::bolt_user: jenkins
 psick::bolt::master::generate_nodes_list: false
 psick::bolt::master::run_ssh_keygen: false

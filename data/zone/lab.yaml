@@ -325,7 +325,7 @@ network::rules_legacy: false
 network::tables_legacy: false
 network::routing_tables_legacy: false
 
-network::routes_hash:
+network::mroutes_hash:
   eth1:
     routes:
       '10.42.50.0/24': '10.42.43.1'

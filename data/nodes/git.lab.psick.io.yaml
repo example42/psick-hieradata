@@ -1,6 +1,12 @@
 ---
 network::interfaces_hash:
   'eth0':
+    enable_dhcp: true
+  'eth1':
+    ipaddress: '10.42.43.102'
+    netmask: '255.255.255.0'
+nonetwork::interfaces:
+  'eth0':
     ipv4_dhcp: true
   'eth1':
     ipv4_address: '10.42.43.102'

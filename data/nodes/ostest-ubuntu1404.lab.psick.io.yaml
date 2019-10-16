@@ -7,10 +7,16 @@ psick::users::users_hash:
       - --wheel
 
 # Network configs
-network::interfaces_hash:
+newnetwork::interfaces_hash:
   'eth0':
     ipv4_dhcp: true
   'eth1':
     ipv4_address: '10.42.43.128'
     ipv4_netmask: '255.255.255.0'
 
+network::interfaces_hash:
+  'eth0':
+    dhcp: true
+  'eth1':
+    ipaddress: '10.42.43.128'
+    netmask: '255.255.255.0'

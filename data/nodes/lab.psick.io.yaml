@@ -21,7 +21,7 @@ psick::openswan::setup_options:
 psick::openswan::connections:
   dtt:
     ensure: present
-    secret: ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEAm1n0QP69guthZGyBIWtgn61yGz7VqskP6ILCFSj9zb6g+ejMs+k2zpQ7ftP3huDVGnDTSxfzpRE0ZQDPdW7+K5BwAkn9xp+Ef9lb/RoAWvpLp3vba9tq4ZMdabQkDUGhKcrcip684m+rYv9LIZyceMhsgKVgWfy5xM8MmcJvPWOEIN0rdo8zp8bUT8YmWYpx3MQWr1idNafgkvDmNEpvj3DNPkKRH9N420vg2lMH+99Kt+mrzd5uDDh4zThp/UA8vWH18/+iwb9JXzyfS/S2dCvXJbWUVJkDRY0iylRW7xOWztYmQFE1vdoi8G70+Xa3DrwOH98Os3u69Yy1tmAN2zBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBCoRMd0Yr+GU+3xqgpesbmGgCCIdGaGrQdbPXspzQSp5ACWI6Mb57kh5MvFPtJZiA6CrA==] 
+    secret: ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEADP9C0hUgUEmwRIqpGYprxHf6jD3WJCQlltMqfchYabV/cHKVXSE5Mgzo/J3Si0DVU4tjWdOs1E16S3ybOym/Ts0Nfon1HiZrcUFKTLtaIRdyF0hFOTfFATzaB4pPZZxCeWMvJMRd+WfP/kIb9mNXqubKXAI7y2SEEHLMo8lg8RZQC842y5f+tqvbqZlDDJ3tAP70pN8zS2UvMMx9HAPNlQOnQB0KqKK9raX2KRbk0rwJPbPkYtwa0YLvDm7qzXijSTs9ZfIhoYMH9o3d+bLY6cV0sMR+YYIvEJ5QKsRJgsVIJCtWzL07oK6cRDP/1H1xwR7Ft9IxmIWNBTnc8FdETzBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBC1sbSfaIkMMmqMfot3RNFNgCBlpIc5z/XsAh75UWghQl6N+o2/JsVgBxEwtYGH1UKEjA==]
     options:
       auto: start
       type: tunnel
@@ -54,7 +54,7 @@ psick::openswan::connections:
       leftvti: 10.0.0.12/32
   roadwarrior:
     ensure: present
-    secret: ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEAPb89kWCxNGeU7m7Mzx2vZRZKSatJ6gLI15pGpxPevwUBYm3ORHe+kTeKJlyIDbJDnL9L6ekd572S+ltIZ9aEkdF1IniF212RUFvAhswoVKIsPSiLsSLHnAjbS7biqaNYe17A8H4SomdeNs33XI2ygPLRWHr5Khd2LKakDoMvyQHxsuUdeYE6Fz6AUMsqJ15x5ir6vjXezJnTXeNGqThQ6jpZucp+B5uXV6hlMOwDwpFwOD61kHsTwtpD/C2bxnMcFBGagWrKBEqfofahBAJDwSM54I/lOuPkdhKxAoTtQcAwM1kH0f/fszMjz0GIsIigeEBVIUjRHUzyzdqvD9hMqDBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBAcZQUh5U8xaJuPWcdIWo0UgCBtTUf0blOn7wXOfear6cc9VGDmWMVKsxNihe6OYzfXKg==] 
+    secret: ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEALMHInHhNTF5NN1bzG5uNlA7y9Rt5WtNvdZzFRkjGE7cXhQOBNvXvJ76Z3Ygb3Jkn+WJmpEK9JvLcb7dI+NH8x4io4ZDCuCOwR0SKKSldodcgzAskaUghh9K3FnlwPDfdpNWlceMTY44Z51gJ8Ap3BTagQa0uBvmszAdw4lbOqNmQJXgs6lWsWZ3AgeUVi14vGmiKrEHymIOqvDtjFKOv0+hit+KMTcn/s4hK3yhYUyATWG2YabiBsHgHeTXhueP2Lc4O5eEBWFwKI0EwWSjKne4IybQK0csbSqLjwgjjEK0e/oSOTDDgzPlZeFVgg90pScuuwKec508wMUjZjfZgTjBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBDwOT7X1/vp2dmzSCWomq8OgCAusxLr8OIwWw5lexhblF158hc/9YMMChh7NETowTyp5Q==]
     options:
       authby: secret
       xauthby: pam
@@ -162,6 +162,7 @@ tp_profile::nginx::resources:
       vcsrepo: git
       source: git@github.com:/example42/psick.io.git
       path: /usr/share/nginx/psick.io
+      ensure: present
 
 # Selinux disabled here:
 psick::selinux::state: disabled

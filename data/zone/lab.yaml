@@ -111,11 +111,11 @@ icinga2::globals::constants:
 icinga2::feature::api::pki: 'puppet'
 icinga2::feature::api::accept_config: true
 icinga2::feature::api::accept_commands: true
-aicinga2::feature::api::endpoints:
+icinga2::feature::api::endpoints:
   "%{fqdn}": {}
   'icinga.lab.psick.io':
     host: 'icinga.lab.psick.io'
-aicinga2::feature::api::zones:
+icinga2::feature::api::zones:
   "%{fqdn}":
     endpoints:
       - "%{fqdn}"
@@ -319,11 +319,11 @@ psick::servers:
 
 
 # network settings tests
-network::routes_legacy: false
-network::interfaces_legacy: false
-network::rules_legacy: false
-network::tables_legacy: false
-network::routing_tables_legacy: false
+#network::routes_legacy: false
+#network::interfaces_legacy: false
+#network::rules_legacy: false
+#network::tables_legacy: false
+#network::routing_tables_legacy: false
 
 network::mroutes_hash:
   eth1:

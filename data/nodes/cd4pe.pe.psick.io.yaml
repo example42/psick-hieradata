@@ -1,0 +1,5 @@
+---
+# CD4PE runs inside a container
+
+psick::sysctl::settings_hash:
+  net.ipv4.conf.all.forwarding: 1

@@ -21,10 +21,9 @@ Create WIP MR:
     - schedules
   allow_failure: true
 
-# Run Syntax Checks on Feature/Personal Branch
 Syntax checks:
   stage: checks
-  script: "bin/puppet_check_syntax_fast.sh all_but_chars"
+  script: "bin/yaml_check_syntax.sh"
   cache:
     untracked: true
     paths:
@@ -35,21 +34,6 @@ Syntax checks:
     - production
   only:
     - branches
-
-Hidden chars check:
-  stage: checks
-  script: "bin/puppet_check_syntax_fast.sh chars"
-  cache:
-    untracked: true
-    paths:
-    - modules/
-  tags:
-    - test_puppet
-  except:
-    - production
-  only:
-    - branches
-  allow_failure: true
 
 Accept MR:
   stage: promote

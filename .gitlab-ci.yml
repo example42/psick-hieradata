@@ -1,5 +1,7 @@
 # GitLab CI configuration - https://docs.gitlab.com/ce/ci/yaml/README.html
 # r10k or similar.
+variables:
+  GIT_STRATEGY: clone
 
 stages:
   - merge request

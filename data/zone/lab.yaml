@@ -9,6 +9,7 @@ psick::base::linux_classes:
   monitor_plugins: psick::monitor::nagiosplugins
   network: network
   selinux: psick::selinux
+  limits: psick::limits
 
 #  sensu: psick::sensu
 #  ansible: psick::ansible
@@ -378,3 +379,9 @@ tp_profile::postfix::options:
 
 # We keep selinux enabled by default
 psick::selinux::state: enforcing
+
+# Sample Limits
+psick::limits::limits_hash:
+  '*/nofile':
+    soft: 2048
+    hard: 4096

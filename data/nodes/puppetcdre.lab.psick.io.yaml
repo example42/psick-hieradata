@@ -1,18 +1,24 @@
 ---
+
+cd4pe::cd4pe_version: 3.4.0
+cd4pe::cd4pe_docker_extra_params: 
+  - --add-host puppet.lab.psick.io:10.42.43.101
+  - --add-host git.lab.psick.io:10.42.43.102
+        
 network::interfaces_hash:
   'eth0':
     enable_dhcp: true
   'eth1':
-    ipaddress: '10.42.43.110'
+    ipaddress: '10.42.43.109'
     netmask: '255.255.255.0'
 
 nonetwork::interfaces:
   'eth0':
     ipv4_dhcp: true
   'eth1':
-    ipv4_address: '10.42.43.110'
+    ipv4_address: '10.42.43.109'
     ipv4_netmask: '255.255.255.0'
+
 
 psick::sysctl::settings_hash:
   net.ipv4.conf.all.forwarding: 1
-

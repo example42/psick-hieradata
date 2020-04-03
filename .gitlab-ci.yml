@@ -1,0 +1,62 @@
+# GitLab CI configuration - https://docs.gitlab.com/ce/ci/yaml/README.html
+# r10k or similar.
+
+stages:
+  - merge request
+  - checks
+  - promote
+
+# Create WIP Merge request
+Create WIP MR:
+  stage: merge request
+  script:
+    - "bin/gitlab_create_merge_request.rb ${CI_BUILD_REF_NAME} production \"WIP: Works on ${CI_BUILD_REF_NAME}\"" 
+  when: on_success
+  tags:
+    - deploy_puppet
+  except:
+    - production
+    - schedules
+  allow_failure: true
+
+# Run Syntax Checks on Feature/Personal Branch
+Syntax checks:
+  stage: checks
+  script: "bin/puppet_check_syntax_fast.sh all_but_chars"
+  cache:
+    untracked: true
+    paths:
+    - modules/
+  tags:
+    - test_puppet
+  except:
+    - production
+  only:
+    - branches
+
+Hidden chars check:
+  stage: checks
+  script: "bin/puppet_check_syntax_fast.sh chars"
+  cache:
+    untracked: true
+    paths:
+    - modules/
+  tags:
+    - test_puppet
+  except:
+    - production
+  only:
+    - branches
+  allow_failure: true
+
+Accept MR:
+  stage: promote
+  script: "bin/gitlab_accept_merge_request.rb ${CI_BUILD_REF_NAME} production"
+  tags:
+    - deploy_puppet
+  when: manual
+  except:
+    - production
+  only:
+    - branches_disabled
+

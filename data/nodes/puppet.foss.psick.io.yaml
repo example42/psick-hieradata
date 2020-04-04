@@ -1,9 +1,9 @@
 ---
 psick::base::linux_classes:
-        # puppetdb: psick::puppetdb
+# puppetdb: psick::puppetdb
 # psick::puppetserver is alternative tp psick::foss_master: don't use both at the same time
   puppetserver: psick::puppet::foss_master
-  # puppetserver: psick::puppetserver
+# puppetserver: psick::puppetserver
   puppetautosign: psick::puppet::autosign
 
 psick::puppet::gems::install_gems: []
@@ -22,6 +22,4 @@ psick::puppetserver::r10k_configure_webhook: false
 psick::puppetserver::dns_alt_names: "puppet, puppet.%{::domain}"
 psick::puppetserver::remove_global_hiera_yaml: true
 
-
-
-psick::puppetdb::postgresql_class: 'psick::postgresql::tp'
+psick::puppetdb::postgresql_class: 'tp_profile::postgresql'

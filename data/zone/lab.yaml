@@ -29,19 +29,12 @@ psick::monitor::nagiosplugins::auto_prereq: false
 # Noop configuration on PE clients
 psick::puppet::pe_agent::manage_noop: true
 # Set here value for noop in agents' puppet.conf
-psick::puppet::pe_agent::noop_mode: false
+psick::puppet::pe_agent::noop_setting: false
 
-# Classes where we want to enforce resource application ALWAYS
-# no_noop param enforces no-noop mode on the specific class even if
-# noop mode is set client side or in Hiera's noop_mode setting.
-# psick::dns::resolver::no_noop: true
-# psick::hostname::no_noop: true
-# psick::hosts::file::no_noop: true
-# psick::puppet::gems::no_noop: true
-
-# If psick::puppet::pe_agent::noop_mode: true
+# If psick::puppet::pe_agent::noop_setting: true
 # this is needed to be able to revert it
-psick::puppet::pe_agent::no_noop: true
+psick::puppet::pe_agent::noop_manage: true
+psick::puppet::pe_agent::noop_value: false
 
 ### Puppet
 psick::puppet::pe_agent::manage_environment: true

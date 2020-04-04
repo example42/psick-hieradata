@@ -8,7 +8,10 @@ psick::profiles::linux_classes:
 
 # This node runs in noop mode by default
 psick::puppet::pe_agent::noop_setting: true
-tp_profile::apache::no_noop: true
+
+# Always enforce changes on apache
+tp_profile::apache::noop_manage: true
+tp_profile::apache::noop_value: false
 
 psick::git::extra_packages_list:
   - git-lfs

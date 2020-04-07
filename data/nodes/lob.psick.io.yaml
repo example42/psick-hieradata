@@ -1,10 +1,10 @@
 ---
 psick::profiles::linux_classes:
-#  web: psick::nginx::tp
+#  web: tp_profile::nginx
 #  ipsec: psick::openswan
   firewall: psick::firewall::iptables
-  #  docker: psick::docker
-  #  vagrant: psick::vagrant
+#  docker: psick::docker
+#  vagrant: psick::vagrant
   virtualbox: psick::virtualbox
   pdk: psick::puppet::pdk
   openvpn: psick::openvpn
@@ -17,11 +17,10 @@ psick::users::users_hash:
       - --wheel
 
 # This node runs in noop mode by default
-psick::puppet::pe_agent::noop_mode: true
+psick::puppet::pe_agent::noop_setting: true
 
 # On lob, Debian 9 openswan packages are missing
 psick::openswan::setup_template: ''
-psick::openswan::tp::manage: false
 tp_profile::openswan::manage: false
 psick::openswan::setup_options:
   plutodebug: none

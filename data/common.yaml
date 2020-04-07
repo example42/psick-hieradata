@@ -1,8 +1,4 @@
 ---
-## Server side Noop mode.
-# Uncomment to enable server side noop mode globally
-# noop_mode: true
-
 ## General settings for psick module.
 # These are the default values.
 # If to actually manage the resource of a class

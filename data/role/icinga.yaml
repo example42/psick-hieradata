@@ -2,8 +2,6 @@
 psick::base::linux_classes:
   icingaweb: psick::icingaweb2
 
-psick::icinga2::module: 'icinga'
-psick::icingaweb2::module: 'icinga'
 psick::icingaweb2::auto_prereq: true
 # Configurations with psick::icinga2::module: 'psick'
 psick::icinga2::is_server: true

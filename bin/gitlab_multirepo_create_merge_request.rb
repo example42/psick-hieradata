@@ -6,7 +6,7 @@ repo = ARGV[0]
 source_branch = ARGV[1] ? ARGV[1] : 'integration'
 destination_branch = ARGV[2] ? ARGV[2] : 'production'
 last_commit=`git log -1 --oneline`
-mr_title = ARGV[3] ? ARGV[4] : "MR:  #{last_commit} #{source_branch} to #{destination_branch}"
+mr_title = ARGV[3] ? ARGV[3] : "MR:  #{last_commit} #{source_branch} to #{destination_branch}"
 
 yaml_config = YAML.load(File.read(GITLAB_CONFIG)) 
 config = yaml_config['defaults'].merge(yaml_config[repo])

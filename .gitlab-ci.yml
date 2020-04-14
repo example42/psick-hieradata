@@ -63,7 +63,7 @@ Hidden chars check:
 
 Accept MR:
   stage: promote
-  script: "/usr/local/bin/bin/gitlab_multirepo_accept_merge_request.rb psick-hieradata ${CI_BUILD_REF_NAME} production"
+  script: "/usr/local/bin/gitlab_multirepo_accept_merge_request.rb psick-hieradata ${CI_BUILD_REF_NAME} production"
   tags:
     - deploy_puppet
   when: on_success

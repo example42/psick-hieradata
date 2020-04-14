@@ -16,7 +16,6 @@ psick::ci::octocatalog::options:
   puppetdb_url: 'https://puppet.lab.psick.io:8081'
   bootstrap_script: 'bin/puppet_install_puppetfile.sh'
 
-
 # Config for the GIT Runners
 # Tokens change at every gitlab installation
 psick::gitlab::runner::use_docker: true

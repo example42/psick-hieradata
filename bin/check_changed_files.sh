@@ -6,12 +6,10 @@ failed_files=()
 #changed_files=$(git  diff --name-only -r ${CI_COMMIT_SHA})
 
 echo "Safe paths: ${dirs}"
-echo
 echo -e "Changed files in MR:\n$changed_files"
-echo
 for file in $changed_files; do
   for dir in $dirs; do
-    grep "^\${dir}" $file
+    echo $file | grep "^${dir}" 
     if [ "$?" != "0" ]; then
       exit_code=1
       failed_files+=($file)

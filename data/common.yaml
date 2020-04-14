@@ -48,7 +48,6 @@ psick::firstrun::windows_classes:
 # and in the base phase (common baseline, applied to all nodes)
 psick::pre::linux_classes:
   puppet: psick::puppet
-  puppet_gems: psick::puppet::gems
   hostname: psick::hostname
   hosts: psick::hosts::resource
   dns: psick::dns::resolver

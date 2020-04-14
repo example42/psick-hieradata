@@ -63,6 +63,6 @@ Accept MR:
       - "data/role/*.yaml"
   except:
     changes:
-      - "*"
-      - "data/role/*.yaml"
-  
+      - "data/common.yaml"
+      - "data/zone/*.yaml"
+      - "bin/*"

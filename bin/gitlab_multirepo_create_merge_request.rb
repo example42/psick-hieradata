@@ -5,13 +5,11 @@ GITLAB_CONFIG='/etc/gitlab-cli.yaml'
 repo = ARGV[0]
 source_branch = ARGV[1] ? ARGV[1] : 'integration'
 destination_branch = ARGV[2] ? ARGV[2] : 'production'
+last_commit=`git log -1 --oneline`
 mr_title = ARGV[3] ? ARGV[4] : "MR:  #{last_commit} #{source_branch} to #{destination_branch}"
 
 yaml_config = YAML.load(File.read(GITLAB_CONFIG)) 
 config = yaml_config['defaults'].merge(yaml_config[repo])
-
-last_commit=`git log -1 --oneline`
-#last_commit="-numero ultima commit-"
 
 project_id = config['project_id']
 endpoint = config['api_endpoint']
@@ -79,3 +77,5 @@ end
 print "Creating #{mr_title}\n Assignee: Name=#{gitlab_user} - Id=#{assignee_id}\n Milestone: Title=#{gitlab_milestone} - Id=#{milestone_id}\n Labels: #{gitlab_labels}\n\n"
 
 Gitlab.create_merge_request(project_id,"#{mr_title[0..200]}",{ source_branch: source_branch, target_branch: destination_branch, labels: gitlab_labels, assignee_id: assignee_id, milestone_id: milestone_id } )
+
+

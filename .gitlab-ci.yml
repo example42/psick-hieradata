@@ -57,10 +57,12 @@ Accept MR:
   tags:
     - deploy_puppet
   when: on_success
-  except:
-    - production
   only:
     changes:
-      - data/nodes/*
-      - data/role/*
-
+      - "data/nodes/*.yaml"
+      - "data/role/*.yaml"
+  except:
+    changes:
+      - "*"
+      - "data/role/*.yaml"
+  

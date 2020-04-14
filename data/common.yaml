@@ -6,13 +6,6 @@
 # this default) is included but does nothing.
 psick::manage: true
 
-# What autoconfiguration defaults to use
-# This feature require more sample hieradata in psick module
-# to be more effective. Current possible values:
-# none - No autoconf settings added
-# hardened - Hardened settings for some profiles
-psick::auto_conf: none
-
 # Manage automatic management of prerequites installation psick wide. Default: true
 # Set to false to try to solve cases of "Error while evaluating a Resource Statement, Duplicate declaration"
 # Psick profiles usually have a local auto_prereq parameter which uses ::psick::auto_prereq as default.

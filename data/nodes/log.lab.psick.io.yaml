@@ -1,7 +1,7 @@
 ---
 psick::base::linux_classes:
   monitor_plugins: ''
-# Network configs
+
 network::interfaces_hash:
   'eth0':
     enable_dhcp: true

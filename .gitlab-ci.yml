@@ -36,16 +36,6 @@ Syntax checks:
   only:
     - branches
 
-Impact checks:
-  stage: impact
-  script: "bin/check_changed_files.sh data/nodes data/role"
-  tags:
-    - test_puppet
-  except:
-    - production
-  only:
-    - branches
-
 Hidden chars check:
   stage: checks
   script: "bin/puppet_check_syntax_fast.sh chars"
@@ -70,5 +60,7 @@ Accept MR:
   except:
     - production
   only:
-    - branches
+    changes:
+      - data/nodes/*
+      - data/role/*
 

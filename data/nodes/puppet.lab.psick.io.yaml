@@ -11,7 +11,7 @@ psick::profiles::linux_classes:
 #  gitlab_ci: psick::gitlab::ci
   puppet_ci: psick::puppet::ci
 #  pe_code_manager: psick::puppet::pe_code_manager
-#  gitlab_runner: psick::gitlab::runner
+  gitlab_runner: psick::gitlab::runner
 #  octocatalog: psick::ci::octocatalog
   danger: psick::ci::danger
   puppet_autosign: psick::puppet::autosign
@@ -124,7 +124,7 @@ psick::gitlab::runner::pe_token_lifetime: '5y'            # Adapt as preferred
 # Config for gitlab cli. Tokens change at every gitlab installation
 # Use the Private token of a user with merge request and accept privileges
 psick::gitlab::cli::config_hash:
-  private_token: 'B4fECx43euLYqv5ewups' # TO CHANGE AT EVERY INSTALLATION
+  private_token: 'qz9fZNFSaZLjVVzH_fag' # TO CHANGE AT EVERY INSTALLATION
   project_id: 1 # Control-repo project ID on GITLAB
   api_endpoint: 'https://git.lab.psick.io/api/v4'
 psick::gitlab::cli::auto_prereq: false # Prevent Duplicate declaration: Tp::Install[ruby]"

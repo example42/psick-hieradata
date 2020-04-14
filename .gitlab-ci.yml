@@ -7,6 +7,7 @@ variables:
 stages:
   - merge request
   - checks
+  - impact
   - promote
 
 # Create WIP Merge request
@@ -25,10 +26,6 @@ Create WIP MR:
 Syntax checks:
   stage: checks
   script: "bin/yaml_check_syntax.sh"
-  cache:
-    untracked: true
-    paths:
-    - modules/
   tags:
     - test_puppet
   except:
@@ -36,12 +33,23 @@ Syntax checks:
   only:
     - branches
 
+Impact checks:
+  stage: impact
+  script: "bin/check_changed_files.sh data/nodes data/role"
+  tags:
+    - test_puppet
+  except:
+    - production
+  only:
+    - branches
+
+
 Accept MR:
   stage: promote
   script: "bin/gitlab_accept_merge_request.rb ${CI_BUILD_REF_NAME} production"
   tags:
     - deploy_puppet
-  when: manual
+  when: on_success
   except:
     - production
   only:

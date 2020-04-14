@@ -127,6 +127,16 @@ psick::gitlab::cli::config_hash:
   private_token: 'qz9fZNFSaZLjVVzH_fag' # TO CHANGE AT EVERY INSTALLATION
   project_id: 1 # Control-repo project ID on GITLAB
   api_endpoint: 'https://git.lab.psick.io/api/v4'
+psick::gitlab::cli::multirepo_config_hash:
+  psick:
+    private_token: 'qz9fZNFSaZLjVVzH_fag' # TO CHANGE AT EVERY INSTALLATION
+    project_id: 1 # Repo project ID on GITLAB
+    api_endpoint: 'https://git.lab.psick.io/api/v4'
+  psick-hieradata:
+    private_token: 'qz9fZNFSaZLjVVzH_fag' # TO CHANGE AT EVERY INSTALLATION
+    project_id: 3 # Repo project ID on GITLAB
+    api_endpoint: 'https://git.lab.psick.io/api/v4'
+
 psick::gitlab::cli::auto_prereq: false # Prevent Duplicate declaration: Tp::Install[ruby]"
 
 # Monitoring

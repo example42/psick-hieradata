@@ -62,6 +62,8 @@ Accept MR:
       - "data/nodes/*.yaml"
       - "data/role/*.yaml"
   except:
+    refs:
+      - production
     changes:
       - "data/common.yaml"
       - "data/zone/*.yaml"

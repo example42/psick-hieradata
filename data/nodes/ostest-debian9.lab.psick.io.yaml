@@ -8,6 +8,7 @@ psick::users::users_hash:
       - sudo
       - --wheel
 
+
 # Network configs
 # network v3 format
 network::interfaces_hash:

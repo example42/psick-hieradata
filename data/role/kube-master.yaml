@@ -1,0 +1,46 @@
+---
+psick::base::linux_classes:
+  docker: '::psick::docker'
+  kmod: '::psick::kmod'
+  mount: '::psick::mounts'
+  firewall: '::firewalld'
+
+psick::kmod::modules:
+  br_netfilter: {}
+
+tp::install_hash:
+  kubernetes:
+    ensure: present
+
+psick::sysctl::settings_hash:
+  net.bridge.bridge-nf-call-ip6tables: 1
+  net.bridge.bridge-nf-call-iptables: 1
+  net.ipv4.conf.all.forwarding: 1
+
+psick::selinux::state: disabled
+
+
+psick::mounts::mounts:
+  swap:
+    ensure: absent
+
+firewalld::default_port_protocol: tcp
+firewalld::ports:
+  'Kubernetes 6443':
+    port: 6443
+  'Kubernetes 10250':
+    port: 10250
+  'Kubernetes 10251':
+    port: 10251
+  'Kubernetes 10252':
+    port: 10252
+  'Kubernetes 10255':
+    port: 10255
+  'Kubernetes 8472':
+    port: 8472
+  'Kubernetes 2379':
+    port: 2379
+  'Kubernetes 2380':
+    port: 2380
+  'Kubernetes 30000-32767':
+    port: 30000-32767

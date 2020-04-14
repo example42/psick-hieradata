@@ -2,17 +2,19 @@
 # r10k or similar.
 variables:
   GIT_STRATEGY: clone
+  PATH: /opt/puppetlabs/puppet/bin:/usr/bin:/usr/sbin:/bin:/sbin
 
 stages:
   - merge request
   - checks
+  - impact
   - promote
 
 # Create WIP Merge request
 Create WIP MR:
   stage: merge request
   script:
-    - "bin/gitlab_create_merge_request.rb ${CI_BUILD_REF_NAME} production \"WIP: Works on ${CI_BUILD_REF_NAME}\"" 
+    - "bin/gitlab_multirepo_create_merge_request.rb psick-hieradata ${CI_BUILD_REF_NAME} production \"WIP: Works on ${CI_BUILD_REF_NAME}\"" 
   when: on_success
   tags:
     - deploy_puppet
@@ -25,10 +27,16 @@ Create WIP MR:
 Syntax checks:
   stage: checks
   script: "bin/yaml_check_syntax.sh"
-  cache:
-    untracked: true
-    paths:
-    - modules/
+  tags:
+    - test_puppet
+  except:
+    - production
+  only:
+    - branches
+
+Impact checks:
+  stage: impact
+  script: "bin/check_changed_files.sh data/nodes data/role"
   tags:
     - test_puppet
   except:
@@ -53,12 +61,12 @@ Hidden chars check:
 
 Accept MR:
   stage: promote
-  script: "bin/gitlab_accept_merge_request.rb ${CI_BUILD_REF_NAME} production"
+  script: "bin/gitlab_multirepo_accept_merge_request.rb psick-hieradata ${CI_BUILD_REF_NAME} production"
   tags:
     - deploy_puppet
-  when: manual
+  when: on_success
   except:
     - production
   only:
-    - branches_disabled
+    - branches
 

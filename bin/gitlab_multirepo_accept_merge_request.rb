@@ -1,21 +1,22 @@
 #!/usr/bin/env ruby
 require 'gitlab'
-GITLAB_CONFIG='/etc/gitlab-cli.conf'
-config = {}
-File.foreach GITLAB_CONFIG do |line|
-  k = line.split("=")[0].gsub("\n",'') if line =~/=/
-  v = line.split("=")[1].gsub("\n",'') if line =~/=/
-  config.store(k,v)
-end
-last_commit=`git log -1 --oneline`
-source_branch = ARGV[0] ? ARGV[0] : 'integration'
-destination_branch = ARGV[1] ? ARGV[1] : 'production'
-mr_title = ARGV[2] ? ARGV[2] : "Merged: #{last_commit} from #{source_branch} to #{destination_branch}"
+require 'yaml'
+GITLAB_CONFIG='/etc/gitlab-cli.yaml'
+repo = ARGV[0]
+source_branch = ARGV[1] ? ARGV[1] : 'integration'
+destination_branch = ARGV[2] ? ARGV[2] : 'production'
+mr_title = ARGV[3] ? ARGV[4] : "Merged:  #{last_commit} from #{source_branch} to #{destination_branch}"
 
-project_id = config['GITLAB_API_PROJECT_ID']
-endpoint = config['GITLAB_API_ENDPOINT']
-private_token = config['GITLAB_API_PRIVATE_TOKEN']
-httparty = config['GITLAB_API_HTTPARTY_OPTIONS'].gsub("'",'')
+yaml_config = YAML.load(File.read(GITLAB_CONFIG))
+config = yaml_config['defaults'].merge(yaml_config[repo])
+
+last_commit=`git log -1 --oneline`
+#last_commit="-numero ultima commit-"
+
+project_id = config['project_id']
+endpoint = config['api_endpoint']
+private_token = config['private_token']
+httparty = config['httparty_options']
 
 Gitlab.endpoint = endpoint
 Gitlab.private_token = private_token

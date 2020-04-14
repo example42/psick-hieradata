@@ -1,30 +1,29 @@
 #!/usr/bin/env ruby
 require 'gitlab'
-GITLAB_CONFIG='/etc/gitlab-cli.conf'
-config = {}
-File.foreach GITLAB_CONFIG do |line|
-  k = line.split("=")[0].gsub("\n",'') if line =~/=/
-  v = line.split("=")[1].gsub("\n",'') if line =~/=/
-  config.store(k,v)
-end
+require 'yaml'
+GITLAB_CONFIG='/etc/gitlab-cli.yaml'
+repo = ARGV[0]
+source_branch = ARGV[1] ? ARGV[1] : 'integration'
+destination_branch = ARGV[2] ? ARGV[2] : 'production'
+mr_title = ARGV[3] ? ARGV[4] : "MR:  #{last_commit} #{source_branch} to #{destination_branch}"
+
+yaml_config = YAML.load(File.read(GITLAB_CONFIG)) 
+config = yaml_config['defaults'].merge(yaml_config[repo])
+
 last_commit=`git log -1 --oneline`
 #last_commit="-numero ultima commit-"
-source_branch = ARGV[0] ? ARGV[0] : 'integration'
-destination_branch = ARGV[1] ? ARGV[1] : 'production'
-mr_title = ARGV[2] ? ARGV[2] : "MR:  #{last_commit} #{source_branch} to #{destination_branch}"
 
-project_id = config['GITLAB_API_PROJECT_ID']
-endpoint = config['GITLAB_API_ENDPOINT']
-private_token = config['GITLAB_API_PRIVATE_TOKEN']
-httparty = config['GITLAB_API_HTTPARTY_OPTIONS'].gsub("'",'')
-
-gitlab_user = config['GITLAB_USER']
-gitlab_milestone = config['GITLAB_MILESTONE']
-gitlab_labels = config['GITLAB_LABELS']
-autoadd_target = config['GITLAB_TARGET_LABEL']
-autoadd_source = config['GITLAB_SOURCE_LABEL']
-default_target = config['GITLAB_DEFAULT_TARGET_LABEL']
-default_source = config['GITLAB_DEFAULT_SOURCE_LABEL']
+project_id = config['project_id']
+endpoint = config['api_endpoint']
+private_token = config['private_token']
+httparty = config['httparty_options']
+gitlab_user = config['assigned_user']
+gitlab_milestone = config['milestone']
+gitlab_labels = config['labels']
+autoadd_target = config['add_target_label']
+autoadd_source = config['add_source_label']
+default_target = config['prefix_target_label']
+default_source = config['prefix_source_label']
 
 if autoadd_target.to_s == "true"
   gitlab_labels=gitlab_labels.to_s+default_target.to_s+destination_branch

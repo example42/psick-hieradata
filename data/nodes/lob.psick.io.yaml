@@ -91,7 +91,7 @@ psick::openswan::connections:
       # rightid: 10.208.194.50
       # rightsourceip: 10.208.194.50
       # rightprotoport: 'tcp/3022'
-      # rightsubnet: '10.90.178.2/32'
+      # rightsubnet: '10.90.178.2/32'
       rightsubnets: '{ 10.42.50.0/24 , 10.42.51.0/24 }'
       pfs: 'yes'
       vti-interface: vti02

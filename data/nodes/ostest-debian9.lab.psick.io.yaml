@@ -1,6 +1,5 @@
 ---
 psick::base::linux_classes:
-        #   network: ''
   icinga: ''        
 psick::users::users_hash:
   al:

@@ -11,10 +11,12 @@ stages:
   - promote
 
 # Create WIP Merge request
+# This script and the accept one require psick::gitlab::cli included on the gitlab-runner node
+# psick::gitlab::cli::multirepo_config_hash must be set for the mentioned repos (psick-hieradata)
 Create WIP MR:
   stage: merge request
   script:
-    - "bin/gitlab_multirepo_create_merge_request.rb psick-hieradata ${CI_BUILD_REF_NAME} production \"WIP: Works on ${CI_BUILD_REF_NAME}\"" 
+    - "/usr/local/bin/gitlab_multirepo_create_merge_request.rb psick-hieradata ${CI_BUILD_REF_NAME} production \"WIP: Works on ${CI_BUILD_REF_NAME}\"" 
   when: on_success
   tags:
     - deploy_puppet
@@ -61,7 +63,7 @@ Hidden chars check:
 
 Accept MR:
   stage: promote
-  script: "bin/gitlab_multirepo_accept_merge_request.rb psick-hieradata ${CI_BUILD_REF_NAME} production"
+  script: "/usr/local/bin/bin/gitlab_multirepo_accept_merge_request.rb psick-hieradata ${CI_BUILD_REF_NAME} production"
   tags:
     - deploy_puppet
   when: on_success

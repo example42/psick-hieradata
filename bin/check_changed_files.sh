@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 dirs=$*
 exit_code=0
-changed_files=$(git  diff --name-only ${CI_COMMIT_BEFORE_SHA}...${CI_COMMIT_SHA})
+#changed_files=$(git  diff --name-only ${CI_COMMIT_BEFORE_SHA}...${CI_COMMIT_SHA})
 failed_files=()
-#changed_files=$(git  diff --name-only -r ${CI_COMMIT_SHA})
+changed_files=$(git  diff --name-only -r ${CI_COMMIT_SHA})
 
 echo "Safe paths: ${dirs}"
 echo -e "Changed files in MR:\n$changed_files"

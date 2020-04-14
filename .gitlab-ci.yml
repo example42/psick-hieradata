@@ -14,7 +14,7 @@ stages:
 Create WIP MR:
   stage: merge request
   script:
-    - "bin/gitlab_create_merge_request.rb ${CI_BUILD_REF_NAME} production \"WIP: Works on ${CI_BUILD_REF_NAME}\"" 
+    - "bin/gitlab_multirepo_create_merge_request.rb psick-hieradata ${CI_BUILD_REF_NAME} production \"WIP: Works on ${CI_BUILD_REF_NAME}\"" 
   when: on_success
   tags:
     - deploy_puppet
@@ -43,10 +43,9 @@ Impact checks:
   only:
     - branches
 
-
 Accept MR:
   stage: promote
-  script: "bin/gitlab_accept_merge_request.rb ${CI_BUILD_REF_NAME} production"
+  script: "bin/gitlab_multirepo_accept_merge_request.rb psick-hieradata ${CI_BUILD_REF_NAME} production"
   tags:
     - deploy_puppet
   when: on_success

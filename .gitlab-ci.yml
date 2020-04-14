@@ -1,5 +1,7 @@
 # GitLab CI configuration - https://docs.gitlab.com/ce/ci/yaml/README.html
 # r10k or similar.
+variables:
+  GIT_STRATEGY: clone
 
 stages:
   - merge request
@@ -22,7 +24,7 @@ Create WIP MR:
 # Run Syntax Checks on Feature/Personal Branch
 Syntax checks:
   stage: checks
-  script: "bin/puppet_check_syntax_fast.sh all_but_chars"
+  script: "bin/yaml_check_syntax.sh"
   cache:
     untracked: true
     paths:

@@ -16,7 +16,7 @@ stages:
 Create WIP MR:
   stage: merge request
   script:
-    - "/usr/local/bin/gitlab_multirepo_create_merge_request.rb psick-hieradata ${CI_BUILD_REF_NAME} production \"Works on ${CI_BUILD_REF_NAME}\"" 
+    - "/usr/local/bin/gitlab_multirepo_create_merge_request.rb psick-hieradata ${CI_BUILD_REF_NAME} production \"${CI_COMMIT_MESSAGE}\"" 
   when: on_success
   tags:
     - deploy_puppet

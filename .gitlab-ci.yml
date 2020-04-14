@@ -53,5 +53,5 @@ Accept MR:
   except:
     - production
   only:
-    - branches_disabled
+    - branches
 

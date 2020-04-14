@@ -29,7 +29,7 @@ psick::docker::allowed_users:
 psick::jenkins::disable_setup_wizard: true
 
 # SSH keys for jenkins to access (read & write) to the scm_sync_repository_url
-# Set ssh_keys_generate to true to automatically generate a new ssh keypair
+# Set ssh_keys_generate to true to automatically generate a new ssh keypair
 # to manually add on the used git server.
 psick::jenkins::ssh_keys_generate: false
 

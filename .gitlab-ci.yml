@@ -2,6 +2,7 @@
 # r10k or similar.
 variables:
   GIT_STRATEGY: clone
+  PATH: /opt/puppetlabs/puppet/bin:/usr/bin:/usr/sbin:/bin:/sbin
 
 stages:
   - merge request

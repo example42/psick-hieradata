@@ -1,0 +1,6 @@
+---
+network::interfaces_hash:
+  'eth0':
+    gateway: '10.42.50.1'
+    ipaddress: '10.42.50.22'
+    netmask: '255.255.255.0'

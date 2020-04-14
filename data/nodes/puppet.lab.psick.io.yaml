@@ -1,4 +1,5 @@
 ---
+puppet_enterprise::master::static_catalogs: false
 psick::pre::linux_classes:
   buildgems: psick::ruby::buildgems
 psick::profiles::linux_classes:

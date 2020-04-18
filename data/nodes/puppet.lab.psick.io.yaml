@@ -21,6 +21,12 @@ psick::profiles::linux_classes:
 psick::repo::use_defaults: false
 
 psick::puppet::pe_server::remove_global_hiera_yaml: true
+psick::puppet::pe_server::extra_environment_path: '/etc/puppetlabs/code-developers'
+psick::puppet::pe_server::extra_environment_files:
+  host:
+    ensure: link
+    target: '/vagrant_puppet'
+
 
 psick::puppet::autosign::autosign: 'on'
 psick::puppet::autosign::autosign_match: "*.%{::domain}"

@@ -1,4 +1,8 @@
 ---
+psick::profiles::linux_classes:
+  pe_puppetdb: psick::puppet::pe_puppetdb
+  pe_server: psick::puppet::pe_server
+
 network::interfaces_hash:
   'eth0':
     enable_dhcp: true
@@ -11,3 +15,11 @@ nonetwork::interfaces:
   'eth1':
     ipv4_address: '10.42.43.111'
     ipv4_netmask: '255.255.255.0'
+
+psick::puppet::pe_server::remove_global_hiera_yaml: true
+psick::puppet::pe_server::extra_environment_path: '/etc/puppetlabs/code-developers'
+psick::puppet::pe_server::extra_environment_files:
+  host:
+    ensure: link
+    target: '/vagrant_puppet'
+

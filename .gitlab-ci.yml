@@ -21,8 +21,11 @@ Create WIP MR:
   tags:
     - deploy_puppet
   except:
-    - production
-    - schedules
+    refs:
+      - production
+      - schedules
+    variables:
+      - $SKIP_MR == "yes"
   allow_failure: true
 
 # Run Syntax Checks on Feature/Personal Branch
@@ -68,3 +71,6 @@ Accept MR:
       - "data/common.yaml"
       - "data/zone/*.yaml"
       - "bin/*"
+    variables:
+      - $SKIP_MR == "yes"
+        

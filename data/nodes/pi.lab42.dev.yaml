@@ -1,0 +1,27 @@
+---
+psick::users::users_hash:
+  al:
+    groups:
+      - users
+      - sudo
+      - --wheel
+
+tp::install_hash:
+  sysdig:
+    ensure: absent
+    auto_prereq: true
+
+# No PE agent here.
+psick::puppet::pe_agent::manage_service: false
+
+psick::puppet::osp_agent::manage_installation: false
+psick::puppet::osp_agent::cronjob_ensure: present
+psick::puppet::osp_agent::service_ensure: stoppedd
+psick::puppet::osp_agent::manage_service: false
+
+psick::puppet::osp_agent::settings:
+  main:
+    server: puppet
+    certname: pi.lab42.dev
+  agent:
+    environment: production

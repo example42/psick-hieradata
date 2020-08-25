@@ -1,0 +1,60 @@
+---
+tp::osfamily_install_hash:
+  RedHat:
+    - docker
+    - code
+    - pdk
+    - git
+  Debian:
+    docker: {}
+    code:
+      settings_hash:
+        package_provider: snap
+    pdk: {}
+    git: {}
+  windows:
+    1password: {}
+    audacity: {}
+    blender: {}
+    BlueJeansApp: {}
+    chocolateygui: {}
+    citrix-workspace: {}
+    cuda: {}
+    discord: {}
+    docker-desktop: {}
+    dropbox: {}
+    epicgameslauncher: {}
+    Firefox: {}
+  #  git: {}
+    goggalaxy: {}
+    google-drive-file-stream: {}
+    GoogleChrome: {}
+    powertoys: {}
+    libreoffice-fresh: {}
+  #  microsoft-windows-terminal: {}
+    MobaXTerm: {}
+    obs-studio: {}
+    opera: {}
+    origin: {}
+  #  pdk: {}
+    PowerBi: {}
+    Sysinternals: {}
+    Steam: {}
+  ##  twitch: {}
+  #  vscode: {}
+    webex-meetings: {}
+    zoom: {}
+
+#  psick::windows::features::use_defaults: true
+psick::windows::features::install_failson10:
+  Microsoft-Windows-Subsystem-Linux:
+    ensure: present
+  Hyper-V:
+    ensure: present
+  Remote-Desktop-Services:
+    ensure: present
+  UpdateServices-RSAT:
+    ensure: present
+  UpdateServices-UI:
+    ensure: present
+  

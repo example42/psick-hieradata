@@ -1,0 +1,2 @@
+---
+puppet_enterprise::console_services::no_longer_reporting_cutoff: 220000

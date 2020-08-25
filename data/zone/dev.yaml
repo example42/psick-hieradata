@@ -1,0 +1,115 @@
+---
+### Classification
+psick::pre::linux_classes:
+  puppet: psick::puppet
+  hosts: psick::hosts::file
+psick::base::linux_classes:
+  selinux: psick::selinux
+  limits: psick::limits
+  packages: psick::packages
+
+psick::pre::windows_classes:
+  chocolatey: chocolatey
+psick::base::windows_classes:
+  packages: psick::packages
+  tp: tp
+  features_class: psick::windows::features
+
+
+psick::dns::resolver::nameservers:
+  - 10.42.100.2
+
+### Noop management
+# Noop configuration on PE clients
+psick::puppet::pe_agent::manage_noop: true
+# Set here value for noop in agents' puppet.conf
+psick::puppet::pe_agent::noop_setting: false
+
+# If psick::puppet::pe_agent::noop_setting: true
+# this is needed to be able to revert it
+psick::puppet::pe_agent::noop_manage: true
+psick::puppet::pe_agent::noop_value: false
+
+### Puppet
+psick::puppet::pe_agent::manage_environment: true
+psick::puppet::pe_agent::manage_service: true
+
+# External facts:
+psick::puppet::external_facts:
+  zone:
+    value: dev
+  datacenter:
+    value: ba
+
+# Disabled updating host entry by psick::hostname
+psick::hostname::update_host_entry: false
+
+# Hosts file managed via file resource
+psick::hosts::file::extra_hosts:
+  - '10.42.100.22 puppet puppet.lab42.dev'
+
+# Enable automatic updates on lab nodes and set schedule:
+# psick::update::cron_schedule: '42 4 * * *'
+
+#Timezone
+psick::timezone: 'Europe/Rome'
+psick::timezone::timezone_windows: 'Central European Standard Time'
+
+# Users
+# psick::users::root_pw: hash_as_in_etc_shadow
+psick::users::delete_unmanaged: false
+psick::users::module: 'psick'
+psick::users::users_hash:
+  al:
+    ensure: present
+    comment: 'Al'
+    groups:
+      - users
+      - wheel
+    ssh_authorized_keys:
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC93uOkdIrvcA1ij6wxtL0wDKch7E2gFqID2xR1LnEVQRSP9OFmNQV+4B7fM/fAVpFs939qBDeDRabft1ZAP2hUIeKWxweNQ6wxxV3YhJbxt+g6RAqm37BI+/ynZnZ4vrQp3XHfxNFYGFqiaowiiQ3/0QLh8PHliDJroOUU7h2YNwKBWiqdgufLCrPgnalSZ3kfKa2Yd5sM+iyAYJ102sXcGIFjAXCmQU1y7aJXjrzXzPuugnHvVFPzAUjsvu0FAiE+m8EhfBiyy1+SjnMB838G3EwrqNW+sEZ6lXh637xensB2WJuH0lPooCgaeG6WCmYjVK9rblcOb3B0Pp8Vbhp5 al@lab.psick.io'
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCrsr0FKUXVE46b1q9grcuNkWZ2BpGN1UhazO2MGFmS8AMQGIJ6Hubh9vjVe3BgBu05vUQGAIHUnfizh6gTVKSfWsTW4dQdwEsikoAahHN45Z4rP3PkCq8z+onn/Mo2S6HCpShp0uifW9uOZKXx9iLjlBDvuIwXjPiUDfWfTvhiSwxGdjHd16EKAbF3QZ4PFvMnDkJlvdCi/4CN8hiwDyCMN7BlF4xH899OjRxe9ThfuiBa3Gm63K5rr7Qn7FRiVHqmzvsaSIOdCdJZrHqdz2RoutFqC7HV1UxMFWvrNNx3XM8QsL+FMmPIebva518kxFSgM0bGzHa5lOiGEH9mQEGqKyI85ADQRKdZSLOKZ1zmWh3cVCk3r2lIFPFrhl3iLc/lwwq+QTFU+OxZUa3FcpEAlsokv0ktct+VBBxqbt33z6fowoPNqkYhjOl/D9Td8b3nViD1K3hrF6QY5x37hAmzRAJrgt1OrsLIfIQSoe+NgITi3t4Zt3sQnl9SsfgJlM9XhZpWhIaLurPWWEC57FRKL6yHVin9xNlfwIYPrtP+y4/yySMFCAaiUANr0D6Hb3DxTYobYpvz5sgI7SIwFNhQ1g2cOSxiFOgQ5SRBf+BD5ie4B/nn6nV9cQ6UilsWC/PqyxScQaMXNIgNbwrICh0ppUYeF7qW6a1Y/sOff12PTw== al@example42.com'
+
+# Passwordless sudopowers for al on lab
+psick::sudo::directives:
+  al:
+    content: 'al ALL=(ALL) NOPASSWD:ALL'
+
+# OpenSSH
+psick::openssh::module: 'tp_profile'
+
+tp_profile::openssh::resources:
+  tp::conf:
+    openssh:
+      template: 'psick/generic/spaced.erb'
+      options_hash:
+        Protocol: 2
+        PermitRootLogin: 'no'
+        Subsystem: 'sftp /usr/libexec/openssh/sftp-server'
+        UsePAM: 'yes'
+        TCPKeepAlive: 'yes'
+        PermitRootLogin: 'without-password'
+
+# Bolt
+psick::bolt::master: puppet.lab.psick.io
+psick::bolt::keyshare_method: storeconfigs
+psick::bolt::ssh_user: bolt
+
+# Enable package data collection on Puppet Enterprise
+puppet_enterprise::profile::agent::package_inventory_enabled: true
+
+# Disable ipv6 and ip forwarding by default
+psick::sysctl::settings_hash:
+  net.ipv4.conf.all.forwarding: 0
+  net.ipv6.conf.all.disable_ipv6: 1
+  net.ipv6.conf.default.disable_ipv6: 1
+
+# We keep selinux enabled by default
+psick::selinux::state: enforcing
+
+# Sample Limits
+psick::limits::limits_hash:
+  '*/nofile':
+    soft: 2048
+    hard: 4096
+

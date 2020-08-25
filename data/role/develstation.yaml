@@ -1,0 +1,25 @@
+---
+tp::osfamily_install_hash:
+  RedHat:
+    - docker
+    - code
+    - pdk
+    - git
+  Debian:
+    docker: {}
+    code:
+      settings_hash:
+        package_provider: snap
+    pdk: {}
+    git: {}
+  windows:
+    - microsoft-windows-terminal
+    - vscode
+    - docker-desktop
+    - pdk
+    - git
+
+tp::osfamily_install_defaults:
+  windows:
+    settings_hash:
+      package_provider: chocolatey

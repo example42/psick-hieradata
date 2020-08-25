@@ -75,12 +75,12 @@ psick::time::servers:
   - pool.ntp.org
 
 # Timezone settings
-psick::timezone: UTC
+# psick::timezone: UTC
 
 # Hostname and network settings
 psick::hostname::update_network_entry: false # Avoid resource duplication when psick::network is used
 
 # Sample sysctl settings
-psick::sysctl::settings_hash:
-  net.ipv4.conf.all.forwarding: 0
+#psick::sysctl::settings_hash:
+#  net.ipv4.conf.all.forwarding: 0
 

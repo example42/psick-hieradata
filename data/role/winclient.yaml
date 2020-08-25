@@ -1,0 +1,15 @@
+---
+tp::install_hash:
+  git: {}
+  Firefox: {}
+  powertoys: {}
+  microsoft-windows-terminal: {}
+  vscode: {}
+  chocolateygui: {}
+  1password: {}
+  docker-desktop: {}
+  dropbox: {}
+  GoogleChrome: {}
+  pdk: {}
+  google-drive-file-stream: {}
+  PowerBi: {}

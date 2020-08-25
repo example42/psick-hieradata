@@ -1,4 +1,9 @@
 ---
+psick::base::linux_classes:
+  firewall: psick::firewall::iptables
+
+psick::firewall::iptables::preserve_rules_on_restore: true
+
 network::interfaces_hash:
   'eth0':
     gateway: '10.42.50.1'

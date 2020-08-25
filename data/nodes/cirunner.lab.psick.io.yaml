@@ -5,6 +5,7 @@ psick::profiles::linux_classes:
   vagrant: vagrant
   git: psick::git
   docker: psick::docker
+  pe_client_tools: psick::puppet::pe_client_tools
 
 # Explicit list of required gems for CI runners for puppet testing
 psick::puppet::gems::install_puppet_gems: true

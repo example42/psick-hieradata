@@ -1,0 +1,34 @@
+---
+psick::base::linux_classes:
+  monitor_plugins: ''
+
+tp::install_hash:
+  rpmfusion-free:
+    ensure: present
+  rpmfusion-nonfree:
+    ensure: present
+  elrepo:
+    ensure: present
+  remi:
+    ensure: present
+  ulyaoth:
+    ensure: present
+  
+psick::resources:
+  file:
+    /usr/local/sbin/eyaml:
+      target:  /opt/puppetlabs/puppet/bin/eyaml
+  package:
+    zsh: {}
+    nrpe:
+      ensure: absent
+  psick::users::managed:
+    test:
+      shell: /bin/sh
+
+psick::resources_defaults:
+  file:
+    owner: test
+  package:
+    ensure: absent
+  

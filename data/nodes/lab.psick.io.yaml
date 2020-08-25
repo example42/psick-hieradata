@@ -9,6 +9,13 @@ psick::users::users_hash:
     ssh_authorized_keys:
       - '--ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC93uOkdIrvcA1ij6wxtL0wDKch7E2gFqID2xR1LnEVQRSP9OFmNQV+4B7fM/fAVpFs939qBDeDRabft1ZAP2hUIeKWxweNQ6wxxV3YhJbxt+g6RAqm37BI+/ynZnZ4vrQp3XHfxNFYGFqiaowiiQ3/0QLh8PHliDJroOUU7h2YNwKBWiqdgufLCrPgnalSZ3kfKa2Yd5sM+iyAYJ102sXcGIFjAXCmQU1y7aJXjrzXzPuugnHvVFPzAUjsvu0FAiE+m8EhfBiyy1+SjnMB838G3EwrqNW+sEZ6lXh637xensB2WJuH0lPooCgaeG6WCmYjVK9rblcOb3B0Pp8Vbhp5 al@lab.psick.io'
 
+
+tp::install_hash:
+  ius:
+    ensure: present
+  git222:
+    ensure: present
+
 # This node runs in noop mode by default
 psick::puppet::pe_agent::noop_setting: true
 
@@ -103,6 +110,7 @@ psick::sysctl::settings_hash:
   net.ipv4.neigh.default.gc_thresh1: 1024
   net.ipv4.neigh.default.gc_thresh2: 2048
   net.ipv4.neigh.default.gc_thresh3: 4096
+  fs.inotify.max_user_watches: 524288
 
 # Firewalling
 psick::firewall::iptables::nat_rules:
@@ -131,6 +139,8 @@ psick::firewall::iptables::allow_ips:
   - 93.40.189.160 # AL
   - 95.216.65.138 # lob.psick.io
 
+psick::firewall::iptables::manage_firewalld: false
+
 # OpenSSH
 tp_profile::openssh::resources:
   tp::conf:
@@ -157,6 +167,10 @@ tp_profile::nginx::resources:
     nginx::foss.conf:
       template: profile/nginx/foss.conf.erb
       base_dir: conf
+    nginx::proxy.conf:
+      template: profile/nginx/proxy.conf.erb
+      base_dir: conf
+      path: /etc/nginx/proxy.conf
   tp::dir:
     nginx::psick.io:
       vcsrepo: git

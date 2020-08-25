@@ -10,7 +10,6 @@ psick::base::linux_classes:
   network: network
   selinux: psick::selinux
   limits: psick::limits
-
 #  sensu: psick::sensu
 #  ansible: psick::ansible
   bolt: psick::bolt
@@ -94,6 +93,10 @@ psick::icinga2::module: 'icinga'
 psick::icinga2::master: 'icinga.lab.psick.io'
 psick::icinga2::is_client: true
 psick::icinga2::install_cli: true
+
+# Icinga disabled (TEMP)
+icinga2::ensure: stopped
+icinga2::enable: false
 
 # Icinga configuration with psick::icinga2::module: 'icinga'
 psick::icinga2::puppetdb_fact_address: 'networking.interfaces.eth1.ip'
@@ -378,3 +381,15 @@ psick::limits::limits_hash:
   '*/nofile':
     soft: 2048
     hard: 4096
+
+# Disabled unwanted services
+psick::resources_defaults:
+  service:
+    ensure: stopped
+    enable: false
+
+psick::resources:
+  service:
+    firewalld: {}
+    rpcbind: {}
+

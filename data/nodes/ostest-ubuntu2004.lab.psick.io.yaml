@@ -1,0 +1,24 @@
+---
+# Network configs
+# Network v3 format
+network::interfaces_hash:
+  'enp0s3':
+    enable_dhcp: true
+  'enp0s8':
+    ipaddress: '10.42.43.124'
+    netmask: '255.255.255.0'
+# Network v4 format
+nonetwork::interfaces:
+  'eth0s3':
+    ipv4_dhcp: true
+  'enp0s8':
+    ipv4_address: '10.42.43.124'
+    ipv4_netmask: '255.255.255.0'
+
+# Override lab defaults. On Ubuntu 1804 wheel group is admin
+psick::users::users_hash:
+  al:
+    groups:
+      - users
+      - admin
+      - --wheel

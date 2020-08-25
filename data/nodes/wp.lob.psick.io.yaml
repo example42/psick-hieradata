@@ -1,0 +1,20 @@
+---
+psick::profiles::linux_classes:
+  worpress: psick::wordpress
+
+network::interfaces_hash:
+  'ens18':
+    ipaddress: '10.42.50.19'
+    netmask: '255.255.255.0'
+    gateway: '10.42.50.1'
+
+psick::wordpress::create_default_instance: false
+psick::wordpress::instances:
+  example42:
+    wordpress_sitename: wordpress.lob.psick.io
+  lab42:
+    wordpress_sitename: lab42.it
+  alvagante:
+    wordpress_sitename: alvagante.com
+  artificialpoets:
+    wordpress_sitename: artificialpoets.lab42.it

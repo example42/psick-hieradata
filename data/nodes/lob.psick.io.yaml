@@ -1,6 +1,6 @@
 ---
 psick::profiles::linux_classes:
-#  web: tp_profile::nginx
+  web: tp_profile::nginx
 #  ipsec: psick::openswan
   firewall: psick::firewall::iptables
 #  docker: psick::docker
@@ -130,6 +130,8 @@ psick::firewall::iptables::extra_rules:
   - '-A INPUT -p ah -j ACCEPT'
 
 psick::firewall::iptables::allow_tcp_ports:
+  - 80
+  - 443
   - 42424
   - 11142 # openvpn
 
@@ -153,11 +155,17 @@ tp_profile::openssh::resources:
 # Nginx
 tp_profile::nginx::resources:
   tp::conf:
-#    nginx::ssl.conf:
-#      template: profile/nginx/ssl.conf.erb
+    nginx::ssl.conf:
+      template: profile/nginx/ssl.conf.erb
+      base_dir: conf
+      path: /etc/nginx/ssl.conf
     nginx::lob.conf:
       template: profile/nginx/lob.conf.erb
       base_dir: conf
+    nginx::proxy.conf:
+      template: profile/nginx/proxy.conf.erb
+      base_dir: conf
+      path: /etc/nginx/proxy.conf
 
 # OpenVPN
 psick::openvpn::module: 'openvpn'

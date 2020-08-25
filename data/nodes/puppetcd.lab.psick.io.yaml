@@ -1,4 +1,23 @@
 ---
+psick::base::linux_classes:
+  firewall: psick::firewall::iptables
+  
+psick::firewall::iptables::preserve_rules_on_restore: true
+
+psick::profiles::linux_classes:
+  cd4pe: cd4pe
+
+psick::firewall::iptables::allow_tcp_ports:
+  - 80
+  - 443
+
+cd4pe::cd4pe_version: 3.12.4
+cd4pe::manage_pe_host_mapping: false
+cd4pe::cd4pe_docker_extra_params:
+  - --add-host puppetcd.lab.psick.io:10.42.43.110
+  - --add-host puppet.lab.psick.io:10.42.43.101
+  - --add-host git.lab.psick.io:10.42.43.102
+
 network::interfaces_hash:
   'eth0':
     enable_dhcp: true
@@ -16,3 +35,18 @@ nonetwork::interfaces:
 psick::sysctl::settings_hash:
   net.ipv4.conf.all.forwarding: 1
 
+tp::install_hash:
+  rpmfusion-free:
+    ensure: present
+  rpmfusion-nonfree:
+    ensure: present
+  elrepo:
+    ensure: present
+  ius:
+    ensure: present
+  nux:
+    ensure: present
+  remi:
+    ensure: present
+  ulyaoth:
+    ensure: present

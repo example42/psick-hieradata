@@ -1,7 +1,15 @@
 ---
+psick::profiles::linux_classes:
+  cd4pe: cd4pe_tools
 
-cd4pe::cd4pe_version: 3.4.0
-cd4pe::cd4pe_docker_extra_params: 
+cd4pe_tools::cd4pe_class_manage: true
+cd4pe_tools::cd4pe_backup_manage: true
+cd4pe_tools::cd4pe_backup_cron: '0 0 * * *'
+
+cd4pe::cd4pe_version: 3.12.4
+cd4pe::manage_pe_host_mapping: false
+cd4pe::cd4pe_docker_extra_params:
+  - --add-host puppetcdre.lab.psick.io:10.42.43.109
   - --add-host puppet.lab.psick.io:10.42.43.101
   - --add-host git.lab.psick.io:10.42.43.102
         
@@ -22,3 +30,5 @@ nonetwork::interfaces:
 
 psick::sysctl::settings_hash:
   net.ipv4.conf.all.forwarding: 1
+
+

@@ -24,6 +24,11 @@ psick::mounts::mounts:
   swap:
     ensure: absent
 
+psick::resources_merge_behaviour: first
+psick::resources:
+  service:
+    rpcbind: {}
+
 firewalld::default_port_protocol: tcp
 firewalld::ports:
   'Kubernetes 6443':

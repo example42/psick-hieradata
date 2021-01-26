@@ -1,7 +1,11 @@
 ---
 psick::profiles::linux_classes:
-  nodejs: nodejs
+  # nodejs: nodejs
   nginx: tp_profile::nginx
+  # hdm: hdm
+
+hdm::passenger::nginx::nginx_package_manage: false
+hdm::webapp_class: hdm::passenger::standalone
 
 network::interfaces_hash:
   'ens18':
@@ -32,6 +36,9 @@ tp::dir_hash:
 
 tp::install_hash:
   asciinema:
+    ensure: present
+  sysdig:
+    auto_prereq: true
     ensure: present
 
 tp_profile::nginx::resources:

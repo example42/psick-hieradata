@@ -1,5 +1,7 @@
 ---
 puppet_enterprise::master::static_catalogs: false
+puppet_enterprise::master::puppetserver::jruby_puppet_multithreaded: true
+
 psick::pre::linux_classes:
   buildgems: psick::ruby::buildgems
 psick::profiles::linux_classes:
@@ -16,6 +18,7 @@ psick::profiles::linux_classes:
   danger: psick::ci::danger
   puppet_autosign: psick::puppet::autosign
   choria_broker: choria::broker
+#  hdm: hdm
 
 # Avoid duplicated tp::repo epel resource
 psick::repo::use_defaults: false
@@ -27,6 +30,19 @@ psick::puppet::pe_server::extra_environment_files:
     ensure: link
     target: '/vagrant_puppet'
 
+psick::puppet::pe_server::extra_authorization_rules:
+  'puppetlabs catalog-diff':
+    match_request_path: '^/puppet/v3/catalog/([^/]+)$'
+    match_request_type: 'regex'
+    match_request_method: ['get', 'post']
+    allow: 'catalog-diff'
+    sort_order: 500
+  'puppetlabs catalog-diff certless':
+    match_request_path: '^/puppet/v4/catalog'
+    match_request_type: 'regex'
+    match_request_method: ['post']
+    allow: 'catalog-diff'
+    sort_order: 500
 
 psick::puppet::autosign::autosign: 'on'
 psick::puppet::autosign::autosign_match: "*.%{::domain}"
@@ -37,12 +53,12 @@ psick::sysctl::settings_hash:
   net.ipv6.conf.all.disable_ipv6: 0
   net.ipv6.conf.default.disable_ipv6: 0
 
-puppet_enterprise::profile::puppetdb::whitelisted_certnames:
+puppet_enterprise::profile::puppetdb::allowlisted_certnames:
   - cirunner.lab.psick.io
   - git.lab.psick.io
   - puppet.lab.psick.io
   - icinga.lab.psick.io
-puppet_enterprise::profile::console::whitelisted_certnames:
+puppet_enterprise::profile::console::allowlisted_certnames:
   - cirunner.lab.psick.io
   - git.lab.psick.io
   - puppet.lab.psick.io
@@ -195,4 +211,12 @@ network::interfaces_hash:
   'eth1':
     ipaddress: '10.42.43.101'
     netmask: '255.255.255.0'
+
+hdm::prereq::packages:
+  - sqlite-devel
+
+hdm::nginx::nginx_package_manage: true
+hdm::nginx::config_options:
+  listen: '8042 default_server'
+
 

@@ -23,6 +23,7 @@ psick::mounts::mounts:
   swap:
     ensure: absent
 
+psick::firewall::iptables::manage_firewalld: false
 firewalld::default_port_protocol: tcp
 firewalld::ports:
   'Kubernetes 10250':

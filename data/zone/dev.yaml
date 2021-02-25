@@ -2,11 +2,12 @@
 ### Classification
 psick::pre::linux_classes:
   puppet: psick::puppet
-  hosts: psick::hosts::file
+  hosts: psick::hosts::puppetdb
 psick::base::linux_classes:
   selinux: psick::selinux
   limits: psick::limits
   packages: psick::packages
+  tp: tp
 
 psick::pre::windows_classes:
   chocolatey: chocolatey
@@ -15,6 +16,23 @@ psick::base::windows_classes:
   tp: tp
   features_class: psick::windows::features
 
+psick::firstrun::darwin_classes:
+  homebrew: homebrew
+psick::base::darwin_classes:
+  tp: tp
+
+homebrew::user: al
+
+# Disabled unwanted services
+psick::resources_defaults:
+  service:
+    ensure: stopped
+    enable: false
+
+psick::resources:
+  service:
+    firewalld: {}
+    rpcbind: {}
 
 psick::dns::resolver::nameservers:
   - 10.42.100.2
@@ -44,9 +62,9 @@ psick::puppet::external_facts:
 # Disabled updating host entry by psick::hostname
 psick::hostname::update_host_entry: false
 
-# Hosts file managed via file resource
-psick::hosts::file::extra_hosts:
-  - '10.42.100.22 puppet puppet.lab42.dev'
+# psick::hosts::puppetdb::puppetdb_fact_address: 'networking.interfaces.eth1.ip'
+psick::hosts::puppetdb::puppethost: '10.42.100.22       puppet  puppet.lab42.dev'
+
 
 # Enable automatic updates on lab nodes and set schedule:
 # psick::update::cron_schedule: '42 4 * * *'
@@ -113,3 +131,252 @@ psick::limits::limits_hash:
     soft: 2048
     hard: 4096
 
+tp::osfamily_install_defaults:
+  RedHat:
+    settings_hash:
+      package_provider: yum
+
+linux_tp_install: &linux_tp_install
+  wazuh-agent:
+    ensure: absent
+    auto_prereq: true
+    settings_hash:
+      extra_prerequisites:
+        file_line:
+          wazuh_server_address:
+            ensure: present
+            path: /var/ossec/etc/ossec.conf
+            line: '      <address>wazuh.lab42.dev</address>'
+            match: '^\s*<address>'
+  filebeat:
+    auto_prereq: true
+    ensure: present
+    settings_hash:
+      extra_prerequisites:
+        file:
+          puppet_private_key_elastic_agents:
+            path: "/etc/puppetlabs/puppet/ssl_private_key_%{clientcert}.pem"
+            source: "file:///etc/puppetlabs/puppet/ssl/private_keys/%{clientcert}.pem"
+            mode: '0640'
+            owner: root
+            group: root
+  metricbeat:
+    ensure: present
+  auditbeat:
+    ensure: present
+  heartbeat-elastic:
+    ensure: present
+  elastic-agent:
+    ensure: absent
+    auto_prereq: true
+    settings_hash:
+      extra_postinstall:
+        exec:
+          elastic-agent-enroll:
+            cwd: '/etc/elastic-agent'
+            command: 'elastic-agent enroll -f  https://wazuh.lab42.dev:5601 UjNzcEszVUJyd3JXcjcxNURaM2s6c0w1MHF0TlRSeTZBQ0lCbUphTEVQZw== -c elastic-agent.yml'
+            creates: '/etc/elastic-agent/fleet.yml'
+            path: '/bin:/usr/bin:/sbin/usr/sbin'
+  zeek:
+    ensure: absent
+
+tp::osfamily_install_hash:
+  RedHat:
+    <<: *linux_tp_install
+  Debian:
+    <<: *linux_tp_install
+
+ssl_settings: &ssl_settings
+  ssl.certificate_authorities: ["/etc/puppetlabs/puppet/ssl/certs/ca.pem"]
+  ssl.certificate: "/etc/puppetlabs/puppet/ssl/certs/%{clientcert}.pem"
+  ssl.key: "/etc/puppetlabs/puppet/ssl_private_key_%{clientcert}.pem"
+  username: alvagante
+  password: loglikehell
+    
+linux_tp_conf: &linux_tp_conf
+  filebeat:
+    ensure: present
+    options_hash:
+      logging.level: info
+      logging.to_files: true
+      logging.files:
+        path: /var/log/filebeat
+        name: filebeat
+        keepfiles: 7
+        permissions: 0644      
+      setup.ilm.enabled: false
+      setup.template.enabled: true
+      setup.template.name: "filebeat"
+      setup.template.pattern: "filebeat-${INDEX_NAME:default}-%{[beat.version]}-*"
+      filebeat.modules:
+      - module: system
+      syslog:
+        enabled: true
+        var.paths:
+          - "/var/log/syslog*"
+          - "/var/log/messages"
+      auth:
+        enabled: true
+        var.paths:
+          - "/var/log/auth.log*"
+          - "/var/log/secure*"        
+#      filebeat.inputs:
+#      - type: log
+#        enabled: true
+#        paths:
+#          - /var/log/*.log
+#          - /var/log/*/*.log
+#        exclude_files:
+#          - "/var/log/kern.log"
+#          - "/var/log/dnf.log"
+#          - "/var/log/redis/redis.log"
+#          - "/var/log/elasticsearch/gc.log"
+        json.message_key: message
+        json.keys_under_root: false
+        json.add_error_key: true  
+      filebeat.config.modules:
+        path: ${path.config}/modules.d/*.yml
+        reload.enabled: true
+      setup.template.settings:
+        index.number_of_shards: 1
+      setup.kibana:
+        host: "https://wazuh.lab42.dev:5601"
+        <<: *ssl_settings
+      output.elasticsearch:
+        hosts:
+          - "https://wazuh.lab42.dev:9200"
+        index: "filebeat-${INDEX_NAME:default}-%{[beat.version]}-%{+yyyy.MM.dd}"
+        #  indices:
+        #  - index: "wazuh-alerts-3.x-%{literal('%')}{+yyyy.MM.dd}"
+        <<: *ssl_settings
+  auditbeat:
+    ensure: present
+    options_hash:
+      logging.level: info
+      logging.to_files: true
+      logging.files:
+        path: /var/log/auditbeat
+        name: auditbeat
+        keepfiles: 7
+        permissions: 0644  
+      auditbeat.modules:
+      - module: auditd
+        audit_rule_files: [ '${path.config}/audit.rules.d/*.conf' ]
+        audit_rules: ''
+      - module: file_integrity
+        paths:
+        - /bin
+        - /usr/bin
+        - /sbin
+        - /usr/sbin
+        - /etc
+      - module: system
+        datasets:
+        state.period: 12h
+        user.detect_password_changes: true
+        login.wtmp_file_pattern: /var/log/wtmp*
+        login.btmp_file_pattern: /var/log/btmp*
+      setup.template.settings:
+        index.number_of_shards: 1
+      setup.kibana:
+      output.elasticsearch:
+        hosts:
+          - "https://wazuh.lab42.dev:9200"
+        <<: *ssl_settings
+      processors:
+      - add_host_metadata: ~
+      - add_cloud_metadata: ~
+      - add_docker_metadata: ~
+  metricbeat:
+    ensure: present
+    options_hash:
+      logging.level: info
+      logging.to_files: true
+      logging.files:
+        path: /var/log/metricbeat
+        name: metricbeat
+        keepfiles: 7
+        permissions: 0644  
+      metricbeat.config.modules:
+        path: ${path.config}/modules.d/*.yml
+        reload.enabled: false
+      setup.template.settings:
+        index.number_of_shards: 1
+        index.codec: best_compression
+      setup.kibana:
+      output.elasticsearch:
+        hosts:
+          - "https://wazuh.lab42.dev:9200"
+        <<: *ssl_settings
+      processors:
+        - add_host_metadata: ~
+        - add_cloud_metadata: ~
+        - add_docker_metadata: ~
+        - add_kubernetes_metadata: ~
+  heartbeat-elastic:
+    ensure: present
+    options_hash:
+      logging.level: info
+      logging.to_files: true
+      logging.files:
+        path: /var/log/heartbeat
+        name: heartbeat
+        keepfiles: 7
+        permissions: 0644  
+      heartbeat.config.monitors:
+        path: ${path.config}/monitors.d/*.yml
+        reload.enabled: false
+        reload.period: 5s
+      heartbeat.monitors:
+      - type: http
+        id: my-monitor
+        name: My Monitor
+        urls: ["https://wazuh.lab42.dev:9200"]
+        schedule: '@every 10s'
+      setup.template.settings:
+        index.number_of_shards: 1
+        index.codec: best_compression
+      setup.kibana:
+      output.elasticsearch:
+        hosts:
+          - "https://wazuh.lab42.dev:9200"
+        <<: *ssl_settings
+      processors:
+        - add_observer_metadata:
+
+linux_tp_conf_disabled:
+  elastic-agent:
+    options_hash:
+      agent.monitoring:
+        enabled: true
+        logs: true
+        metrics: true
+        use_output: default
+        inputs:
+          - type: system/metrics
+            data_stream.namespace: default
+            use_output: default
+            streams:
+              - metricset: cpu
+                data_stream.dataset: system.cpu
+              - metricset: memory
+                data_stream.dataset: system.memory
+              - metricset: network
+                data_stream.dataset: system.network
+              - metricset: filesystem
+                data_stream.dataset: system.filesystem
+      setup.kibana:
+        host: "https://wazuh.lab42.dev:5601"
+        <<: *ssl_settings
+      outputs:
+        default:
+          type: elasticsearch
+          hosts:
+            - "https://wazuh.lab42.dev:9200"
+          <<: *ssl_settings
+                
+tp::osfamily_conf_hash:
+  RedHat:
+    <<: *linux_tp_conf
+  Debian:
+    <<: *linux_tp_conf

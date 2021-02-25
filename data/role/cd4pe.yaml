@@ -1,0 +1,3 @@
+---
+# CD4PE 4 is not supported with Selinux active
+psick::selinux::state: disabled

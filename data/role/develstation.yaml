@@ -1,4 +1,6 @@
 ---
+tp::osfamily_install_hash_merge_behaviour: deep
+
 tp::osfamily_install_hash:
   RedHat:
     - docker
@@ -18,6 +20,13 @@ tp::osfamily_install_hash:
     - docker-desktop
     - pdk
     - git
+  darwin:
+    git:
+      settings_hash:
+        package_provider:  brew
+    visual-studio-code: {}
+    docker: {}
+
 
 tp::osfamily_install_defaults:
   windows:

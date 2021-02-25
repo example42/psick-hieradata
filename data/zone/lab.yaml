@@ -21,6 +21,9 @@ psick::base::linux_classes:
 #  mcollective_choria: mcollective_choria
 #  puppetagent: puppet_agent
 
+psick::base::windows_classes:
+  windows_puppet_certificates: windows_puppet_certificates
+
 # Avoid epel repo duplicated resource
 psick::monitor::nagiosplugins::auto_prereq: false
 
@@ -391,6 +394,8 @@ psick::resources_defaults:
 
 psick::resources:
   service:
-    firewalld: {}
+    firewalld:
+      ensure: stopped
+      enable: false
     rpcbind: {}
 

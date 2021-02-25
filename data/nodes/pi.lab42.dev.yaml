@@ -11,6 +11,10 @@ tp::install_hash:
     ensure: absent
     auto_prereq: true
 
+tp::osfamily_install_hash:
+  Debian: {}
+tp::osfamily_conf_hash:
+  Debian: {}
 # No PE agent here.
 psick::puppet::pe_agent::manage_service: false
 

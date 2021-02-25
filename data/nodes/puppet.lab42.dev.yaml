@@ -1,2 +1,10 @@
 ---
+psick::profiles::linux_classes:
+  pe_server: psick::puppet::pe_server
+  pe_console: psick::puppet::pe_console
+  pe_puppetdb: psick::puppet::pe_puppetdb
+
 puppet_enterprise::console_services::no_longer_reporting_cutoff: 220000
+
+puppet_enterprise::profile::puppetdb::whitelisted_certnames:
+  - bestia.lab42.dev

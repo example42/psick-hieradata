@@ -1,0 +1,37 @@
+---
+tp::install_hash:
+  terraform:
+    ensure: absent
+    auto_prereq: true
+  vagrant:
+    auto_prereq: true
+  waypoint:
+    ensure: absent
+    auto_prereq: true 
+  boundary:
+    ensure: absent
+    auto_prereq: true
+  packer:
+    ensure: absent
+    auto_prereq: true
+  nomad:
+    ensure: absent
+    auto_prereq: true
+#  nomad-enterprise:
+#    auto_prereq: true
+#    ensure: absent
+  vault:
+    ensure: absent
+    auto_prereq: true
+#    ensure: absent
+#  vault-enterprise:
+#    auto_prereq: true
+#    ensure: absent
+
+  consul:
+    ensure: absent
+    auto_prereq: true
+#  consul-enterprise:
+#    auto_prereq: true
+#    ensure: absent
+    

@@ -1,0 +1,27 @@
+---
+psick::base::linux_classes:
+  network: network
+  tp: tp
+#  wazuh: psick::wazuh
+
+network::interfaces_hash:
+  'ens18':
+    ipaddress: '10.42.100.23'
+    netmask: '255.255.255.0'
+    gateway: '10.42.100.1'
+
+network::mroutes_hash:
+  'ens18':
+    routes:
+      '0/0': '10.42.100.1'
+
+psick::resources:
+  file:
+    '/data':
+      ensure: directory
+      before: Mount[/data]
+  mount:
+    '/data':
+      device: /dev/sdb1
+      fstype: xfs
+      options: defaults

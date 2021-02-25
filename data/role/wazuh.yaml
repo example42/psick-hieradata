@@ -1,0 +1,124 @@
+---
+psick::profile::linux_classes:
+  wazuh-server: '' #psick::wazuh
+
+# Just relax it
+psick::selinux::state: permissive
+
+
+# Wazuh server setup directly via tp approach
+tp::osfamily_install_hash_merge_behaviour: 'deep'
+linux_tp_install: &linux_tp_install
+  kibana:
+    ensure: present
+  filebeat:
+    auto_prereq: true
+    ensure: present
+    settings_hash:
+      extra_prerequisites:
+        file:
+          puppet_private_key_elastic_agents:
+            path: "/etc/puppetlabs/puppet/ssl_private_key_%{clientcert}.pem"
+            source: "file:///etc/puppetlabs/puppet/ssl/private_keys/%{clientcert}.pem"
+            mode: '0640'
+            owner: root
+            group: kibana
+  wazuh-server:
+    ensure: absent
+    auto_prereq: true
+  elasticsearch:
+    ensure: present
+    auto_prereq: true
+    settings_hash:
+      extra_prerequisites:
+        file:
+          elastic_ssl_dir: # Elastic needs ssl files under its dir
+            path: "/etc/elasticsearch/ssl"
+            ensure: directory
+            mode: '0755'
+            owner: elasticsearch
+            group: kibana
+          puppet_private_key:
+            path: "/etc/elasticsearch/ssl/puppet_%{clientcert}.key"
+            source: "file:///etc/puppetlabs/puppet/ssl/private_keys/%{clientcert}.pem"
+            mode: '0440'
+            owner: elasticsearch
+            group: kibana
+          puppet_public_key:
+            path: "/etc/elasticsearch/ssl/puppet_%{clientcert}.pem"
+            source: "file:///etc/puppetlabs/puppet/ssl/certs/%{clientcert}.pem"
+            mode: '0440'
+            owner: elasticsearch
+            group: kibana
+          puppet_ca:
+            path: "/etc/elasticsearch/ssl/puppet_ca.pem"
+            source: "file:///etc/puppetlabs/puppet/ssl/certs/ca.pem"
+            mode: '0440'
+            owner: elasticsearch
+            group: kibana
+
+tp::osfamily_install_hash:
+  RedHat:
+    <<: *linux_tp_install
+  Debian:
+    <<: *linux_tp_install
+
+tp::osfamily_conf_hash_merge_behaviour: 'deep'
+linux_tp_conf: &linux_tp_conf
+  elasticsearch:
+    options_hash:
+      node.name: "%{fqdn}"
+      path.data: /var/lib/elasticsearch
+      path.logs: /var/log/elasticsearch
+      network.host: "%{ipaddress}"
+      cluster.initial_master_nodes:
+        - "%{fqdn}"
+      xpack.security.enabled: true
+      xpack.security.http.ssl.enabled: true
+      xpack.security.http.ssl.certificate: "/etc/elasticsearch/ssl/puppet_%{clientcert}.pem"
+      xpack.security.http.ssl.certificate_authorities: "/etc/elasticsearch/ssl/puppet_ca.pem"
+      xpack.security.http.ssl.key: "/etc/elasticsearch/ssl/puppet_%{clientcert}.key"
+      xpack.security.transport.ssl.enabled: true
+      xpack.security.transport.ssl.key: "/etc/elasticsearch/ssl/puppet_%{clientcert}.key"
+      xpack.security.transport.ssl.certificate: "/etc/elasticsearch/ssl/puppet_%{clientcert}.pem"
+      xpack.security.transport.ssl.certificate_authorities: "/etc/elasticsearch/ssl/puppet_ca.pem"
+  elasticsearch::role_mapping.yml:
+    options_hash:
+      admin:
+        cluster: all
+        indices:
+          '*': all
+      all_access:
+        - wazuh.lab42.dev
+        - puppet.lab42.dev
+        - bestia.lab42.dev
+        - pve.lab42.dev
+        - al
+  elasticsearch::users_roles:
+    content: "superuser:al\nkibana_admin:alvagante\nsuperuser:alvagante\nbeats_admin:beat\n"
+    group: elasticsearch
+    mode: '0660'
+  kibana:
+    options_hash:
+      elasticsearch.hosts:
+        - "https://wazuh.lab42.dev:9200"
+      server.host: wazuh.lab42.dev
+      server.ssl.enabled: true
+      server.ssl.key: "/etc/puppetlabs/puppet/ssl_private_key_%{clientcert}.pem"
+      server.ssl.certificate: "/etc/puppetlabs/puppet/ssl/certs/%{clientcert}.pem"
+      server.ssl.certificateAuthorities: ["/etc/puppetlabs/puppet/ssl/certs/ca.pem"]
+      elasticsearch.ssl.verificationMode: certificate
+      elasticsearch.ssl.key: "/etc/puppetlabs/puppet/ssl_private_key_%{clientcert}.pem"
+      elasticsearch.ssl.certificate: "/etc/puppetlabs/puppet/ssl/certs/%{clientcert}.pem"
+      elasticsearch.ssl.certificateAuthorities: "/etc/puppetlabs/puppet/ssl/certs/ca.pem"
+      elasticsearch.username: al
+      elasticsearch.password: superpippo
+      csp.strict: true
+      xpack.security.enabled: true
+      xpack.encryptedSavedObjects.encryptionKey: "dfvvb7435tro4tgfdfg304q865trtf345gvkxfsdrv23vvhdfv"
+
+tp::osfamily_conf_hash:
+  RedHat:
+    <<: *linux_tp_conf
+  Debian:
+    <<: *linux_tp_conf

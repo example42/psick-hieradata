@@ -1,0 +1,7 @@
+---
+psick::users::users_hash:
+  al:
+      groups:
+      - users
+      - admin
+      - --wheel

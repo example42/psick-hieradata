@@ -1,0 +1,16 @@
+---
+psick::users::users_hash:
+  al:
+      groups:
+      - users
+      - --wheel
+
+tp::osfamily_install_hash:
+  Debian:
+    docker: {}
+    code:
+      settings_hash:
+        package_provider: snap
+    pdk:
+      ensure: absent
+    git: {}

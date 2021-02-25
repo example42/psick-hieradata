@@ -9,11 +9,11 @@ psick::profiles::linux_classes:
 #  - psick::gitlab::runner
 #  - psick::ci::octocatalog
 
-puppet_enterprise::psick::puppetdb::whitelisted_certnames:
+puppet_enterprise::profile::puppetdb::allowlisted_certnames:
   - cirunner.demo
   - git.demo
   - puppet.demo
-puppet_enterprise::psick::console::whitelisted_certnames:
+puppet_enterprise::profile::console::allowlisted_certnames:
   - cirunner.demo
   - git.demo
   - puppet.demo

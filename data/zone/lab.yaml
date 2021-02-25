@@ -39,6 +39,7 @@ psick::puppet::pe_agent::noop_manage: true
 psick::puppet::pe_agent::noop_value: false
 
 ### Puppet
+psick::puppet::agent_class: psick::puppet::pe_agent
 psick::puppet::pe_agent::manage_environment: true
 psick::puppet::pe_agent::manage_service: true
 

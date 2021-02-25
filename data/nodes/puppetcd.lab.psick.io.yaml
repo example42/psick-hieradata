@@ -1,12 +1,11 @@
 ---
 psick::base::linux_classes:
   firewall: psick::firewall::iptables
-  
-psick::firewall::iptables::preserve_rules_on_restore: true
-
-psick::profiles::linux_classes:
+psick::profiles::linux_classes_deprecated:
   cd4pe: cd4pe
 
+psick::firewall::iptables::manage_firewalld: false
+psick::firewall::iptables::preserve_rules_on_restore: true
 psick::firewall::iptables::allow_tcp_ports:
   - 80
   - 443
@@ -35,18 +34,4 @@ nonetwork::interfaces:
 psick::sysctl::settings_hash:
   net.ipv4.conf.all.forwarding: 1
 
-tp::install_hash:
-  rpmfusion-free:
-    ensure: present
-  rpmfusion-nonfree:
-    ensure: present
-  elrepo:
-    ensure: present
-  ius:
-    ensure: present
-  nux:
-    ensure: present
-  remi:
-    ensure: present
-  ulyaoth:
-    ensure: present
+

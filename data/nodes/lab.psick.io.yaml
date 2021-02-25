@@ -181,3 +181,4 @@ tp_profile::nginx::resources:
 # Selinux disabled here:
 psick::selinux::state: disabled
 
+psick::puppet::facts_file_path: /tmp/facts.yaml

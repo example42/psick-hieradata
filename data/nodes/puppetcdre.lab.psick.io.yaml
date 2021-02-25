@@ -2,7 +2,7 @@
 psick::profiles::linux_classes:
   cd4pe: cd4pe_tools
 
-cd4pe_tools::cd4pe_class_manage: true
+cd4pe_tools::cd4pe_class_manage: false
 cd4pe_tools::cd4pe_backup_manage: true
 cd4pe_tools::cd4pe_backup_cron: '0 0 * * *'
 
@@ -30,5 +30,4 @@ nonetwork::interfaces:
 
 psick::sysctl::settings_hash:
   net.ipv4.conf.all.forwarding: 1
-
 

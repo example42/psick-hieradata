@@ -1,14 +1,17 @@
 ---
 psick::pre::linux_classes:
   buildgems: psick::ruby::buildgems
+
 psick::profiles::linux_classes:
   vagrant: vagrant
   git: psick::git
   docker: psick::docker
   pe_client_tools: psick::puppet::pe_client_tools
+#  hdm: hdm
 
+hdm::puppetdb_token: ENC[PKCS7,MIIBmQYJKoZIhvcNAQcDoIIBijCCAYYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEAsotE1Db5e0NYJqgYYm1XvUtPY9ape4wcnphikJxYkrMO6eFpWCzYTOtGGW9wawjYgiULTRZUnQ3XPnMv7iwghet7YoQ5QubEIULF7kcKmopMJ3NBHbPE/8vFAt1848FbfM9bTmkFd3/s73qrBtPrd5IqpaDpqdxpGfjzFEzjDWxt73jsLMVrWbQeGXcR565R9eHOk/xx7KsT8Nud/LbVO9DtvyRMQ9i7Vw5tibh+3/XSYBarRJvWlHK+YLKH6Ot3X8w/OWCoHC5HlyarcFFYmRDWueXeTPWgwkDoP0KIMB+7tzJDkItbLu4iZX2Oe3De/V//DhBvORzPqn6PRT7CuzBcBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBDWy/LNBXoM44ayAOU5jY/XgDB+L2AHSdqTgD80KWm8TqIw01eC5Djcy+soOphDi0NPy44IPJkKs4RGhVZQxJQ5o/8=]
 # Explicit list of required gems for CI runners for puppet testing
-psick::puppet::gems::install_puppet_gems: true
+psick::puppet::gems::install_puppet_gems: trueunknown
 psick::puppet::gems::install_system_gems: false
 psick::puppet::gems::default_set: integration
 
@@ -61,7 +64,7 @@ network::interfaces_hash:
   'eth1':
     ipaddress:
       - '10.42.43.104'
-      - '10.42.143.104'
+      - '10.42.143.104/24'
     netmask: '255.255.255.0'
     gateway: '10.42.143.1'
 

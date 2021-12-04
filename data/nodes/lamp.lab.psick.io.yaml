@@ -47,6 +47,7 @@ tp_profile::apache::resources:
 #          RewriteRule: '^(.*)$ /route.php?url=$1 [L]'
   tp::dir:
     apache::openskills.info:
+      ensure: latest
       vcsrepo: git
       source: git@bitbucket.org:alvagante/openskills.info.git
       path: /var/www/html/openskills.info
@@ -59,6 +60,7 @@ tp_profile::apache::resources:
 psick::php::module_hash:
   mysql: {}
   gd: {}
+  yaml: {}
 
 psick::mariadb::user_hash:
   openskills:
@@ -73,7 +75,7 @@ tp_profile::mariadb::resources:
   tp::dir:
     mariadb::openskills-data:
       vcsrepo: git
-      source: git@git.lab.psick.io:alvagante/openskills-data.git
+      source: git@bitbucket.org:alvagante/openskills-data.git
       path: /root/openskills-data
 
 psick::users::users_hash:
@@ -81,3 +83,26 @@ psick::users::users_hash:
     openssh_keygen:
       root:
         bits: 2048
+
+tp::conf_hash:
+  openssh::root_id_rsa:
+    path: '/root/.ssh/id_rsa'
+    mode: '0400'
+    source: puppet:///modules/profile/openssh/lamp.lab.psick.io/id_rsa
+    settings_hash:
+      validate_cmd: ~
+  openssh::root_id_rsa.pub:
+    path: '/root/.ssh/id_rsa.pub'
+    mode: '0644'
+    source: puppet:///modules/profile/openssh/lamp.lab.psick.io/id_rsa.pub
+    settings_hash:
+      validate_cmd: ~
+  openssh::root_id_rsa.pub:
+    path: '/root/.ssh'
+    ensure: directory
+    before: Class[Tp_profile::Apache]
+    settings_hash:
+      validate_cmd: ~
+
+psick::openssh::keyscans_hash:
+  bitbucket.org: {}

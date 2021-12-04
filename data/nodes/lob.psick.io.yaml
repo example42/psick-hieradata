@@ -82,8 +82,8 @@ psick::openswan::connections:
       ikev2: 'no'
       keylife: 1h
       ikelifetime: 1440m
-      left: 88.99.137.168
-      leftid: 88.99.137.168
+      left: 95.217.117.39
+      leftid: 95.217.117.39
       leftsubnet: 10.42.43.0/24
       leftsourceip: 10.42.43.1
       right: 95.216.65.138
@@ -143,6 +143,7 @@ psick::firewall::iptables::allow_udp_ports:
 psick::firewall::iptables::allow_ips:
   - 2.34.117.121 # al
   - 88.99.137.168 # lab.psick.io
+  - 95.217.117.39 # lab.psick.io v2
   - 95.216.65.138 # lob.psick.io
   - 10.42.43.0/24 # lob.psick.io
 

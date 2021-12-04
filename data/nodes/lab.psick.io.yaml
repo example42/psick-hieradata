@@ -1,20 +1,20 @@
 ---
 psick::profiles::linux_classes:
   web: tp_profile::nginx
-  ipsec: psick::openswan
+#  ipsec: psick::openswan
   firewall: psick::firewall::iptables
+  openvpn: psick::openvpn
+  network: ''
+  pdk: psick::puppet::pdk
 
 psick::users::users_hash:
   al:
     ssh_authorized_keys:
       - '--ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC93uOkdIrvcA1ij6wxtL0wDKch7E2gFqID2xR1LnEVQRSP9OFmNQV+4B7fM/fAVpFs939qBDeDRabft1ZAP2hUIeKWxweNQ6wxxV3YhJbxt+g6RAqm37BI+/ynZnZ4vrQp3XHfxNFYGFqiaowiiQ3/0QLh8PHliDJroOUU7h2YNwKBWiqdgufLCrPgnalSZ3kfKa2Yd5sM+iyAYJ102sXcGIFjAXCmQU1y7aJXjrzXzPuugnHvVFPzAUjsvu0FAiE+m8EhfBiyy1+SjnMB838G3EwrqNW+sEZ6lXh637xensB2WJuH0lPooCgaeG6WCmYjVK9rblcOb3B0Pp8Vbhp5 al@lab.psick.io'
-
-
-tp::install_hash:
-  ius:
-    ensure: present
-  git222:
-    ensure: present
+    groups:
+      - users
+      - --admin
+      - --wheel
 
 # This node runs in noop mode by default
 psick::puppet::pe_agent::noop_setting: true
@@ -26,39 +26,6 @@ psick::openswan::setup_options:
   protostack: netkey
 
 psick::openswan::connections:
-  dtt:
-    ensure: present
-    secret: ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEADP9C0hUgUEmwRIqpGYprxHf6jD3WJCQlltMqfchYabV/cHKVXSE5Mgzo/J3Si0DVU4tjWdOs1E16S3ybOym/Ts0Nfon1HiZrcUFKTLtaIRdyF0hFOTfFATzaB4pPZZxCeWMvJMRd+WfP/kIb9mNXqubKXAI7y2SEEHLMo8lg8RZQC842y5f+tqvbqZlDDJ3tAP70pN8zS2UvMMx9HAPNlQOnQB0KqKK9raX2KRbk0rwJPbPkYtwa0YLvDm7qzXijSTs9ZfIhoYMH9o3d+bLY6cV0sMR+YYIvEJ5QKsRJgsVIJCtWzL07oK6cRDP/1H1xwR7Ft9IxmIWNBTnc8FdETzBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBC1sbSfaIkMMmqMfot3RNFNgCBlpIc5z/XsAh75UWghQl6N+o2/JsVgBxEwtYGH1UKEjA==]
-    options:
-      auto: start
-      type: tunnel
-      rekey: 'yes'
-      aggressive: 'no'
-      compress: 'no'
-      authby: secret
-      ike: aes256-sha256-modp2048
-      phase2: esp
-      phase2alg: aes256-sha256;modp2048
-      ikev2: 'no'
-      keylife: 1h
-      ikelifetime: 1440m
-      left: 88.99.137.168
-      leftid: 88.99.137.168
-      leftsubnet: 10.0.0.12/32
-      leftsourceip: 10.0.0.12
-      # leftsourceip: 88.99.137.168
-      right: 217.7.16.126
-      rightid: 217.7.16.126
-      # rightid: 10.208.194.50
-      # rightsourceip: 10.208.194.50
-      # rightprotoport: 'tcp/3022'
-      # rightsubnet: '10.90.178.2/32'
-      rightsubnets: '{ 10.90.178.2/32 , 10.102.222.220/32 }'
-      pfs: 'yes'
-      vti-interface: vti01
-      mark: '5/0xffffffff'
-      vti-routing: 'yes'
-      leftvti: 10.0.0.12/32
   roadwarrior:
     ensure: present
     secret: ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEALMHInHhNTF5NN1bzG5uNlA7y9Rt5WtNvdZzFRkjGE7cXhQOBNvXvJ76Z3Ygb3Jkn+WJmpEK9JvLcb7dI+NH8x4io4ZDCuCOwR0SKKSldodcgzAskaUghh9K3FnlwPDfdpNWlceMTY44Z51gJ8Ap3BTagQa0uBvmszAdw4lbOqNmQJXgs6lWsWZ3AgeUVi14vGmiKrEHymIOqvDtjFKOv0+hit+KMTcn/s4hK3yhYUyATWG2YabiBsHgHeTXhueP2Lc4O5eEBWFwKI0EwWSjKne4IybQK0csbSqLjwgjjEK0e/oSOTDDgzPlZeFVgg90pScuuwKec508wMUjZjfZgTjBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBDwOT7X1/vp2dmzSCWomq8OgCAusxLr8OIwWw5lexhblF158hc/9YMMChh7NETowTyp5Q==]
@@ -116,7 +83,7 @@ psick::sysctl::settings_hash:
 psick::firewall::iptables::nat_rules:
   - '-A POSTROUTING -d 10.102.222.220/32 -o vti01 -s 10.42.250.0/24 -j SNAT --to 10.0.0.12'
   - '-A POSTROUTING -d 10.90.178.2/32 -o vti01 -s 10.42.250.0/24 -j SNAT --to 10.0.0.12'
-  - '-A POSTROUTING ! -d 10.42.0.0/16 -j SNAT --to 88.99.137.168'
+  - "-A POSTROUTING ! -d 10.42.0.0/16 -j SNAT --to %{ipaddress}"
 
 psick::firewall::iptables::mangle_rules:
   - '-A FORWARD -o vti01 -p tcp -m tcp --tcp-flags SYN,RST SYN -m tcpmss --mss 1361:1536 -j TCPMSS --set-mss 1360'
@@ -124,6 +91,8 @@ psick::firewall::iptables::mangle_rules:
 psick::firewall::iptables::extra_rules:
   - '-A INPUT -p esp -j ACCEPT'
   - '-A INPUT -p ah -j ACCEPT'
+  - '-A INPUT -s 10.42.0.0/16 -p udp --dport 53 -j ACCEPT'
+  - '-A INPUT -s 10.42.0.0/16 -p tcp --dport 53 -j ACCEPT'
 
 psick::firewall::iptables::allow_tcp_ports:
   - 80
@@ -136,7 +105,7 @@ psick::firewall::iptables::allow_udp_ports:
 
 psick::firewall::iptables::allow_ips:
   - 217.7.16.126 # DTT
-  - 93.40.189.160 # AL
+  - 2.34.117.121 # AL
   - 95.216.65.138 # lob.psick.io
 
 psick::firewall::iptables::manage_firewalld: false
@@ -150,6 +119,12 @@ tp_profile::openssh::resources:
 # Nginx
 tp_profile::nginx::resources:
   tp::conf:
+    nginx::.htpasswd:
+      template: profile/nginx/htpasswd.erb
+      validate_syntax: false
+    nginx::auth.conf:
+      template: profile/nginx/auth.conf.erb
+      validate_syntax: false
     nginx::ssl.conf:
       template: profile/nginx/ssl.conf.erb
     nginx::lab.conf:
@@ -164,6 +139,9 @@ tp_profile::nginx::resources:
     nginx::openskills.conf:
       template: profile/nginx/openskills.conf.erb
       base_dir: conf
+    nginx::abnormalia.conf:
+      template: profile/nginx/abnormalia.conf.erb
+      base_dir: conf
     nginx::foss.conf:
       template: profile/nginx/foss.conf.erb
       base_dir: conf
@@ -171,14 +149,44 @@ tp_profile::nginx::resources:
       template: profile/nginx/proxy.conf.erb
       base_dir: conf
       path: /etc/nginx/proxy.conf
+    nginx::selfsigned.crt:
+      template: profile/nginx/nginx-selfsigned.crt
+      base_dir: conf
+      path: /etc/ssl/certs/nginx-selfsigned.crt
+    nginx::selfsigned.key:
+      template: profile/nginx/nginx-selfsigned.key
+      base_dir: conf
+      path: /etc/ssl/private/nginx-selfsigned.key
+    nginx::selfsigned.dhparam:
+      template: profile/nginx/nginx-dhparam.pem
+      base_dir: conf
+      path: /etc/ssl/certs/dhparam.pem
   tp::dir:
     nginx::psick.io:
       vcsrepo: git
-      source: git@github.com:/example42/psick.io.git
+      source: https://github.com/example42/psick.io.git
       path: /usr/share/nginx/psick.io
       ensure: present
+
+# OpenVPN
+tp_profile::openvpn::resources:
+  tp::conf:
+    openvpn:
+      path: /etc/openvpn/lab.conf
+      source: puppet:///modules/profile/openvpn/lab.conf
+  tp::dir:
+    openvpn::keys:
+      recurse: true
+      path: /etc/openvpn/keys
+      source: puppet:///modules/profile/openvpn/keys/
+
 
 # Selinux disabled here:
 psick::selinux::state: disabled
 
-psick::puppet::facts_file_path: /tmp/facts.yaml
+#psick::puppet::facts_file_path: /tmp/facts.yaml
+
+# Passwordless sudopowers for al on lab
+psick::sudo::directives:
+  lab:
+    content: 'lab ALL=(ALL) NOPASSWD:/opt/puppetlabs/bin/puppet node purge'

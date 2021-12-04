@@ -1,6 +1,8 @@
 ---
 puppet_enterprise::master::static_catalogs: false
 puppet_enterprise::master::puppetserver::jruby_puppet_multithreaded: true
+puppet_enterprise::enable_system_metrics_collection: true
+puppet_enterprise::enable_database_maintenance: true
 
 psick::pre::linux_classes:
   buildgems: psick::ruby::buildgems
@@ -17,7 +19,7 @@ psick::profiles::linux_classes:
 #  octocatalog: psick::ci::octocatalog
   danger: psick::ci::danger
   puppet_autosign: psick::puppet::autosign
-  choria_broker: choria::broker
+#  choria_broker: choria::broker
 #  hdm: hdm
 
 # Avoid duplicated tp::repo epel resource
@@ -107,6 +109,9 @@ psick::puppet::pe_code_manager::pe_password: 'deployme'   # PE user password. TO
 psick::puppet::pe_code_manager::lifetime: '5y'            # Adapt as preferred
 psick::puppet::pe_code_manager::generate_ssh_keys: true   # Default breaks on code manager configured PE from 2017.2.x
 
+# PE tunings
+
+
 # Configure the scripts used during Gitlab CI of the control repo
 psick::gitlab::ci::default_nodes:
   - puppet.lab.psick.io
@@ -133,15 +138,17 @@ psick::ci::octocatalog::template: 'psick/ci/octocatalog/octocatalog-diff.cfg.rb.
 psick::gitlab::runner::runners:
   deploy_puppet:
     url: 'https://git.lab.psick.io'
-    token: 'cycnwQxGbhv37PtaRUUj' # CI Runner token TO CHANGE AT EVERY INSTALLATION
+    token: ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEAdyiC58Y5vb+mIiVgCAqdRvdLgj5jj3ybz/6q4J463mHm/2RJFLbPhpPYCRt4UB14pzl+9/nGoGvqNzDwenf7BhWsPrhJ2Drff4JgalNh7OV+G3CDfqVZ8skldH1jWuRSQcgDn22k/j7h2UNLDYUKzp67XZfXQ9412NpE/2PrGOyOnHmsUUZFTyREuZp7FQ2N4zX5r+i/sNp79Ffb+M3NIAIvgKI0ndDLHZwMfstP/H9GJWrCtzUq/02YaDc0tfE9tUHPZHSWbejIioHa+2MtU17PfIsQgC+ERsTqCmRv02wDrguE7ovAAeWWc/x1IymzUPob0AdWcnrVYasZRjGZQjBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBBYiExiIabHBniYXlQGyuVkgCDJZ0EpXBvwc6TUE80KOe948/UGvj/fzBMeWQGjKdJzvQ==] # CI Runner token TO CHANGE AT EVERY INSTALLATION
     tag_list: 'deploy_puppet'
     tls_ca_file: '/etc/puppetlabs/puppet/ssl/certs/ca.pem'
 
 # Manage puppet agent grants. PE User must be already existing
-# If using PE. it must have permission to trigger remote puppet agents
-psick::gitlab::runner::pe_user: 'deployer'       # A user you've created on PE
-psick::gitlab::runner::pe_password: 'deployer'   # PE user password.
-psick::gitlab::runner::pe_token_lifetime: '5y'            # Adapt as preferred
+# If using PE it must have permission to trigger remote puppet agents
+psick::gitlab::runner::pe_user: 'deployer'
+# pe_user password:
+psick::gitlab::runner::pe_password: ENC[PKCS7,MIIBeQYJKoZIhvcNAQcDoIIBajCCAWYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEAiZXAfIJu358JQ6rxIYDqWTr4YRKEnrNtB4JtExfS9NWX3z5ioM9AmFoqj47P+weNMz/PqokPxewxQ0D8aZhkfgNPkJMDBMMUg0QIMFdmeZK4A65VgXCS5VWnuLjHsw8u7dUzUe5EOSdQlDefgOMbI44eE5dXqMTq5lrjIijFDFSg8RKJVp/mVrBRH/cdtpcTE3sPEpvZfYhnBIBbP6DRc1bD/YxJzeHMOX+TMkDI0xm6gw3yLDhn/Vx+fZt/hdKbfLceg/jDJxVryavtw1SWqzLB7kwHXU6S1ozGEtiNjJTktwINrcZP8qqY19vjWYurLgr8rkm77kFVLFQOc5WnEzA8BgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBB+Yh9aOrqowXe8AkwWURfogBBh30jlt7u3W7tZF72xtDnX]
+# Lifetime of a token created with the above credentials
+psick::gitlab::runner::pe_token_lifetime: '5y'
 
 # Config for gitlab cli. Tokens change at every gitlab installation
 # Use the Private token of a user with merge request and accept privileges

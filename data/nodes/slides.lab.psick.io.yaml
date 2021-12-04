@@ -18,15 +18,15 @@ hdm::webapp_class: hdm::passenger::standalone
 
 network::interfaces_hash:
   'ens18':
-    ipaddress: '10.42.50.20'
+    ipaddress: '10.42.43.20'
     netmask: '255.255.255.0'
-    gateway: '10.42.50.1'
+    gateway: '10.42.43.1'
 network::mroutes_hash:
   ens18:
     routes:
-      '10.42.50.0/24': '10.42.50.1'
-      '10.42.100.0/24': '10.42.50.1'
-      '10.42.251.0/24': '10.42.50.1'
+      '10.42.50.0/24': '10.42.43.1'
+      '10.42.100.0/24': '10.42.43.1'
+      '10.42.251.0/24': '10.42.43.1'
       
 psick::users::users_hash:
   al:

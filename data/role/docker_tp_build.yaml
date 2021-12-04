@@ -8,7 +8,7 @@ psick::profiles::linux_classes:
 psick::docker::username: example42
 psick::docker::install_class: '' # To allow operations from Mac. Docker has to be installed.
 psick::docker::run_examples::ensure: absent
-psick::docker::builder::maintainer: 'Example42 GmbH <info@example42.com>'
+psick::docker::builder::maintainer: 'Example42 <info@example42.com>'
 psick::docker::builder::images:
   apache:
     ensure: present

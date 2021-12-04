@@ -16,12 +16,10 @@ psick::base::windows_classes:
   tp: tp
   features_class: psick::windows::features
 
-psick::firstrun::darwin_classes:
+psick::pre::darwin_classes:
   homebrew: homebrew
 psick::base::darwin_classes:
   tp: tp
-
-homebrew::user: al
 
 # Disabled unwanted services
 psick::resources_defaults:
@@ -36,6 +34,16 @@ psick::resources:
 
 psick::dns::resolver::nameservers:
   - 10.42.100.2
+
+psick::packages::packages_osfamily_hash:
+  RedHat:
+    - net-tools
+    - telnet
+    - wget
+  Debian:
+    - net-tools
+    - telnet
+    - wget
 
 ### Noop management
 # Noop configuration on PE clients
@@ -63,7 +71,7 @@ psick::puppet::external_facts:
 psick::hostname::update_host_entry: false
 
 # psick::hosts::puppetdb::puppetdb_fact_address: 'networking.interfaces.eth1.ip'
-psick::hosts::puppetdb::puppethost: '10.42.100.22       puppet  puppet.lab42.dev'
+psick::hosts::puppetdb::puppethost: '10.42.100.9       puppet  puppet.lab42.dev'
 
 
 # Enable automatic updates on lab nodes and set schedule:
@@ -150,7 +158,7 @@ linux_tp_install: &linux_tp_install
             match: '^\s*<address>'
   filebeat:
     auto_prereq: true
-    ensure: present
+    ensure: absent
     settings_hash:
       extra_prerequisites:
         file:
@@ -161,11 +169,11 @@ linux_tp_install: &linux_tp_install
             owner: root
             group: root
   metricbeat:
-    ensure: present
+    ensure: absent
   auditbeat:
-    ensure: present
+    ensure: absent
   heartbeat-elastic:
-    ensure: present
+    ensure: absent
   elastic-agent:
     ensure: absent
     auto_prereq: true
@@ -179,6 +187,8 @@ linux_tp_install: &linux_tp_install
             path: '/bin:/usr/bin:/sbin/usr/sbin'
   zeek:
     ensure: absent
+  cron:
+    ensure: present
 
 tp::osfamily_install_hash:
   RedHat:
@@ -193,7 +203,10 @@ ssl_settings: &ssl_settings
   username: alvagante
   password: loglikehell
     
-linux_tp_conf: &linux_tp_conf
+linux_tp_conf: &linux_tp_conf {}
+
+
+linux_tp_conf_disabled:
   filebeat:
     ensure: present
     options_hash:
@@ -344,7 +357,6 @@ linux_tp_conf: &linux_tp_conf
       processors:
         - add_observer_metadata:
 
-linux_tp_conf_disabled:
   elastic-agent:
     options_hash:
       agent.monitoring:

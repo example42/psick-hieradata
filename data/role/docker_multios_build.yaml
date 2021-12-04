@@ -7,7 +7,7 @@ psick::profiles::linux_classes:
 
 psick::docker::username: example42
 psick::docker::install_class: ''
-psick::docker::builder::maintainer: 'Example42 GmbH <info@example42.com>'
+psick::docker::builder::maintainer: 'Example42 <info@example42.com>'
 psick::docker::builder::workdir: '/var/tmp/dockerfiles'
 psick::docker::builder::always_build: true
 psick::docker::builder::push: false

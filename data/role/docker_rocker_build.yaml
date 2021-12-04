@@ -5,7 +5,7 @@ psick::profiles::linux_classes:
 
 psick::docker::username: example42
 psick::docker::install_class: ''
-psick::docker::builder::maintainer: 'Example42 GmbH <info@example42.com>'
+psick::docker::builder::maintainer: 'Example42 <info@example42.com>'
 psick::docker::builder::workdir: '/var/tmp/dockerfiles'
 psick::docker::builder::always_build: true
 psick::docker::builder::push: false
@@ -21,7 +21,7 @@ psick::docker::builder::images:
         mode: '0755'
         group: 'wheel'      
 
-psick::docker::rocker_builder::maintainer: 'Example42 GmbH <info@example42.com>'
+psick::docker::rocker_builder::maintainer: 'Example42 <info@example42.com>'
 psick::docker::rocker_builder::workdir: '/var/tmp/rockerfiles'
 psick::docker::rocker_builder::always_build: true
 psick::docker::rocker_builder::push: false

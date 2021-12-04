@@ -1,7 +1,0 @@
----
-psick::profiles::linux_classes:
-  ansible: '::psick::ansible'
-
-psick::ansible::master: 'puppet'
-psick::ansible::keyshare_method: 'storeconfigs'
-

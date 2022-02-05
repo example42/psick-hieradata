@@ -19,7 +19,7 @@ profile::wordpress::instances:
     wordpress_sitename: wordpress.lob.psick.io
   alvagante:
     wordpress_sitename: alvagante.com
-    wordpress_alias: www.alvagante.com
+    wordpress_alias: www.alvagante.com test.alvagante.com
     web_ssl: true
 tp::dir_hash:
   apache::ssl:

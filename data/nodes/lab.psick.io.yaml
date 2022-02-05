@@ -81,32 +81,26 @@ psick::sysctl::settings_hash:
 
 # Firewalling
 psick::firewall::iptables::nat_rules:
-  - '-A POSTROUTING -d 10.102.222.220/32 -o vti01 -s 10.42.250.0/24 -j SNAT --to 10.0.0.12'
-  - '-A POSTROUTING -d 10.90.178.2/32 -o vti01 -s 10.42.250.0/24 -j SNAT --to 10.0.0.12'
   - "-A POSTROUTING ! -d 10.42.0.0/16 -j SNAT --to %{ipaddress}"
 
-psick::firewall::iptables::mangle_rules:
-  - '-A FORWARD -o vti01 -p tcp -m tcp --tcp-flags SYN,RST SYN -m tcpmss --mss 1361:1536 -j TCPMSS --set-mss 1360'
+#psick::firewall::iptables::mangle_rules:
+#  - '-A FORWARD -o vti01 -p tcp -m tcp --tcp-flags SYN,RST SYN -m tcpmss --mss 1361:1536 -j TCPMSS --set-mss 1360'
 
 psick::firewall::iptables::extra_rules:
-  - '-A INPUT -p esp -j ACCEPT'
-  - '-A INPUT -p ah -j ACCEPT'
   - '-A INPUT -s 10.42.0.0/16 -p udp --dport 53 -j ACCEPT'
   - '-A INPUT -s 10.42.0.0/16 -p tcp --dport 53 -j ACCEPT'
 
 psick::firewall::iptables::allow_tcp_ports:
   - 80
   - 443
+  - 11142
   - 42424
 
 psick::firewall::iptables::allow_udp_ports:
-  - 500
-  - 4500
+  - 11142
 
 psick::firewall::iptables::allow_ips:
-  - 217.7.16.126 # DTT
   - 2.34.117.121 # AL
-  - 95.216.65.138 # lob.psick.io
 
 psick::firewall::iptables::manage_firewalld: false
 
@@ -169,16 +163,87 @@ tp_profile::nginx::resources:
       ensure: present
 
 # OpenVPN
-tp_profile::openvpn::resources:
-  tp::conf:
-    openvpn:
-      path: /etc/openvpn/lab.conf
-      source: puppet:///modules/profile/openvpn/lab.conf
-  tp::dir:
-    openvpn::keys:
-      recurse: true
-      path: /etc/openvpn/keys
-      source: puppet:///modules/profile/openvpn/keys/
+psick::openvpn::module: 'openvpn'
+openvpn::client_defaults:
+  port: '11142'
+  server: 'lab.psick.io'
+  remote_host: "lab.psick.io"
+openvpn::client_specific_configs:
+  busto:
+    server: lab.psick.io
+    route:
+      - '10.42.50.0 255.255.255.0 10.42.251.1'
+      - '10.42.40.0 255.255.255.0 10.42.251.2'
+      - '10.42.41.0 255.255.255.0 10.42.251.2'
+      - '10.42.42.0 255.255.255.0 10.42.251.2'
+      - '10.42.43.0 255.255.255.0 10.42.251.2'
+      - '10.42.44.0 255.255.255.0 10.42.251.2'
+      - '10.42.45.0 255.255.255.0 10.42.251.2'
+      - '10.42.46.0 255.255.255.0 10.42.251.2'
+      - '10.42.47.0 255.255.255.0 10.42.251.2'
+      - '10.42.48.0 255.255.255.0 10.42.251.2'
+      - '10.42.49.0 255.255.255.0 10.42.251.2'
+    iroute:
+      - '10.42.100.0 255.255.255.0'
+    ifconfig: '10.42.251.3 255.255.255.0' 
+  al:
+    server: lab.psick.io
+    ifconfig: '10.42.251.10 255.255.255.0' 
+    route:
+      - '10.42.50.0 255.255.255.0 10.42.251.1'
+      - '10.42.100.0 255.255.255.0 10.42.251.3'
+      - '10.42.40.0 255.255.255.0 10.42.251.2'
+      - '10.42.41.0 255.255.255.0 10.42.251.2'
+      - '10.42.42.0 255.255.255.0 10.42.251.2'
+      - '10.42.43.0 255.255.255.0 10.42.251.2'
+      - '10.42.44.0 255.255.255.0 10.42.251.2'
+      - '10.42.45.0 255.255.255.0 10.42.251.2'
+      - '10.42.46.0 255.255.255.0 10.42.251.2'
+      - '10.42.47.0 255.255.255.0 10.42.251.2'
+      - '10.42.48.0 255.255.255.0 10.42.251.2'
+      - '10.42.49.0 255.255.255.0 10.42.251.2'
+
+openvpn::servers:
+  'lab.psick.io':
+    country: 'IT'
+    province: 'VA'
+    city: 'Busto Arsizio'
+    organization: 'example42'
+#    key_cn: 'example42'
+#    key_name: 'example42'
+#    key_ou: 'example42'
+#    crl_days: 3650
+    email: 'info@lab42.it'
+    server: "10.42.251.0 255.255.255.0"
+    local: "%{ipaddress}"
+    persist_key: true
+    persist_tun: true
+    tcp_nodelay: true
+    c2c: true
+    topology: 'subnet'
+    port: '11142'
+    route:
+      - '10.42.40.0 255.255.255.0'
+      - '10.42.41.0 255.255.255.0'
+      - '10.42.42.0 255.255.255.0'
+      - '10.42.43.0 255.255.255.0'
+      - '10.42.44.0 255.255.255.0'
+      - '10.42.45.0 255.255.255.0'
+      - '10.42.46.0 255.255.255.0'
+      - '10.42.47.0 255.255.255.0'
+      - '10.42.48.0 255.255.255.0'
+      - '10.42.49.0 255.255.255.0'
+      - '10.42.100.0 255.255.255.0'
+    logfile: "/var/log/openvpn.log"
+    custom_options:
+      ifconfig: '10.42.251.1 255.255.255.0'
+      route-gateway: '10.42.251.1'
+
+openvpn::clients:
+  'al': {}
+  'busto': {}
+
+
 
 
 # Selinux disabled here:

@@ -1,9 +1,8 @@
 ---
 psick::profiles::linux_classes:
-  nodejs: psick::nodejs
+  # nodejs: psick::nodejs
   nginx: tp_profile::nginx
   puppi: puppi
-  # hdm: hdm
 
 psick::nodejs::nvm_manage: true
 psick::nodejs::nvm_installs:
@@ -13,12 +12,11 @@ psick::nodejs::nvm_installs:
       yarn: {}
       pm2:
         version: 2.10.4
-hdm::passenger::nginx::nginx_package_manage: false
-hdm::webapp_class: hdm::passenger::standalone
+
 
 network::interfaces_hash:
   'ens18':
-    ipaddress: '10.42.43.20'
+    ipaddress: '10.42.43.206'
     netmask: '255.255.255.0'
     gateway: '10.42.43.1'
 network::mroutes_hash:

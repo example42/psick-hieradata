@@ -7,8 +7,15 @@ psick::profiles::linux_classes:
 
 psick::selinux::state: disabled
 
+psick::users::users_hash:
+  al:
+      groups:
+      - users
+      - --wheel
+
+
 network::interfaces_hash:
-  'ens18':
+  'eth1':
     ipaddress: '10.42.43.19'
     netmask: '255.255.255.0'
     gateway: '10.42.43.1'
@@ -16,10 +23,11 @@ network::interfaces_hash:
 profile::wordpress::create_default_instance: false
 profile::wordpress::instances:
   example42:
-    wordpress_sitename: wordpress.lasb.psick.io
+    wordpress_sitename: example42.com
+    wordpress_alias: www.example42.com test.example42.com
   alvagante:
     wordpress_sitename: alvagante.com
-    wordpress_alias: www.alvagante.com
+    wordpress_alias: www.alvagante.com test.alvagante.com
     web_ssl: true
 tp::dir_hash:
   apache::ssl:

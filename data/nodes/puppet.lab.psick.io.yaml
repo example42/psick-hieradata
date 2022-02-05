@@ -17,7 +17,7 @@ psick::profiles::linux_classes:
 #  pe_code_manager: psick::puppet::pe_code_manager
   gitlab_runner: psick::gitlab::runner
 #  octocatalog: psick::ci::octocatalog
-  danger: psick::ci::danger
+#  danger: psick::ci::danger
   puppet_autosign: psick::puppet::autosign
 #  choria_broker: choria::broker
 #  hdm: hdm

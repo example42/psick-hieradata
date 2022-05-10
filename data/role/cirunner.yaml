@@ -20,7 +20,7 @@ psick::ci::danger::plugins:
   - danger-mention
   - danger-commit_lint
 
-psick::vagrant::default_plugins:
+psick_profile::vagrant::default_plugins:
   - vagrant-cachier
   - vagrant-vbguest
 

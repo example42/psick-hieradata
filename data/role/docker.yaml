@@ -9,5 +9,5 @@ psick::docker::username: example42
 psick::docker::run_examples::ensure: present
 
 
-psick::sensu::plugins_hash:
+psick_profile::sensu::plugins_hash:
   'sensu-plugins-docker': {}

@@ -22,4 +22,4 @@ psick::puppetserver::r10k_configure_webhook: false
 psick::puppetserver::dns_alt_names: "puppet, puppet.%{::domain}"
 psick::puppetserver::remove_global_hiera_yaml: true
 
-psick::puppetdb::postgresql_class: 'tp_profile::postgresql'
+psick::puppetdb::postgresql_class: 'psick_profile::postgresql'

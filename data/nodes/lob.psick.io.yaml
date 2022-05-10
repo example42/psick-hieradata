@@ -1,11 +1,11 @@
 ---
 psick::profiles::linux_classes:
-  web: tp_profile::nginx
+  web: psick_profile::nginx
 #  ipsec: psick_profile::openswan
   firewall: psick::firewall::iptables
 #  docker: psick::docker
-#  vagrant: psick::vagrant
-  virtualbox: psick::virtualbox
+#  vagrant: psick_profile::vagrant
+  virtualbox: psick_profile::virtualbox
   pdk: psick::puppet::pdk
   openvpn: psick_profile::openvpn
 
@@ -21,7 +21,7 @@ psick::puppet::pe_agent::noop_setting: true
 
 # On lob, Debian 9 openswan packages are missing
 psick_profile::openswan::setup_template: ''
-tp_profile::openswan::manage: false
+psick_profile::openswan::manage: false
 psick_profile::openswan::setup_options:
   plutodebug: none
   virtual_private: '%v4:10.0.0.0/8,%v4:192.168.0.0/16,%v4:172.16.0.0/12,%v4:!10.42.0.0/16'
@@ -148,13 +148,13 @@ psick::firewall::iptables::allow_ips:
   - 10.42.43.0/24 # lob.psick.io
 
 # OpenSSH
-tp_profile::openssh::resources:
+psick::openssh::install::resources:
   tp::conf:
     openssh:
       template: profile/openssh/sshd_config.erb
 
 # Nginx
-tp_profile::nginx::resources:
+psick_profile::nginx::resources:
   tp::conf:
     nginx::ssl.conf:
       template: profile/nginx/ssl.conf.erb

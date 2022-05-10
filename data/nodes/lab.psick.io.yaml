@@ -1,6 +1,6 @@
 ---
 psick::profiles::linux_classes:
-  web: tp_profile::nginx
+  web: psick_profile::nginx
 #  ipsec: psick_profile::openswan
   firewall: psick::firewall::iptables
   openvpn: psick_profile::openvpn
@@ -19,7 +19,6 @@ psick::users::users_hash:
 # This node runs in noop mode by default
 psick::puppet::pe_agent::noop_setting: true
 
-psick_profile::openswan::module: tp_profile
 psick_profile::openswan::setup_options:
   plutodebug: none
   virtual_private: '%v4:10.0.0.0/8,%v4:192.168.0.0/16,%v4:172.16.0.0/12,%v4:!10.42.0.0/16'
@@ -109,13 +108,13 @@ psick::firewall::iptables::allow_ips:
 psick::firewall::iptables::manage_firewalld: false
 
 # OpenSSH
-tp_profile::openssh::resources:
+psick::openssh::install::resources:
   tp::conf:
     openssh:
       template: profile/openssh/sshd_config.erb
 
 # Nginx
-tp_profile::nginx::resources:
+psick_profile::nginx::resources:
   tp::conf:
     nginx::.htpasswd:
       template: profile/nginx/htpasswd.erb

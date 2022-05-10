@@ -4,13 +4,13 @@ psick::pre::linux_classes:
   puppet: psick::puppet
   hosts: psick::hosts::puppetdb
 psick::base::linux_classes:
-  mail: tp_profile::postfix
+  mail: psick_profile::postfix
 #  icinga: psick_profile::icinga2
 #  monitor_plugins: psick_profile::nagiosplugins
   network: network
   selinux: psick::selinux
   limits: psick::limits
-#  sensu: psick::sensu
+#  sensu: psick_profile::sensu
   admin: psick::admin
   bolt: psick::bolt
   puppet_postrun: psick::puppet::postrun
@@ -137,12 +137,12 @@ icinga2::feature::api::zones:
 
 
 # Sensu
-psick::sensu::is_client: true
-psick::sensu::rabbitmq_host: 'sensu.lab.psick.io'
-psick::sensu::rabbitmq_password: 'hiera_encrypt_in_the_real_world'
-psick::sensu::rabbitmq_vhost: '/sensu'
-psick::sensu::api_user: 'admin'
-psick::sensu::api_password: 'sensu' # In real world encrypt with hiera eyaml
+psick_profile::sensu::is_client: true
+psick_profile::sensu::rabbitmq_host: 'sensu.lab.psick.io'
+psick_profile::sensu::rabbitmq_password: 'hiera_encrypt_in_the_real_world'
+psick_profile::sensu::rabbitmq_vhost: '/sensu'
+psick_profile::sensu::api_user: 'admin'
+psick_profile::sensu::api_password: 'sensu' # In real world encrypt with hiera eyaml
 
 #sensu::client_http_socket:
 #  bind: "%{facts.networking.ip}"
@@ -165,13 +165,13 @@ sensu::client_deregister: false
 #  handler: 'servicenow'
 
 
-psick::sensu::checks_params_hash:
+psick_profile::sensu::checks_params_hash:
   handlers:
     - 'graphite'
     - 'mailer'
   standalone: false
   subscribers: 'base'
-psick::sensu::checks_hash:
+psick_profile::sensu::checks_hash:
   'check_cpu':
     command: '/opt/sensu/embedded/bin/check-cpu.rb'
   'check_cron':
@@ -210,11 +210,11 @@ sensu::handlers:
       smtp_port: 25
       smtp_domain: "%{facts.networking.domain}"
 
-psick::sensu::plugins_params_hash:
+psick_profile::sensu::plugins_params_hash:
   pkg_provider: 'sensu_gem'
   type: 'package'
 
-psick::sensu::plugins_hash:
+psick_profile::sensu::plugins_hash:
   'sensu-plugins-conntrack': {}
   'sensu-plugins-cpu-checks': {}
   'sensu-plugins-cpu-usage': {}
@@ -272,9 +272,9 @@ psick::sudo::directives:
     content: 'al ALL=(ALL) NOPASSWD:ALL'
 
 # OpenSSH
-psick::openssh::module: 'tp_profile'
+psick::openssh::module: 'psick'
 
-tp_profile::openssh::resources:
+psick::openssh::install::resources:
   tp::conf:
     openssh:
       template: 'psick/generic/spaced.erb'
@@ -365,11 +365,11 @@ psick::packages::packages_osfamily_hash:
     - wget
 
 # General postfix configuration
-tp_profile::postfix::resources:
+psick_profile::postfix::resources:
   tp::conf:
     postfix:
       template: 'psick/postfix/main.cf.erb'
-tp_profile::postfix::options:
+psick_profile::postfix::options:
   'mydomain': "%{facts.domain}"
   'myhostname': "%{facts.hostname}"
   'inet_interfaces': '127.0.0.1'

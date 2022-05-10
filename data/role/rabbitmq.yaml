@@ -1,7 +1,7 @@
 ---
 psick::profiles::linux_classes:
-  rabbitmq: tp_profile::rabbitmq
+  rabbitmq: psick_profile::rabbitmq
 
-psick::sensu::plugins:
+psick_profile::sensu::plugins:
   'sensu-plugins-rabbitmq':
     type: 'package'

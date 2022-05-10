@@ -1,7 +1,7 @@
 ---
 psick::profiles::linux_classes:
   # nodejs: psick::nodejs
-  nginx: tp_profile::nginx
+  nginx: psick_profile::nginx
   puppi: puppi
 
 psick::nodejs::nvm_manage: true
@@ -48,7 +48,7 @@ tp::install_hash:
     auto_prereq: true
     ensure: present
 
-tp_profile::nginx::resources:
+psick_profile::nginx::resources:
   tp::conf:
     nginx::default:
       template: 'hieradata/nginx/slides.conf.erb'

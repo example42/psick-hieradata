@@ -97,10 +97,10 @@ tp::conf_hash:
     source: puppet:///modules/profile/openssh/lamp.lab.psick.io/id_rsa.pub
     settings_hash:
       validate_cmd: ~
-  openssh::root_id_rsa.pub:
+  openssh::root_id_rsa.pub_dir:
     path: '/root/.ssh'
     ensure: directory
-    before: Class[TPsick::Apache::Install]
+    before: Class[Psick::Apache::Install]
     settings_hash:
       validate_cmd: ~
 

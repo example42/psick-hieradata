@@ -9,15 +9,15 @@ psick::base::linux_classes:
 psick::profiles::linux_classes:
   jenkins: ''
   pdk: psick::puppet::pdk
-  vagrant: psick::vagrant
+  vagrant: psick_profile::vagrant
   git: psick::git
   puppet_pdk: psick::puppet::pdk
   puppet_ci: psick::puppet::ci
 
 #:noop_mode: true
-tp_profile::postfix::no_noop: true
+psick_profile::postfix::no_noop: true
 
-psick::vagrant::default_plugins:
+psick_profile::vagrant::default_plugins:
   - vagrant-cachier
   - vagrant-vbguest
 psick::docker::allowed_users:
@@ -114,7 +114,7 @@ psick::openssh::configs_hash:
         UserKnownHostsFile: /dev/null
 
 # Pork around for sudo al on Ubuntu
-tp_profile::postfix::manage: false
+psick_profile::postfix::manage: false
 psick::users::users_hash:
   al:
     groups:

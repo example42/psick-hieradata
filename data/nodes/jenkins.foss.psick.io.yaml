@@ -8,12 +8,12 @@ psick::base::linux_classes:
   jenkins_jcasc: psick_profile::jenkins::jcasc
   docker: psick::docker
   pdk: psick::puppet::pdk
-  vagrant: psick::vagrant
+  vagrant: psick_profile::vagrant
 #  git: psick::git
   puppet_pdk: psick::puppet::pdk
   puppet_ci: psick::puppet::ci
 
-psick::vagrant::default_plugins:
+psick_profile::vagrant::default_plugins:
   - vagrant-cachier
   - vagrant-vbguest
 psick::docker::allowed_users:

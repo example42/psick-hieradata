@@ -13,6 +13,7 @@ psick::users::users_hash:
       - users
       - --wheel
 
+psick::firewall::iptables::manage_firewalld: true
 
 network::interfaces_hash:
   'eth1':

@@ -6,7 +6,7 @@ network::mroutes_hash:
       '10.42.100.0/24': '10.42.43.1'
       '10.42.251.0/24': '10.42.43.1'
       '10.42.252.0/24': '10.42.43.1'
-psick::icinga2::puppetdb_hosts_override_hash:
+psick_profile::icinga2::puppetdb_hosts_override_hash:
   'lab.psick.io':
     address: 10.42.43.1
     vars:
@@ -20,14 +20,14 @@ psick::icinga2::puppetdb_hosts_override_hash:
   'puppetcd.lab.psick.io':
     ensure: absent
 
-psick::icinga2::puppetdb_zones_override_hash:
+psick_profile::icinga2::puppetdb_zones_override_hash:
   'puppetcd.lab.psick.io':
     ensure: absent
-psick::icinga2::puppetdb_endpoints_override_hash:
+psick_profile::icinga2::puppetdb_endpoints_override_hash:
   'puppetcd.lab.psick.io':
     ensure: absent
 
-psick::icinga2::user_hash:
+psick_profile::icinga2::user_hash:
   icingaadmin:
     display_name: "Icinga2 Admin"
     email: al@example42.com
@@ -42,7 +42,7 @@ psick::icinga2::user_hash:
     display_name: "Martin Alfke"
     email: ma@example42.com
 
-psick::icinga2::service_hash:
+psick_profile::icinga2::service_hash:
   mysql:
     apply: true
     check_command: mysql

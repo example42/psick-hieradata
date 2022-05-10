@@ -3,21 +3,25 @@
 psick::pre::linux_classes:
   puppet: psick::puppet
   hosts: psick::hosts::puppetdb
+  tp: tp
 psick::base::linux_classes:
   selinux: psick::selinux
   limits: psick::limits
   packages: psick::packages
-  tp: tp
+  pe_status: pe_status_check
 
 psick::pre::windows_classes:
   chocolatey: chocolatey
+  tp: tp
+  puppet: psick::puppet
 psick::base::windows_classes:
   packages: psick::packages
-  tp: tp
   features_class: psick::windows::features
+  pe_status: pe_status_check
 
 psick::pre::darwin_classes:
   homebrew: homebrew
+  puppet: psick::puppet
 psick::base::darwin_classes:
   tp: tp
 
@@ -26,11 +30,6 @@ psick::resources_defaults:
   service:
     ensure: stopped
     enable: false
-
-psick::resources:
-  service:
-    firewalld: {}
-    rpcbind: {}
 
 psick::dns::resolver::nameservers:
   - 10.42.100.2
@@ -57,7 +56,9 @@ psick::puppet::pe_agent::noop_manage: true
 psick::puppet::pe_agent::noop_value: false
 
 ### Puppet
+psick::puppet::agent_class: psick::puppet::pe_agent
 psick::puppet::pe_agent::manage_environment: true
+psick::puppet::pe_agent::environment_setting: host
 psick::puppet::pe_agent::manage_service: true
 
 # External facts:

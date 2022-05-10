@@ -7,7 +7,6 @@ psick::profiles::linux_classes:
 #  - psick::gitlab::ci
 #  - psick::puppet::pe_code_manager
 #  - psick::gitlab::runner
-#  - psick::ci::octocatalog
 
 puppet_enterprise::profile::puppetdb::allowlisted_certnames:
   - cirunner.demo
@@ -48,9 +47,7 @@ psick::gitlab::ci::always_nodes:
   - git.demo
   - cirunner.demo
 
-psick::ci::octocatalog::run_as_user: 'gitlab-runner'
-psick::ci::octocatalog::template: 'psick/ci/octocatalog/octocatalog-diff.cfg.rb.erb'
-  
+ 
 # Config for the GIT Runners for Puppet deployments
 # Tokens change at every gitlab installation
 psick::gitlab::runner::runners:
@@ -67,5 +64,3 @@ psick::gitlab::cli::config_hash:
   project_id: 2 # Control-repo project ID on GITLAB
   api_endpoint: 'https://git.demo/api/v3'
 
-psick::ci::octocatalog::run_as_user: 'gitlab-runner'
-psick::ci::octocatalog::template: 'psick/ci/octocatalog/octocatalog-diff.cfg.rb.erb'

@@ -50,12 +50,12 @@ psick::base::linux_classes:
   ssh: psick::openssh
   sudo: psick::sudo
   logs: psick::logs::rsyslog
-  time: psick::time
+##  time: psick::time
   sysctl: psick::sysctl
   update: psick::update
   motd: psick::motd
   profile: psick::profile
-  systat: psick::monitor::sar
+  systat: psick_profile::sar
 
 # PSICK classification for Windows nodes
 psick::pre::windows_classes:
@@ -83,4 +83,3 @@ psick::hostname::update_network_entry: false # Avoid resource duplication when p
 # Sample sysctl settings
 #psick::sysctl::settings_hash:
 #  net.ipv4.conf.all.forwarding: 0
-

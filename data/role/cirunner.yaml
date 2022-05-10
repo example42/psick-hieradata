@@ -1,15 +1,20 @@
 ---
 psick::profiles::linux_classes:
   git: psick::git
-#  octocatalog: psick::ci::octocatalog
+#  octocatalog: psick_profile::octocatalog
 #  puppet_gems: psick::puppet::gems
 #  danger: psick::ci::danger
   gitlab_runner: psick::gitlab::runner
   gitlab_ci: psick::gitlab::ci
   docker: psick::docker
 
-psick::ci::octocatalog::run_as_user: 'gitlab-runner'
-psick::ci::octocatalog::template: 'psick/ci/octocatalog/octocatalog-diff.cfg.rb.erb'
+# Octocatalog
+psick_profile::octocatalog::run_as_user: 'gitlab-runner'
+psick_profile::octocatalog::template: 'psick_profile/octocatalog/octocatalog-diff.cfg.rb.erb'
+psick_profile::octocatalog::options:
+  puppetdb_url: "https://puppet.%{::domain}:8081"
+  bootstrap_script: 'bin/puppet_install_puppetfile.sh'
+
 psick::ci::danger::use_gitlab: true
 psick::ci::danger::plugins:
   - danger-mention

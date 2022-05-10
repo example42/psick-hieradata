@@ -1,4 +1,4 @@
 ---
 psick::profiles::linux_classes:
-  rundeck: psick::rundeck
+  rundeck: psick_profile::rundeck
 

@@ -1,14 +1,17 @@
 ---
-psick::profiles::linux_classes:
+psick::profiles::linux_classess:
   admin: psick::admin
 
-psick::profiles:windows_classes:
+psick::profiles:windows_classess:
   admin: psick::admin
 
-psick::profiles::darwin_classes:
+psick::profiles::darwin_classess:
   admin: psick::admin
 
 homebrew::user: al
+psick::homebrew::user: al
+puppet_enterprise::manage_symlinks: false
+
 
 tp::osfamily_install_hash_merge_behaviour: deep
 tp::osfamily_install_hash:
@@ -48,32 +51,31 @@ tp::osfamily_install_hash:
   #  vscode: {}
     webex-meetings: {}
     zoom: {}
-  darwin:
-    1password: {}
-    git: {}
-    docker: {}
-    puppetlabs/puppet/pdk: {}
-    citrix-workspace: {}
-    firefox: {}
-    google-chrome: {}
-    iterm2: {}
-    libreoffice: {}
-    obs-studio: {}
-    opera: {}
-    puppetlabs/puppet/pe-client-tools: {}
-    spotify: {}
-    visual-studio-code: {}
-    puppetlabs/puppet/wash: {}
-    webex-meetings: {}
-    zoom: {}
-
+  Darwin:
+    - 1password
+    - docker
+    - pdk
+#   - citrix-workspace
+    - firefox
+    - google-chrome
+    - iterm2
+    - libreoffice
+    - streamlabs-obs
+    - opera
+    - pe-client-tools
+    - spotify
+    - visual-studio-code
+#   - puppetlabs/puppet/wash
+    - webex-meetings
+    - zoom
+#  -  git
+    
 tp::osfamily_install_defaults:
   windows:
     settings_hash:
       package_provider: chocolatey
-  darwin:
-    settings_hash:
-      package_provider: brewcask
+  Darwin:
+    auto_prereq: true
 
 #  psick::windows::features::use_defaults: true
 psick::windows::features::install_failson10:
@@ -87,4 +89,3 @@ psick::windows::features::install_failson10:
     ensure: present
   UpdateServices-UI:
     ensure: present
-  

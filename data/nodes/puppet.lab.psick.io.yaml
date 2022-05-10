@@ -15,8 +15,8 @@ psick::profiles::linux_classes:
 #  gitlab_ci: psick::gitlab::ci
   puppet_ci: psick::puppet::ci
 #  pe_code_manager: psick::puppet::pe_code_manager
-  gitlab_runner: psick::gitlab::runner
-#  octocatalog: psick::ci::octocatalog
+#  gitlab_runner: psick::gitlab::runner
+#  octocatalog: psick_profile::octocatalog
 #  danger: psick::ci::danger
   puppet_autosign: psick::puppet::autosign
 #  choria_broker: choria::broker
@@ -59,7 +59,7 @@ puppet_enterprise::profile::puppetdb::allowlisted_certnames:
   - cirunner.lab.psick.io
   - git.lab.psick.io
   - puppet.lab.psick.io
-  - icinga.lab.psick.io
+  - lab.psick.io
 puppet_enterprise::profile::console::allowlisted_certnames:
   - cirunner.lab.psick.io
   - git.lab.psick.io
@@ -79,6 +79,7 @@ puppet_enterprise::profile::console::java_args:
   Xms: 512m
   Xmx: 512m
 puppet_enterprise::master::puppetserver::jruby_max_active_instances: 1
+
 puppet_enterprise::profile::master::java_args:
   Xms: 512m
   Xmx: 512m
@@ -97,9 +98,10 @@ psick::puppet::gems::install_gems:
   - rake
 
 # Code manager setup
-puppet_enterprise::profile::master::r10k_remote: 'git@git.lab.psick.io:puppet/psick.git'
+puppet_enterprise::profile::master::r10k_remote: https://github.com/example42/psick.git
+puppet_enterprise::profile::master::r10k_private_key: /etc/puppetlabs/puppetserver/ssh/id_rsa
 puppet_enterprise::profile::master::code_manager_auto_configure: true
-puppet_enterprise::profile::master::r10k_private_key: '/etc/puppetlabs/ssh/id-control_repo.rsa'
+
 # setup code_manager to update classes in the console after environment code deployment
 puppet_enterprise::master::code_manager::post_environment_hooks:
   - url: 'https://puppet.lab.psick.io:4433/classifier-api/v1/update-classes'
@@ -129,8 +131,8 @@ psick::puppet::ci::options:
     - puppet.lab.psick.io
 
 
-psick::ci::octocatalog::run_as_user: 'gitlab-runner'
-psick::ci::octocatalog::template: 'psick/ci/octocatalog/octocatalog-diff.cfg.rb.erb'
+psick_profile::octocatalog::run_as_user: 'gitlab-runner'
+psick_profile::octocatalog::template: 'psick_profile/octocatalog/octocatalog-diff.cfg.rb.erb'
 
 # Config for the GIT Runners for Puppet deployments
 # Tokens change at every gitlab installation
@@ -138,7 +140,7 @@ psick::ci::octocatalog::template: 'psick/ci/octocatalog/octocatalog-diff.cfg.rb.
 psick::gitlab::runner::runners:
   deploy_puppet:
     url: 'https://git.lab.psick.io'
-    token: ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEAdyiC58Y5vb+mIiVgCAqdRvdLgj5jj3ybz/6q4J463mHm/2RJFLbPhpPYCRt4UB14pzl+9/nGoGvqNzDwenf7BhWsPrhJ2Drff4JgalNh7OV+G3CDfqVZ8skldH1jWuRSQcgDn22k/j7h2UNLDYUKzp67XZfXQ9412NpE/2PrGOyOnHmsUUZFTyREuZp7FQ2N4zX5r+i/sNp79Ffb+M3NIAIvgKI0ndDLHZwMfstP/H9GJWrCtzUq/02YaDc0tfE9tUHPZHSWbejIioHa+2MtU17PfIsQgC+ERsTqCmRv02wDrguE7ovAAeWWc/x1IymzUPob0AdWcnrVYasZRjGZQjBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBBYiExiIabHBniYXlQGyuVkgCDJZ0EpXBvwc6TUE80KOe948/UGvj/fzBMeWQGjKdJzvQ==] # CI Runner token TO CHANGE AT EVERY INSTALLATION
+    token: CHANGEME
     tag_list: 'deploy_puppet'
     tls_ca_file: '/etc/puppetlabs/puppet/ssl/certs/ca.pem'
 
@@ -146,7 +148,7 @@ psick::gitlab::runner::runners:
 # If using PE it must have permission to trigger remote puppet agents
 psick::gitlab::runner::pe_user: 'deployer'
 # pe_user password:
-psick::gitlab::runner::pe_password: ENC[PKCS7,MIIBeQYJKoZIhvcNAQcDoIIBajCCAWYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEAiZXAfIJu358JQ6rxIYDqWTr4YRKEnrNtB4JtExfS9NWX3z5ioM9AmFoqj47P+weNMz/PqokPxewxQ0D8aZhkfgNPkJMDBMMUg0QIMFdmeZK4A65VgXCS5VWnuLjHsw8u7dUzUe5EOSdQlDefgOMbI44eE5dXqMTq5lrjIijFDFSg8RKJVp/mVrBRH/cdtpcTE3sPEpvZfYhnBIBbP6DRc1bD/YxJzeHMOX+TMkDI0xm6gw3yLDhn/Vx+fZt/hdKbfLceg/jDJxVryavtw1SWqzLB7kwHXU6S1ozGEtiNjJTktwINrcZP8qqY19vjWYurLgr8rkm77kFVLFQOc5WnEzA8BgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBB+Yh9aOrqowXe8AkwWURfogBBh30jlt7u3W7tZF72xtDnX]
+psick::gitlab::runner::pe_password: CHANGEME
 # Lifetime of a token created with the above credentials
 psick::gitlab::runner::pe_token_lifetime: '5y'
 
@@ -177,7 +179,7 @@ psick::sensu::checks_hash:
     interval: 86400
 
 psick::ci::danger::use_gitlab: true
-psick::ansible::is_master: true
+psick::admin::master_enable: true
 psick::bolt::is_master: true
 psick::bolt::node::create_ssh_user: false
 

@@ -1,9 +1,9 @@
 ---
 psick::profiles::linux_classes:
   web: tp_profile::nginx
-#  ipsec: psick::openswan
+#  ipsec: psick_profile::openswan
   firewall: psick::firewall::iptables
-  openvpn: psick::openvpn
+  openvpn: psick_profile::openvpn
   network: ''
   pdk: psick::puppet::pdk
 
@@ -19,13 +19,13 @@ psick::users::users_hash:
 # This node runs in noop mode by default
 psick::puppet::pe_agent::noop_setting: true
 
-psick::openswan::module: tp_profile
-psick::openswan::setup_options:
+psick_profile::openswan::module: tp_profile
+psick_profile::openswan::setup_options:
   plutodebug: none
   virtual_private: '%v4:10.0.0.0/8,%v4:192.168.0.0/16,%v4:172.16.0.0/12,%v4:!10.42.0.0/16'
   protostack: netkey
 
-psick::openswan::connections:
+psick_profile::openswan::connections:
   roadwarrior:
     ensure: present
     secret: ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEALMHInHhNTF5NN1bzG5uNlA7y9Rt5WtNvdZzFRkjGE7cXhQOBNvXvJ76Z3Ygb3Jkn+WJmpEK9JvLcb7dI+NH8x4io4ZDCuCOwR0SKKSldodcgzAskaUghh9K3FnlwPDfdpNWlceMTY44Z51gJ8Ap3BTagQa0uBvmszAdw4lbOqNmQJXgs6lWsWZ3AgeUVi14vGmiKrEHymIOqvDtjFKOv0+hit+KMTcn/s4hK3yhYUyATWG2YabiBsHgHeTXhueP2Lc4O5eEBWFwKI0EwWSjKne4IybQK0csbSqLjwgjjEK0e/oSOTDDgzPlZeFVgg90pScuuwKec508wMUjZjfZgTjBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBDwOT7X1/vp2dmzSCWomq8OgCAusxLr8OIwWw5lexhblF158hc/9YMMChh7NETowTyp5Q==]
@@ -78,6 +78,9 @@ psick::sysctl::settings_hash:
   net.ipv4.neigh.default.gc_thresh2: 2048
   net.ipv4.neigh.default.gc_thresh3: 4096
   fs.inotify.max_user_watches: 524288
+  net.ipv6.conf.all.disable_ipv6: 1
+  net.ipv6.conf.default.disable_ipv6: 1
+  net.ipv6.conf.lo.disable_ipv6: 1
 
 # Firewalling
 psick::firewall::iptables::nat_rules:
@@ -93,6 +96,7 @@ psick::firewall::iptables::extra_rules:
 psick::firewall::iptables::allow_tcp_ports:
   - 80
   - 443
+  - 8000
   - 11142
   - 42424
 
@@ -163,7 +167,7 @@ tp_profile::nginx::resources:
       ensure: present
 
 # OpenVPN
-psick::openvpn::module: 'openvpn'
+psick_profile::openvpn::module: 'openvpn'
 openvpn::client_defaults:
   port: '11142'
   server: 'lab.psick.io'

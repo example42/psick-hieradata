@@ -5,23 +5,26 @@ psick::pre::linux_classes:
 psick::resources:
   --service: {}
 
+psick::users::users_hash:
+  al:
+      groups:
+      - users
+      - admin
+      - --wheel
+
 psick::profiles::linux_classes:
   vagrant: vagrant
-  git: psick::git
   docker: psick::docker
   pe_client_tools: psick::puppet::pe_client_tools
 #  bind: profile::bind
+  git: ''
+  gitlab_runner: ''
+  gitlab_ci: ''
 
-hdm::puppetdb_token: ENC[PKCS7,MIIBmQYJKoZIhvcNAQcDoIIBijCCAYYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEAsotE1Db5e0NYJqgYYm1XvUtPY9ape4wcnphikJxYkrMO6eFpWCzYTOtGGW9wawjYgiULTRZUnQ3XPnMv7iwghet7YoQ5QubEIULF7kcKmopMJ3NBHbPE/8vFAt1848FbfM9bTmkFd3/s73qrBtPrd5IqpaDpqdxpGfjzFEzjDWxt73jsLMVrWbQeGXcR565R9eHOk/xx7KsT8Nud/LbVO9DtvyRMQ9i7Vw5tibh+3/XSYBarRJvWlHK+YLKH6Ot3X8w/OWCoHC5HlyarcFFYmRDWueXeTPWgwkDoP0KIMB+7tzJDkItbLu4iZX2Oe3De/V//DhBvORzPqn6PRT7CuzBcBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBDWy/LNBXoM44ayAOU5jY/XgDB+L2AHSdqTgD80KWm8TqIw01eC5Djcy+soOphDi0NPy44IPJkKs4RGhVZQxJQ5o/8=]
 # Explicit list of required gems for CI runners for puppet testing
 psick::puppet::gems::install_puppet_gems: trueunknown
 psick::puppet::gems::install_system_gems: false
 psick::puppet::gems::default_set: integration
-
-# Options for psick::ci::octocatalog::template
-psick::ci::octocatalog::options:
-  puppetdb_url: 'https://puppet.lab.psick.io:8081'
-  bootstrap_script: 'bin/puppet_install_puppetfile.sh'
 
 # Config for the GIT Runners
 # Tokens change at every gitlab installation
@@ -39,8 +42,8 @@ psick::gitlab::runner::runners:
     tls_ca_file: '/etc/puppetlabs/puppet/ssl/certs/ca.pem'
 
 # Integration tests via docker
-psick::docker::allowed_users:
-  - gitlab-runner
+#psick::docker::allowed_users:
+#  - gitlab-runner
 psick::sysctl::settings_hash:
   net.ipv4.conf.all.forwarding: 1
 
@@ -62,9 +65,9 @@ psick::git::configs_hash:
 
 # Network configs
 network::interfaces_hash:
-  'eth0':
+  'enp0s3':
     enable_dhcp: true
-  'eth1':
+  'enp0s8':
     ipaddress:
       - '10.42.43.104'
       - '10.42.143.104/24'

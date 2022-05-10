@@ -32,12 +32,6 @@ psick::puppet::pe_code_manager::puppet_user: 'gitlab-runner'
 psick::puppet::pe_code_manager::deploy_ssh_private_source: 'file:///home/gitlab-runner/.ssh/id_rsa'
 
 
-#  psick::ci::octocatalog::git_repo: 'git@git.demo:puppet/control-repo.git'
-# Options for psick::ci::octocatalog::template
-psick::ci::octocatalog::options:
-  puppetdb_url: 'https://puppet.demo:8081'
-  bootstrap_script: 'bin/puppet_install_puppetfile.sh'
-
 # Config for the GIT Runners
 # Tokens change at every gitlab installation
 psick::gitlab::runner::runners:

@@ -1,3 +1,3 @@
 ---
 psick::profiles::linux_classes:
-  foreman: tp_profile::foreman
+  foreman: psick_profile::foreman

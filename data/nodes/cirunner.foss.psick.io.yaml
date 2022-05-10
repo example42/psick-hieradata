@@ -8,16 +8,11 @@ psick::profiles::linux_classes:
   puppet_pdk: psick::puppet::pdk
   puppet_ci: psick::puppet::ci
   buildgems: ''
-  jenkins: 'psick::jenkins'
+  jenkins: 'psick_profile::jenkins'
 # Explicit list of required gems for CI runners for puppet testing
 psick::puppet::gems::install_puppet_gems: false
 psick::puppet::gems::install_system_gems: false
 psick::puppet::gems::default_set: integration
-
-# Options for psick::ci::octocatalog::template
-psick::ci::octocatalog::options:
-  puppetdb_url: 'https://puppet.lab.psick.io:8081'
-  bootstrap_script: 'bin/puppet_install_puppetfile.sh'
 
 # Config for the GIT Runners
 # Tokens change at every gitlab installation
@@ -58,6 +53,6 @@ psick::git::configs_hash:
         sslVerify: false
 
 # Jenkins
-psick::jenkins::disable_setup_wizard: true
-psick::jenkins::admin_password: 'example42'
-psick::jenkins::module: jenkins
+psick_profile::jenkins::disable_setup_wizard: true
+psick_profile::jenkins::admin_password: 'example42'
+psick_profile::jenkins::module: jenkins

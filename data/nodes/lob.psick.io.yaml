@@ -1,13 +1,13 @@
 ---
 psick::profiles::linux_classes:
   web: tp_profile::nginx
-#  ipsec: psick::openswan
+#  ipsec: psick_profile::openswan
   firewall: psick::firewall::iptables
 #  docker: psick::docker
 #  vagrant: psick::vagrant
   virtualbox: psick::virtualbox
   pdk: psick::puppet::pdk
-  openvpn: psick::openvpn
+  openvpn: psick_profile::openvpn
 
 # On debian wheel group doesn't exist. Overriding it here 
 psick::users::users_hash:
@@ -20,14 +20,14 @@ psick::users::users_hash:
 psick::puppet::pe_agent::noop_setting: true
 
 # On lob, Debian 9 openswan packages are missing
-psick::openswan::setup_template: ''
+psick_profile::openswan::setup_template: ''
 tp_profile::openswan::manage: false
-psick::openswan::setup_options:
+psick_profile::openswan::setup_options:
   plutodebug: none
   virtual_private: '%v4:10.0.0.0/8,%v4:192.168.0.0/16,%v4:172.16.0.0/12,%v4:!10.42.0.0/16'
   protostack: netkey
 
-psick::openswan::connections:
+psick_profile::openswan::connections:
   roadwarrior:
     ensure: present
     tp_options:
@@ -169,7 +169,7 @@ tp_profile::nginx::resources:
       path: /etc/nginx/proxy.conf
 
 # OpenVPN
-psick::openvpn::module: 'openvpn'
+psick_profile::openvpn::module: 'openvpn'
 openvpn::client_defaults:
   port: '11142'
   server: 'lob.psick.io'

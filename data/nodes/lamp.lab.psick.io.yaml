@@ -2,7 +2,7 @@
 psick::base::linux_classes:
   'git': psick::git
 psick::profiles::linux_classes:
-  'apache': tp_profile::apache
+  'apache': psick::apache::install
   'php': psick::php
   'mysql': psick::mariadb
 
@@ -10,13 +10,13 @@ psick::profiles::linux_classes:
 psick::puppet::pe_agent::noop_setting: true
 
 # Always enforce changes on apache
-tp_profile::apache::noop_manage: true
-tp_profile::apache::noop_value: false
+psick::apache::install::noop_manage: true
+psick::apache::install::noop_value: false
 
 psick::git::extra_packages_list:
   - git-lfs
 
-tp_profile::apache::resources:
+psick::apache::install::resources:
   tp::conf:
     apache::openkills.info.conf:
       base_dir: conf
@@ -71,7 +71,7 @@ psick::mariadb::grant_hash:
     db: openskills
     db_init_query_file: /root/openskills-data/openskills.sql
     require: 'Tp::Dir[mariadb::openskills-data]'
-tp_profile::mariadb::resources:
+psick::mariadb::install::resources:
   tp::dir:
     mariadb::openskills-data:
       vcsrepo: git
@@ -100,7 +100,7 @@ tp::conf_hash:
   openssh::root_id_rsa.pub:
     path: '/root/.ssh'
     ensure: directory
-    before: Class[Tp_profile::Apache]
+    before: Class[TPsick::Apache::Install]
     settings_hash:
       validate_cmd: ~
 

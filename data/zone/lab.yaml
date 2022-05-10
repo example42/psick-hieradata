@@ -5,13 +5,13 @@ psick::pre::linux_classes:
   hosts: psick::hosts::puppetdb
 psick::base::linux_classes:
   mail: tp_profile::postfix
-#  icinga: psick::icinga2
-  monitor_plugins: psick::monitor::nagiosplugins
+#  icinga: psick_profile::icinga2
+#  monitor_plugins: psick_profile::nagiosplugins
   network: network
   selinux: psick::selinux
   limits: psick::limits
 #  sensu: psick::sensu
-#  ansible: psick::ansible
+  admin: psick::admin
   bolt: psick::bolt
   puppet_postrun: psick::puppet::postrun
   packages: psick::packages
@@ -24,7 +24,7 @@ psick::base::windows_classes:
   windows_puppet_certificates: windows_puppet_certificates
 
 # Avoid epel repo duplicated resource
-psick::monitor::nagiosplugins::auto_prereq: false
+psick_profile::nagiosplugins::auto_prereq: false
 
 ### Noop management
 # Noop configuration on PE clients
@@ -40,6 +40,8 @@ psick::puppet::pe_agent::noop_value: false
 ### Puppet
 psick::puppet::agent_class: psick::puppet::pe_agent
 psick::puppet::pe_agent::manage_environment: true
+psick::puppet::pe_agent::environment_setting: host
+
 psick::puppet::pe_agent::manage_service: true
 
 # Postrun command management
@@ -95,20 +97,19 @@ psick::update::cron_schedule: '42 4 * * *'
 psick::monitor:
   interface: 'eth1'
 
-psick::monitor::nagiosplugins::auto_prereq: true
-psick::icinga2::module: 'icinga'
-# Icinga configuration with psick::icinga2::module: 'psick'
-psick::icinga2::master: 'icinga.lab.psick.io'
-psick::icinga2::is_client: true
-psick::icinga2::install_cli: true
+psick_profile::icinga2::module: 'icinga'
+# Icinga configuration with psick_profile::icinga2::module: 'psick'
+psick_profile::icinga2::master: 'icinga.lab.psick.io'
+psick_profile::icinga2::is_client: true
+psick_profile::icinga2::install_cli: true
 
 # Icinga disabled (TEMP)
 icinga2::ensure: stopped
 icinga2::enable: false
 
-# Icinga configuration with psick::icinga2::module: 'icinga'
-psick::icinga2::puppetdb_fact_address: 'networking.interfaces.eth1.ip'
-psick::icinga2::puppetdb_fact_network: 'networking.interfaces.eth1.network'
+# Icinga configuration with psick_profile::icinga2::module: 'icinga'
+psick_profile::icinga2::puppetdb_fact_address: 'networking.interfaces.eth1.ip'
+psick_profile::icinga2::puppetdb_fact_network: 'networking.interfaces.eth1.network'
 # icinga2::confd: false
 icinga2::manage_repo: true
 icinga2::globals::constants:
@@ -221,7 +222,6 @@ psick::sensu::plugins_hash:
   'sensu-plugins-disk-checks': {}
   'sensu-plugins-dns': {}
   'sensu-plugins-dnslookup': {}
-  'sensu-plugins-disk-checks': {}
   'sensu-plugins-filesystem-checks': {}
   'sensu-plugins-filesize': {}
   'sensu-plugins-fsmounts': {}
@@ -247,9 +247,6 @@ sensu::purge:
 psick::timezone: 'Europe/Berlin'
 psick::timezone::timezone_windows: 'Central European Standard Time'
 
-# Puppet agents (on PE) sticky environment
-psick::puppet::pe_agent::manage_environment: true
-
 # Users
 # psick::users::root_pw: hash_as_in_etc_shadow
 psick::users::delete_unmanaged: false
@@ -274,9 +271,6 @@ psick::sudo::directives:
   al:
     content: 'al ALL=(ALL) NOPASSWD:ALL'
 
-# Docker tp profile when used
-psick::docker::install_class: 'tp_profile::docker'
-
 # OpenSSH
 psick::openssh::module: 'tp_profile'
 
@@ -286,14 +280,14 @@ tp_profile::openssh::resources:
       template: 'psick/generic/spaced.erb'
       options_hash:
         Protocol: 2
-        PermitRootLogin: 'no'
+        PermitRootLogin: 'without-password'
         Subsystem: 'sftp /usr/libexec/openssh/sftp-server'
         UsePAM: 'yes'
         TCPKeepAlive: 'yes'
-        PermitRootLogin: 'without-password'
-# Ansible
-psick::ansible::master: puppet.lab.psick.io
-psick::ansible::keyshare_method: storeconfigs
+
+# Admin
+psick::admin::master: puppet.lab.psick.io
+psick::admin::keyshare_method: storeconfigs
 
 # Bolt
 psick::bolt::master: puppet.lab.psick.io
@@ -360,10 +354,6 @@ psick::sysctl::settings_hash:
   net.ipv6.conf.default.disable_ipv6: 1
 
 # Extra packages
-tp::install_hash:
-  sysdig:
-    ensure: present
-    auto_prereq: true
 psick::packages::packages_osfamily_hash:
   RedHat:
     - net-tools

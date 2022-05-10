@@ -1,10 +1,10 @@
 ---
 psick::base::linux_classes:
-  icingaweb: psick::icingaweb2
+  icingaweb: psick_profile::icingaweb2
 
-psick::icingaweb2::auto_prereq: true
-# Configurations with psick::icinga2::module: 'psick'
-psick::icinga2::is_server: true
+psick_profile::icingaweb2::auto_prereq: true
+# Configurations with psick_profile::icinga2::module: 'psick'
+psick_profile::icinga2::is_server: true
 
 #icinga2::globals::service_reload: 'icinga2 daemon -C && service icinga2 reload'
 icinga2::confd: true
@@ -21,7 +21,7 @@ aicinga2::feature::api::zones:
   director-global:
     global: true
 
-# Configurations with psick::icingaweb2::module: 'icinga'
+# Configurations with psick_profile::icingaweb2::module: 'icinga'
 icinga2::manage_repo: true
 icingaweb2::manage_repo: false
 

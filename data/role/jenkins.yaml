@@ -1,23 +1,23 @@
 ---
 psick::base::linux_classes:
-  jenkins: psick::jenkins
+  jenkins: psick_profile::jenkins
 
 # Enabled and configure scm-sync plugin
-psick::jenkins::disable_setup_wizard: true
+psick_profile::jenkins::disable_setup_wizard: true
 
 # Generate jenkins ssh keypair
-psick::jenkins::ssh_keys_generate: true
+psick_profile::jenkins::ssh_keys_generate: true
 #
 # Pregenerated key-pairs file can be provided via content or source arguments.
 # Private key should be secret: to source from a secure path
 # or specify content and then encrypt it ith hiera eyaml
-# psick::jenkins::ssh_private_key_content: ENC[...]
-# psick::jenkins::ssh_private_key_source: puppet:///modules/profile/jenkins/ssh/id_rsa
-# psick::jenkins::ssh_public_key_source: puppet:///modules/profile/jenkins/ssh/id_rsa.pub
+# psick_profile::jenkins::ssh_private_key_content: ENC[...]
+# psick_profile::jenkins::ssh_private_key_source: puppet:///modules/profile/jenkins/ssh/id_rsa
+# psick_profile::jenkins::ssh_public_key_source: puppet:///modules/profile/jenkins/ssh/id_rsa.pub
 
 # Plugins installation.
 # Check psick/manifests/jenkins/plugin.pp for parameters
-psick::jenkins::plugins:
+psick_profile::jenkins::plugins:
   warnings:
     enable: true
   blueocean:

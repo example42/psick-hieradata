@@ -1,12 +1,12 @@
 ---
 psick::profiles::linux_classes:
-  docker: psick::docker
-  docker_host: psick::docker::host
-  docker_compose: psick::docker::compose
-#  docker_examples: psick::docker::run_examples
+  docker: psick_profile::docker
+  docker_host: psick_profile::docker::host
+  docker_compose: psick_profile::docker::compose
+#  docker_examples: psick_profile::docker::run_examples
 
-psick::docker::username: example42
-psick::docker::run_examples::ensure: present
+psick_profile::docker::username: example42
+psick_profile::docker::run_examples::ensure: present
 
 
 psick_profile::sensu::plugins_hash:

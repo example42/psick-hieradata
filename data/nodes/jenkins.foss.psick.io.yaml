@@ -6,7 +6,7 @@ psick::pre::linux_classes:
 psick::base::linux_classes:
   jenkins: psick_profile::jenkins
   jenkins_jcasc: psick_profile::jenkins::jcasc
-  docker: psick::docker
+  docker: psick_profile::docker
   pdk: psick::puppet::pdk
   vagrant: psick_profile::vagrant
 #  git: psick::git
@@ -16,7 +16,7 @@ psick::base::linux_classes:
 psick_profile::vagrant::default_plugins:
   - vagrant-cachier
   - vagrant-vbguest
-psick::docker::allowed_users:
+psick_profile::docker::allowed_users:
   - jenkins
 
 # Enable and configure scm-sync plugin

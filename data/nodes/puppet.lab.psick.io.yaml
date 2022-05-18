@@ -11,11 +11,11 @@ psick::profiles::linux_classes:
   pe_console: psick::puppet::pe_console
   pe_puppetdb: psick::puppet::pe_puppetdb
   pe_server: psick::puppet::pe_server
-  gitlab_cli: psick::gitlab::cli
-#  gitlab_ci: psick::gitlab::ci
+  gitlab_cli: psick_profile::gitlab::cli
+#  gitlab_ci: psick_profile::gitlab::ci
   puppet_ci: psick::puppet::ci
 #  pe_code_manager: psick::puppet::pe_code_manager
-#  gitlab_runner: psick::gitlab::runner
+#  gitlab_runner: psick_profile::gitlab::runner
 #  octocatalog: psick_profile::octocatalog
 #  danger: psick::ci::danger
   puppet_autosign: psick::puppet::autosign
@@ -115,9 +115,9 @@ psick::puppet::pe_code_manager::generate_ssh_keys: true   # Default breaks on co
 
 
 # Configure the scripts used during Gitlab CI of the control repo
-psick::gitlab::ci::default_nodes:
+psick_profile::gitlab::ci::default_nodes:
   - puppet.lab.psick.io
-psick::gitlab::ci::always_nodes:
+psick_profile::gitlab::ci::always_nodes:
   - git.lab.psick.io
   - cirunner.lab.psick.io
 psick::puppet::ci::default_nodes:
@@ -137,7 +137,7 @@ psick_profile::octocatalog::template: 'psick_profile/octocatalog/octocatalog-dif
 # Config for the GIT Runners for Puppet deployments
 # Tokens change at every gitlab installation
 # Check under your control-repo project settings - CI/CD - Specific runner token
-psick::gitlab::runner::runners:
+psick_profile::gitlab::runner::runners:
   deploy_puppet:
     url: 'https://git.lab.psick.io'
     token: CHANGEME
@@ -146,21 +146,21 @@ psick::gitlab::runner::runners:
 
 # Manage puppet agent grants. PE User must be already existing
 # If using PE it must have permission to trigger remote puppet agents
-psick::gitlab::runner::pe_user: 'deployer'
+psick_profile::gitlab::runner::pe_user: 'deployer'
 # pe_user password:
-psick::gitlab::runner::pe_password: CHANGEME
+psick_profile::gitlab::runner::pe_password: CHANGEME
 # Lifetime of a token created with the above credentials
-psick::gitlab::runner::pe_token_lifetime: '5y'
+psick_profile::gitlab::runner::pe_token_lifetime: '5y'
 
 # Config for gitlab cli. Tokens change at every gitlab installation
 # Use the Private token of a user with merge request and accept privileges
 # Settings to generate /etc/gitlab-cli.conf used by gitlab_create_merge_request.rb and gitlab_accept_merge_request.rb
-psick::gitlab::cli::config_hash:
+psick_profile::gitlab::cli::config_hash:
   private_token: 'qz9fZNFSaZLjVVzH_fag' # TO CHANGE AT EVERY INSTALLATION
   project_id: 1 # Control-repo project ID on GITLAB
   api_endpoint: 'https://git.lab.psick.io/api/v4'
 # Settings to generate /etc/gitlab-cli.yaml used by gitlab_multirepo_create_merge_request.rb and gitlab_multirepo_accept_merge_request.rb
-psick::gitlab::cli::multirepo_config_hash:
+psick_profile::gitlab::cli::multirepo_config_hash:
   psick:
     private_token: 'qz9fZNFSaZLjVVzH_fag' # TO CHANGE AT EVERY INSTALLATION
     project_id: 1 # Repo project ID on GITLAB
@@ -170,7 +170,7 @@ psick::gitlab::cli::multirepo_config_hash:
     project_id: 3 # Repo project ID on GITLAB
     api_endpoint: 'https://git.lab.psick.io/api/v4'
 
-psick::gitlab::cli::auto_prereq: false # Prevent Duplicate declaration: Tp::Install[ruby]"
+psick_profile::gitlab::cli::auto_prereq: false # Prevent Duplicate declaration: Tp::Install[ruby]"
 
 # Monitoring
 psick_profile::sensu::checks_hash:

@@ -2,21 +2,21 @@
 psick::base::linux_classes:
   'git': psick::git
 psick::profiles::linux_classes:
-  'apache': psick::apache::install
+  'apache': psick_profile::apache::install
   'php': psick::php
-  'mysql': psick::mariadb
+  'mysql': psick_profile::mariadb
 
 # This node runs in noop mode by default
 psick::puppet::pe_agent::noop_setting: true
 
 # Always enforce changes on apache
-psick::apache::install::noop_manage: true
-psick::apache::install::noop_value: false
+psick_profile::apache::install::noop_manage: true
+psick_profile::apache::install::noop_value: false
 
 psick::git::extra_packages_list:
   - git-lfs
 
-psick::apache::install::resources:
+psick_profile::apache::install::resources:
   tp::conf:
     apache::openkills.info.conf:
       base_dir: conf
@@ -62,16 +62,16 @@ psick::php::module_hash:
   gd: {}
   yaml: {}
 
-psick::mariadb::user_hash:
+psick_profile::mariadb::user_hash:
   openskills:
     password: shouldbesecret
-psick::mariadb::grant_hash:
+psick_profile::mariadb::grant_hash:
   openskills:
     password: shouldbesecret
     db: openskills
     db_init_query_file: /root/openskills-data/openskills.sql
     require: 'Tp::Dir[mariadb::openskills-data]'
-psick::mariadb::install::resources:
+psick_profile::mariadb::install::resources:
   tp::dir:
     mariadb::openskills-data:
       vcsrepo: git

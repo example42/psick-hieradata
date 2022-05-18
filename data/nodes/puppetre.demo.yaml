@@ -2,9 +2,9 @@
 psick::profiles::linux_classes:
   - psick::puppet::pe_puppetdb
   - psick::puppet::pe_server
-#  - psick::gitlab::ci
+#  - psick_profile::gitlab::ci
 #  - psick::puppet::pe_code_manager
-#  - psick::gitlab::runner
+#  - psick_profile::gitlab::runner
 
 psick::puppet::pe_server::remove_global_hiera_yaml: true
 psick::puppet::pe_server::extra_environment_path: '/etc/puppetlabs/code-developers'

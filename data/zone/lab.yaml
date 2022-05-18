@@ -335,18 +335,6 @@ network::mroutes_hash:
       '10.42.100.0/24': '10.42.43.1'
       '10.42.251.0/24': '10.42.43.1'
 
-DISnetwork::config_file_per_interface: false
-
-# Choria
-choria::manage_package_repo: true
-choria::server: true
-amcollective::client: false
-amcollective::server: false
-amcollective_choria::client: false
-amcollective_choria::server: true
-amcollective_choria::config:
-        #  security.serializer: "json"
-
 # Disable ipv6 and ip forwarding by default
 psick::sysctl::settings_hash:
   net.ipv4.conf.all.forwarding: 0

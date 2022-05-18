@@ -11,8 +11,8 @@ stages:
   - promote
 
 # Create WIP Merge request
-# This script and the accept one require psick::gitlab::cli included on the gitlab-runner node
-# psick::gitlab::cli::multirepo_config_hash must be set for the mentioned repos (psick-hieradata)
+# This script and the accept one require psick_profile::gitlab::cli included on the gitlab-runner node
+# psick_profile::gitlab::cli::multirepo_config_hash must be set for the mentioned repos (psick-hieradata)
 Create WIP MR:
   stage: merge request
   script:

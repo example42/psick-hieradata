@@ -2,9 +2,16 @@
 psick::profiles::linux_classess:
   admin: psick::admin
 
+psick::admin::ensure: absent
+
 psick::profiles:windows_classess:
   admin: psick::admin
 
+psick::pre::darwin_classes:
+  homebrew: homebrew
+  puppet: psick::puppet
+psick::base::darwin_classes:
+  tp: tp
 psick::profiles::darwin_classess:
   admin: psick::admin
 

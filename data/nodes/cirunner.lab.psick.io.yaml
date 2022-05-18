@@ -14,7 +14,7 @@ psick::users::users_hash:
 
 psick::profiles::linux_classes:
   vagrant: vagrant
-  docker: psick::docker
+  docker: psick_profile::docker
   pe_client_tools: psick::puppet::pe_client_tools
 #  bind: profile::bind
   git: ''
@@ -28,8 +28,8 @@ psick::puppet::gems::default_set: integration
 
 # Config for the GIT Runners
 # Tokens change at every gitlab installation
-psick::gitlab::runner::use_docker: true
-psick::gitlab::runner::runners:
+psick_profile::gitlab::runner::use_docker: true
+psick_profile::gitlab::runner::runners:
   test_puppet:
     url: 'https://git.lab.psick.io'
     token: ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEwDQYJKoZIhvcNAQEBBQAEggEAdyiC58Y5vb+mIiVgCAqdRvdLgj5jj3ybz/6q4J463mHm/2RJFLbPhpPYCRt4UB14pzl+9/nGoGvqNzDwenf7BhWsPrhJ2Drff4JgalNh7OV+G3CDfqVZ8skldH1jWuRSQcgDn22k/j7h2UNLDYUKzp67XZfXQ9412NpE/2PrGOyOnHmsUUZFTyREuZp7FQ2N4zX5r+i/sNp79Ffb+M3NIAIvgKI0ndDLHZwMfstP/H9GJWrCtzUq/02YaDc0tfE9tUHPZHSWbejIioHa+2MtU17PfIsQgC+ERsTqCmRv02wDrguE7ovAAeWWc/x1IymzUPob0AdWcnrVYasZRjGZQjBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBBYiExiIabHBniYXlQGyuVkgCDJZ0EpXBvwc6TUE80KOe948/UGvj/fzBMeWQGjKdJzvQ==] # CI Runner token TO CHANGE AT EVERY INSTALLATION
@@ -42,17 +42,17 @@ psick::gitlab::runner::runners:
     tls_ca_file: '/etc/puppetlabs/puppet/ssl/certs/ca.pem'
 
 # Integration tests via docker
-#psick::docker::allowed_users:
+#psick_profile::docker::allowed_users:
 #  - gitlab-runner
 psick::sysctl::settings_hash:
   net.ipv4.conf.all.forwarding: 1
 
 # Configure the scripts used during Puppet CI
-psick::gitlab::ci::default_nodes:
+psick_profile::gitlab::ci::default_nodes:
   - puppet.lab.psick.io
-psick::gitlab::ci::always_nodes:
+psick_profile::gitlab::ci::always_nodes:
   - git.lab.psick.io
-psick::gitlab::ci::options:
+psick_profile::gitlab::ci::options:
   catalog_preview_default_nodes: 'git.lab.psick.io,log.lab.psick.io'
 
 # Configure gitconfig for gitlab-runner to ignore

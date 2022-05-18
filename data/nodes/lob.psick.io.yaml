@@ -3,7 +3,7 @@ psick::profiles::linux_classes:
   web: psick_profile::nginx
 #  ipsec: psick_profile::openswan
   firewall: psick::firewall::iptables
-#  docker: psick::docker
+#  docker: psick_profile::docker
 #  vagrant: psick_profile::vagrant
   virtualbox: psick_profile::virtualbox
   pdk: psick::puppet::pdk

@@ -3,10 +3,10 @@ psick::profiles::linux_classes:
   - psick::puppet::pe_console
   - psick::puppet::pe_puppetdb
   - psick::puppet::pe_server
-  - psick::gitlab::cli
-#  - psick::gitlab::ci
+  - psick_profile::gitlab::cli
+#  - psick_profile::gitlab::ci
 #  - psick::puppet::pe_code_manager
-#  - psick::gitlab::runner
+#  - psick_profile::gitlab::runner
 
 puppet_enterprise::profile::puppetdb::allowlisted_certnames:
   - cirunner.demo
@@ -41,16 +41,16 @@ psick::puppet::pe_code_manager::pe_email: 'root@localhost' # PE user email.
 psick::puppet::pe_code_manager::lifetime: '5y'            # Adapt as preferred
 
 # Configure the scripts used during Gitlab CI of the control repo
-psick::gitlab::ci::default_nodes:
+psick_profile::gitlab::ci::default_nodes:
   - puppet.demo
-psick::gitlab::ci::always_nodes:
+psick_profile::gitlab::ci::always_nodes:
   - git.demo
   - cirunner.demo
 
  
 # Config for the GIT Runners for Puppet deployments
 # Tokens change at every gitlab installation
-psick::gitlab::runner::runners:
+psick_profile::gitlab::runner::runners:
   deploy_puppet:
     url: 'https://git.demo'
     token: 'K3k3nPCzGTDpZhMspgdg' # Private token of a GitLab user TO CHANGE AT EVERY INSTALLATION
@@ -59,7 +59,7 @@ psick::gitlab::runner::runners:
 
 # This is needed for the gitlab_get_id function to catch GitLab data
 # Config for gitlab cli. Tokens change at every gitlab installation
-psick::gitlab::cli::config_hash:
+psick_profile::gitlab::cli::config_hash:
   private_token: 'EbCApya5qgkrVdajEW33' # TO CHANGE AT EVERY INSTALLATION
   project_id: 2 # Control-repo project ID on GITLAB
   api_endpoint: 'https://git.demo/api/v3'

@@ -20,7 +20,7 @@ psick_profile::apache::install::resources:
   tp::conf:
     apache::openkills.info.conf:
       base_dir: conf
-      template: psick/apache/vhost.conf.erb
+      template: psick_profile/apache/vhost.conf.erb
       options_hash:
         ServerName: openskills.info
         ServerAlias:
@@ -30,10 +30,10 @@ psick_profile::apache::install::resources:
         AddDefaultCharset: ISO-8859-1
     apache::deny_git.conf:
       base_dir: conf
-      source: puppet:///modules/psick/apache/deny_git.conf
+      source: puppet:///modules/psick_profile/apache/deny_git.conf
     apache::abnormalia.com.conf:
       base_dir: conf
-      template: psick/apache/vhost.conf.erb
+      template: psick_profile/apache/vhost.conf.erb
       options_hash:
         ServerName: abnormalia.com
         ServerAlias:
@@ -100,7 +100,7 @@ tp::conf_hash:
   openssh::root_id_rsa.pub_dir:
     path: '/root/.ssh'
     ensure: directory
-    before: Class[Psick::Apache::Install]
+    before: Class[Psick_profile::Apache::Install]
     settings_hash:
       validate_cmd: ~
 

@@ -7,9 +7,9 @@ psick_profile::gitlab::manage_installation: true
 
 # Manage whole gitlab configration file via template        
 # Template based on upstream gitlab.rb (to parametrise) 
-# psick_profile::gitlab::template: 'psick/gitlab/gitlab.rb.erb'
+# psick_profile::gitlab::template: 'psick_profile/gitlab/gitlab.rb.erb'
 # Generic template where are set only keys defined in the options_hash + defaults
-# psick_profile::gitlab::template: 'psick/gitlab/gitlab.rb-generic.erb'
+# psick_profile::gitlab::template: 'psick_profile/gitlab/gitlab.rb-generic.erb'
 
 # Manage single lines in gitlab cofniguration and not the whole file (alternative to template)
 psick_profile::gitlab::manage_inline_configuration: true

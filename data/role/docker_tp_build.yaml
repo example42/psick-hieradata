@@ -15,7 +15,7 @@ psick_profile::docker::builder::images:
     conf_hash:
       apache::mysite:
         base_dir: 'conf'
-        template: 'psick/apache/vhost.conf.erb'
+        template: 'psick_profile/apache/vhost.conf.erb'
         options:
           ServerName: 'www.example42.com'
           ServerAliases:

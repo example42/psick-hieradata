@@ -356,7 +356,7 @@ psick::packages::packages_osfamily_hash:
 psick_profile::postfix::resources:
   tp::conf:
     postfix:
-      template: 'psick/postfix/main.cf.erb'
+      template: 'psick_profile/postfix/main.cf.erb'
 psick_profile::postfix::options:
   'mydomain': "%{facts.domain}"
   'myhostname': "%{facts.hostname}"

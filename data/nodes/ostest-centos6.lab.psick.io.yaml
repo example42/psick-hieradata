@@ -5,13 +5,10 @@ tp::install_hash:
     ensure: absent
     auto_prereq: false
 
-# Network v3 format
-network::interfaces_hash:
+psick::network::interfaces:
   'eth0':
-    enable_dhcp: true
+    ipv4_dhcp: true
   'eth1':
-    ipaddress:
-      - '10.42.43.157'
-      - '10.42.143.157'
-    netmask: '255.255.255.0'
-    gateway: '10.42.43.1'
+    ipv4_address: '10.42.43.157'
+    ipv4_netmask: '255.255.255.0'
+    ipv4_gateway: '10.42.43.1'

@@ -1,16 +1,16 @@
 ---
 psick::base::linux_classes:
-  network: network
+  network: psick::network
   tp: tp
 #  wazuh: psick::wazuh
 
-network::interfaces_hash:
+psick::network::interfaces:
   'ens18':
-    ipaddress: '10.42.100.24'
-    netmask: '255.255.255.0'
-    gateway: '10.42.100.1'
+    ipv4_address: '10.42.100.24'
+    ipv4_netmask: '255.255.255.0'
+    ipv4_gateway: '10.42.100.1'
 
-network::mroutes_hash:
+psick::network::routes:
   'ens18':
     routes:
       '0/0': '10.42.100.1'

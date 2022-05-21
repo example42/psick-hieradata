@@ -1,11 +1,4 @@
 ---
-network::mroutes_hash:
-  eth1:
-    routes:
-      '10.42.50.0/24': '10.42.43.1'
-      '10.42.100.0/24': '10.42.43.1'
-      '10.42.251.0/24': '10.42.43.1'
-      '10.42.252.0/24': '10.42.43.1'
 psick_profile::icinga2::puppetdb_hosts_override_hash:
   'lab.psick.io':
     address: 10.42.43.1

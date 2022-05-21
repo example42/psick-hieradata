@@ -1,3 +1,3 @@
 ---
-psick::openssh::installoptions:
+psick::openssh::tp::options:
   PermitTunnel: yes

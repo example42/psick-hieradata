@@ -13,14 +13,15 @@ psick::nodejs::nvm_installs:
       pm2:
         version: 2.10.4
 
+psick::network::interfaces:
+  'enp0s3':
+    ipv4_dhcp: true
+  'enp0s8':
+    ipv4_address: '10.42.43.206'
+    ipv4_netmask: '255.255.255.0'
 
-network::interfaces_hash:
-  'ens18':
-    ipaddress: '10.42.43.206'
-    netmask: '255.255.255.0'
-    gateway: '10.42.43.1'
-network::mroutes_hash:
-  ens18:
+psick::network::routes:
+  enp0s8:
     routes:
       '10.42.50.0/24': '10.42.43.1'
       '10.42.100.0/24': '10.42.43.1'

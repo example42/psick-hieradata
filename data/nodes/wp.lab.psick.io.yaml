@@ -15,11 +15,11 @@ psick::users::users_hash:
 
 psick::firewall::iptables::manage_firewalld: true
 
-network::interfaces_hash:
+psick::network::interfaces:
   'eth1':
-    ipaddress: '10.42.43.19'
-    netmask: '255.255.255.0'
-    gateway: '10.42.43.1'
+    ipv4_address: '10.42.43.19'
+    ipv4_netmask: '255.255.255.0'
+    ipv4_gateway: '10.42.43.1'
 
 profile::wordpress::create_default_instance: false
 profile::wordpress::instances:

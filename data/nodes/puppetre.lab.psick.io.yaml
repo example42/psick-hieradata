@@ -3,13 +3,7 @@ psick::profiles::linux_classes:
   pe_puppetdb: psick::puppet::pe_puppetdb
   pe_server: psick::puppet::pe_server
 
-network::interfaces_hash:
-  'eth0':
-    enable_dhcp: true
-  'eth1':
-    ipaddress: '10.42.43.111'
-    netmask: '255.255.255.0'
-nonetwork::interfaces:
+psick::network::interfaces:
   'eth0':
     ipv4_dhcp: true
   'eth1':

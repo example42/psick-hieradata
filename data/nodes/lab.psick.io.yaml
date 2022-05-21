@@ -108,7 +108,7 @@ psick::firewall::iptables::allow_ips:
 psick::firewall::iptables::manage_firewalld: false
 
 # OpenSSH
-psick::openssh::install::resources:
+psick::openssh::tp::resources:
   tp::conf:
     openssh:
       template: profile/openssh/sshd_config.erb

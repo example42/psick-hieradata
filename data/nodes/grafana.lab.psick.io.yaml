@@ -9,9 +9,3 @@ psick_profile::grafana::plugins_hash:
     ensure: absent
 
 psick_profile::icinga2::manage: false
-network::config_file_notify: false
-network::confs_hash:
-  eth22:
-    content: '# Test9'
-    # config_file_notify: false
-    # config_file_notify: ~

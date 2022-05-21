@@ -13,14 +13,7 @@ cd4pe::cd4pe_docker_extra_params:
   - --add-host puppet.lab.psick.io:10.42.43.101
   - --add-host git.lab.psick.io:10.42.43.102
         
-network::interfaces_hash:
-  'eth0':
-    enable_dhcp: true
-  'eth1':
-    ipaddress: '10.42.43.109'
-    netmask: '255.255.255.0'
-
-nonetwork::interfaces:
+psick::network::interfaces:
   'eth0':
     ipv4_dhcp: true
   'eth1':

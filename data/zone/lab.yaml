@@ -7,7 +7,7 @@ psick::base::linux_classes:
   mail: psick_profile::postfix
 #  icinga: psick_profile::icinga2
 #  monitor_plugins: psick_profile::nagiosplugins
-  network: network
+  network: psick::network
   selinux: psick::selinux
   limits: psick::limits
 #  sensu: psick_profile::sensu
@@ -274,7 +274,7 @@ psick::sudo::directives:
 # OpenSSH
 psick::openssh::module: 'psick'
 
-psick::openssh::install::resources:
+psick::openssh::tp::resources:
   tp::conf:
     openssh:
       template: 'psick/generic/spaced.erb'
@@ -320,15 +320,7 @@ psick::servers:
     host: icinga.lab.psick.io
     port: 5665
 
-
-# network settings tests
-#network::routes_legacy: false
-#network::interfaces_legacy: false
-#network::rules_legacy: false
-#network::tables_legacy: false
-#network::routing_tables_legacy: false
-
-network::mroutes_hash:
+psick::network::routes:
   eth1:
     routes:
       '10.42.50.0/24': '10.42.43.1'

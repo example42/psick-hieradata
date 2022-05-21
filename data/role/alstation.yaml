@@ -60,7 +60,7 @@ tp::osfamily_install_hash:
     zoom: {}
   Darwin:
     - 1password
-    - docker
+#    - docker
     - pdk
 #   - citrix-workspace
     - firefox

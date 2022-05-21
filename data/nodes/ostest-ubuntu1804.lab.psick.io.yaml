@@ -3,15 +3,7 @@ psick::profiles::linux_classes:
   monit: monit
 
 # Network configs
-# Network v3 format
-network::interfaces_hash:
-  'eth0s3':
-    enable_dhcp: true
-  'enp0s8':
-    ipaddress: '10.42.43.123'
-    netmask: '255.255.255.0'
-# Network v4 format
-nonetwork::interfaces:
+psick::network::interfaces:
   'eth0s3':
     ipv4_dhcp: true
   'enp0s8':

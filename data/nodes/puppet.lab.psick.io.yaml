@@ -207,19 +207,12 @@ mcollective::client: true
 #      topic: mcollective.broadcast.agent.discovery
 #      protocol: request
 #      workers: 10
-NEWnetwork::interfaces_hash:
+psick::network::interfaces:
   'eth0':
     ipv4_dhcp: true
   'eth1':
     ipv4_address: '10.42.43.101'
     ipv4_netmask: '255.255.255.0'
-
-network::interfaces_hash:
-  'eth0':
-    enable_dhcp: true
-  'eth1':
-    ipaddress: '10.42.43.101'
-    netmask: '255.255.255.0'
 
 hdm::prereq::packages:
   - sqlite-devel

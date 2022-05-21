@@ -83,3 +83,6 @@ psick::hostname::update_network_entry: false # Avoid resource duplication when p
 # Sample sysctl settings
 #psick::sysctl::settings_hash:
 #  net.ipv4.conf.all.forwarding: 0
+
+psick::network::noop_manage: true
+psick::network::noop_value: true

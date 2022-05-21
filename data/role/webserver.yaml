@@ -1,5 +1,5 @@
 ---
 psick::profiles::linux_classes:
-  webserver: 'psick_profile::apache::install'
+  webserver: 'psick_profile::apache::tp'
 psick::profiles::windows_classes:
   webserver: 'iis'

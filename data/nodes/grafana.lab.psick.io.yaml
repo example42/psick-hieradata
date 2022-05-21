@@ -1,7 +1,7 @@
 ---
 psick::profiles::linux_classes:
   grafana: psick_profile::grafana
-  influxdb: psick_profile::influxdb::install
+  influxdb: psick_profile::influxdb::tp
 
 psick_profile::grafana::plugins_hash:
   cloudflare-app: {}

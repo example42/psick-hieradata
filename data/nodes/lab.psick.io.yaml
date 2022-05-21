@@ -1,6 +1,6 @@
 ---
 psick::profiles::linux_classes:
-  web: psick_profile::nginx
+  web: psick_profile::nginx::tp
 #  ipsec: psick_profile::openswan
   firewall: psick::firewall::iptables
   openvpn: psick_profile::openvpn
@@ -114,7 +114,7 @@ psick::openssh::tp::resources:
       template: profile/openssh/sshd_config.erb
 
 # Nginx
-psick_profile::nginx::resources:
+psick_profile::nginx::tp::resources:
   tp::conf:
     nginx::.htpasswd:
       template: profile/nginx/htpasswd.erb

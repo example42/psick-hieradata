@@ -6,7 +6,7 @@ psick::profiles::linux_classes:
   docker_build_examples: '::psick_profile::docker::build_examples'
 
 psick_profile::docker::username: example42
-psick_profile::docker::install_class: '' # To allow operations from Mac. Docker has to be installed.
+psick_profile::docker::tp_class: '' # To allow operations from Mac. Docker has to be installed.
 psick_profile::docker::run_examples::ensure: absent
 psick_profile::docker::builder::maintainer: 'Example42 <info@example42.com>'
 psick_profile::docker::builder::images:

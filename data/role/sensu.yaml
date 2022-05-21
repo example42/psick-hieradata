@@ -1,8 +1,8 @@
 ---
 psick_profile::sensu::is_server: true
 psick_profile::sensu::is_api: true
-psick_profile::sensu::rabbitmq_class: '::psick_profile::rabbitmq'
-psick_profile::sensu::redis_class: '::psick_profile::redis'
+psick_profile::sensu::rabbitmq_class: '::psick_profile::rabbitmq::tp'
+psick_profile::sensu::redis_class: '::psick_profile::redis::tp'
 psick_profile::sensu::dashboard_class: '::psick_profile::sensu::uchiwa'
 
 # 20171012 - Repo installed by uchiwa module fails

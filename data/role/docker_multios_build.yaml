@@ -6,7 +6,7 @@ psick::profiles::linux_classes:
   rocker_builder: '::psick_profile::docker::rocker_builder'
 
 psick_profile::docker::username: example42
-psick_profile::docker::install_class: ''
+psick_profile::docker::tp_class: ''
 psick_profile::docker::builder::maintainer: 'Example42 <info@example42.com>'
 psick_profile::docker::builder::workdir: '/var/tmp/dockerfiles'
 psick_profile::docker::builder::always_build: true

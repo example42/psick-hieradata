@@ -1,6 +1,6 @@
 ---
 psick::profiles::linux_classes:
-  puppetserver: tp_profile::puppetserver
+  puppetserver: psick_profile::puppetserver::tp
 
-# psick::puppetserver::options_hash:
+# psick_profile::puppetserver::options_hash:
 #   java_args: '-Xms512m -Xmx512m -XX:MaxPermSize=256m'

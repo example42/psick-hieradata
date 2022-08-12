@@ -12,7 +12,7 @@ psick::base::windows_classes:
   users: psick::windows::users
 #  firewall: windows_firewall
 psick::profile::windows_classes:
-  webserver: psick::iis
+  webserver: psick_profile::iis
 
 psick::packages::resource_default_arguments:
   provider: chocolatey

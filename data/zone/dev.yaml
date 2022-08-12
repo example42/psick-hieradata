@@ -4,24 +4,28 @@ psick::pre::linux_classes:
   puppet: psick::puppet
   hosts: psick::hosts::puppetdb
 psick::base::linux_classes:
+  tp: tp
   selinux: psick::selinux
   limits: psick::limits
   packages: psick::packages
-  tp: tp
+  pe_status: pe_status_check
+  crowdsec: psick_profile::crowdsec
 
 psick::pre::windows_classes:
   chocolatey: chocolatey
+  tp: tp
+  puppet: psick::puppet
 psick::base::windows_classes:
   packages: psick::packages
-  tp: tp
   features_class: psick::windows::features
+  pe_status: pe_status_check
 
-psick::firstrun::darwin_classes:
+psick::pre::darwin_classes:
   homebrew: homebrew
+  puppet: psick::puppet
 psick::base::darwin_classes:
   tp: tp
-
-homebrew::user: al
+#  crowdsec: psick_profile::crowdsec
 
 # Disabled unwanted services
 psick::resources_defaults:
@@ -29,13 +33,22 @@ psick::resources_defaults:
     ensure: stopped
     enable: false
 
-psick::resources:
-  service:
-    firewalld: {}
-    rpcbind: {}
-
 psick::dns::resolver::nameservers:
   - 10.42.100.2
+  - 10.42.100.3
+
+psick::dns::resolver::options:
+  - 'rotate'
+
+psick::packages::packages_osfamily_hash:
+  RedHat:
+    - net-tools
+    - telnet
+    - wget
+  Debian:
+    - net-tools
+    - telnet
+    - wget
 
 ### Noop management
 # Noop configuration on PE clients
@@ -49,7 +62,9 @@ psick::puppet::pe_agent::noop_manage: true
 psick::puppet::pe_agent::noop_value: false
 
 ### Puppet
+psick::puppet::agent_class: psick::puppet::pe_agent
 psick::puppet::pe_agent::manage_environment: true
+psick::puppet::pe_agent::environment_setting: host
 psick::puppet::pe_agent::manage_service: true
 
 # External facts:
@@ -63,7 +78,7 @@ psick::puppet::external_facts:
 psick::hostname::update_host_entry: false
 
 # psick::hosts::puppetdb::puppetdb_fact_address: 'networking.interfaces.eth1.ip'
-psick::hosts::puppetdb::puppethost: '10.42.100.22       puppet  puppet.lab42.dev'
+psick::hosts::puppetdb::puppethost: '10.42.43.101       puppet  puppet.lab42.dev'
 
 
 # Enable automatic updates on lab nodes and set schedule:
@@ -94,15 +109,14 @@ psick::sudo::directives:
     content: 'al ALL=(ALL) NOPASSWD:ALL'
 
 # OpenSSH
-psick::openssh::module: 'tp_profile'
+psick::openssh::module: 'psick_profile'
 
-tp_profile::openssh::resources:
+psick::openssh::tp::resources:
   tp::conf:
     openssh:
       template: 'psick/generic/spaced.erb'
       options_hash:
         Protocol: 2
-        PermitRootLogin: 'no'
         Subsystem: 'sftp /usr/libexec/openssh/sftp-server'
         UsePAM: 'yes'
         TCPKeepAlive: 'yes'
@@ -150,7 +164,7 @@ linux_tp_install: &linux_tp_install
             match: '^\s*<address>'
   filebeat:
     auto_prereq: true
-    ensure: present
+    ensure: absent
     settings_hash:
       extra_prerequisites:
         file:
@@ -161,11 +175,11 @@ linux_tp_install: &linux_tp_install
             owner: root
             group: root
   metricbeat:
-    ensure: present
+    ensure: absent
   auditbeat:
-    ensure: present
+    ensure: absent
   heartbeat-elastic:
-    ensure: present
+    ensure: absent
   elastic-agent:
     ensure: absent
     auto_prereq: true
@@ -179,12 +193,15 @@ linux_tp_install: &linux_tp_install
             path: '/bin:/usr/bin:/sbin/usr/sbin'
   zeek:
     ensure: absent
+  cron:
+    ensure: present
 
 tp::osfamily_install_hash:
   RedHat:
     <<: *linux_tp_install
   Debian:
     <<: *linux_tp_install
+
 
 ssl_settings: &ssl_settings
   ssl.certificate_authorities: ["/etc/puppetlabs/puppet/ssl/certs/ca.pem"]
@@ -193,7 +210,10 @@ ssl_settings: &ssl_settings
   username: alvagante
   password: loglikehell
     
-linux_tp_conf: &linux_tp_conf
+linux_tp_conf: &linux_tp_conf {}
+
+
+linux_tp_conf_disabled:
   filebeat:
     ensure: present
     options_hash:
@@ -344,7 +364,6 @@ linux_tp_conf: &linux_tp_conf
       processors:
         - add_observer_metadata:
 
-linux_tp_conf_disabled:
   elastic-agent:
     options_hash:
       agent.monitoring:

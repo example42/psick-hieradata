@@ -1,6 +1,6 @@
 ---
 psick::base::linux_classes:
-  docker: '::psick::docker'
+  docker: '::psick_profile::docker'
   kmod: '::psick::kmod'
   mount: '::psick::mounts'
   firewall: '::firewalld'

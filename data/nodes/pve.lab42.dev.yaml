@@ -1,8 +1,0 @@
----
-psick::users::users_hash:
-  al:
-    groups:
-      - users
-      - sudo
-      - --wheel
-  

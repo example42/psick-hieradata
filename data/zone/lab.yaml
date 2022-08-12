@@ -4,28 +4,31 @@ psick::pre::linux_classes:
   puppet: psick::puppet
   hosts: psick::hosts::puppetdb
 psick::base::linux_classes:
-  mail: tp_profile::postfix
-  icinga: psick::icinga2
-  monitor_plugins: psick::monitor::nagiosplugins
-  network: network
+  mail: psick_profile::postfix
+#  icinga: psick_profile::icinga2
+#  monitor_plugins: psick_profile::nagiosplugins
+  network: psick::network
   selinux: psick::selinux
   limits: psick::limits
-#  sensu: psick::sensu
-#  ansible: psick::ansible
+#  sensu: psick_profile::sensu
+##  admin: psick::admin
   bolt: psick::bolt
-  dns: '' # In lab we leave DNS unmanaged
   puppet_postrun: psick::puppet::postrun
   packages: psick::packages
 #  choria: choria
 # mcollective: mcollective
 #  mcollective_choria: mcollective_choria
 #  puppetagent: puppet_agent
+  crowdsec: psick_profile::crowdsec
+
+#psick::base::darwin_classes:
+#  crowdsec: psick_profile::crowdsec
 
 psick::base::windows_classes:
   windows_puppet_certificates: windows_puppet_certificates
 
 # Avoid epel repo duplicated resource
-psick::monitor::nagiosplugins::auto_prereq: false
+psick_profile::nagiosplugins::auto_prereq: false
 
 ### Noop management
 # Noop configuration on PE clients
@@ -41,6 +44,8 @@ psick::puppet::pe_agent::noop_value: false
 ### Puppet
 psick::puppet::agent_class: psick::puppet::pe_agent
 psick::puppet::pe_agent::manage_environment: true
+psick::puppet::pe_agent::environment_setting: host
+
 psick::puppet::pe_agent::manage_service: true
 
 # Postrun command management
@@ -67,8 +72,12 @@ psick::hostname::update_host_entry: false
 # Hosts file managed via Puppetdb query         
 psick::hosts::puppetdb::puppetdb_fact_address: 'networking.interfaces.eth1.ip'
 psick::hosts::puppetdb::puppethost: '10.42.43.101       puppet  puppet.lab.psick.io'
-psick::hosts::puppetdb::extra_hosts:
-  - '10.42.43.123       ostest-ubuntu1804 ostest-ubuntu1804.lab.psick.io'
+
+
+psick::dns::resolver::nameservers:
+  - 10.42.43.1
+  - 1.1.1.1
+
 
 # Hosts file managed via file resource
 psick::hosts::file::extra_hosts:
@@ -91,20 +100,19 @@ psick::update::cron_schedule: '42 4 * * *'
 psick::monitor:
   interface: 'eth1'
 
-psick::monitor::nagiosplugins::auto_prereq: true
-psick::icinga2::module: 'icinga'
-# Icinga configuration with psick::icinga2::module: 'psick'
-psick::icinga2::master: 'icinga.lab.psick.io'
-psick::icinga2::is_client: true
-psick::icinga2::install_cli: true
+psick_profile::icinga2::module: 'icinga'
+# Icinga configuration with psick_profile::icinga2::module: 'psick'
+psick_profile::icinga2::master: 'icinga.lab.psick.io'
+psick_profile::icinga2::is_client: true
+psick_profile::icinga2::install_cli: true
 
 # Icinga disabled (TEMP)
 icinga2::ensure: stopped
 icinga2::enable: false
 
-# Icinga configuration with psick::icinga2::module: 'icinga'
-psick::icinga2::puppetdb_fact_address: 'networking.interfaces.eth1.ip'
-psick::icinga2::puppetdb_fact_network: 'networking.interfaces.eth1.network'
+# Icinga configuration with psick_profile::icinga2::module: 'icinga'
+psick_profile::icinga2::puppetdb_fact_address: 'networking.interfaces.eth1.ip'
+psick_profile::icinga2::puppetdb_fact_network: 'networking.interfaces.eth1.network'
 # icinga2::confd: false
 icinga2::manage_repo: true
 icinga2::globals::constants:
@@ -132,12 +140,12 @@ icinga2::feature::api::zones:
 
 
 # Sensu
-psick::sensu::is_client: true
-psick::sensu::rabbitmq_host: 'sensu.lab.psick.io'
-psick::sensu::rabbitmq_password: 'hiera_encrypt_in_the_real_world'
-psick::sensu::rabbitmq_vhost: '/sensu'
-psick::sensu::api_user: 'admin'
-psick::sensu::api_password: 'sensu' # In real world encrypt with hiera eyaml
+psick_profile::sensu::is_client: true
+psick_profile::sensu::rabbitmq_host: 'sensu.lab.psick.io'
+psick_profile::sensu::rabbitmq_password: 'hiera_encrypt_in_the_real_world'
+psick_profile::sensu::rabbitmq_vhost: '/sensu'
+psick_profile::sensu::api_user: 'admin'
+psick_profile::sensu::api_password: 'sensu' # In real world encrypt with hiera eyaml
 
 #sensu::client_http_socket:
 #  bind: "%{facts.networking.ip}"
@@ -160,13 +168,13 @@ sensu::client_deregister: false
 #  handler: 'servicenow'
 
 
-psick::sensu::checks_params_hash:
+psick_profile::sensu::checks_params_hash:
   handlers:
     - 'graphite'
     - 'mailer'
   standalone: false
   subscribers: 'base'
-psick::sensu::checks_hash:
+psick_profile::sensu::checks_hash:
   'check_cpu':
     command: '/opt/sensu/embedded/bin/check-cpu.rb'
   'check_cron':
@@ -205,11 +213,11 @@ sensu::handlers:
       smtp_port: 25
       smtp_domain: "%{facts.networking.domain}"
 
-psick::sensu::plugins_params_hash:
+psick_profile::sensu::plugins_params_hash:
   pkg_provider: 'sensu_gem'
   type: 'package'
 
-psick::sensu::plugins_hash:
+psick_profile::sensu::plugins_hash:
   'sensu-plugins-conntrack': {}
   'sensu-plugins-cpu-checks': {}
   'sensu-plugins-cpu-usage': {}
@@ -217,7 +225,6 @@ psick::sensu::plugins_hash:
   'sensu-plugins-disk-checks': {}
   'sensu-plugins-dns': {}
   'sensu-plugins-dnslookup': {}
-  'sensu-plugins-disk-checks': {}
   'sensu-plugins-filesystem-checks': {}
   'sensu-plugins-filesize': {}
   'sensu-plugins-fsmounts': {}
@@ -243,11 +250,9 @@ sensu::purge:
 psick::timezone: 'Europe/Berlin'
 psick::timezone::timezone_windows: 'Central European Standard Time'
 
-# Puppet agents (on PE) sticky environment
-psick::puppet::pe_agent::manage_environment: true
-
 # Users
 # psick::users::root_pw: hash_as_in_etc_shadow
+
 psick::users::delete_unmanaged: false
 psick::users::module: 'psick'
 psick::users::users_hash:
@@ -257,38 +262,44 @@ psick::users::users_hash:
     groups:
       - users
       - wheel
+    # Change these in custome environments!
     ssh_authorized_keys:
       - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC93uOkdIrvcA1ij6wxtL0wDKch7E2gFqID2xR1LnEVQRSP9OFmNQV+4B7fM/fAVpFs939qBDeDRabft1ZAP2hUIeKWxweNQ6wxxV3YhJbxt+g6RAqm37BI+/ynZnZ4vrQp3XHfxNFYGFqiaowiiQ3/0QLh8PHliDJroOUU7h2YNwKBWiqdgufLCrPgnalSZ3kfKa2Yd5sM+iyAYJ102sXcGIFjAXCmQU1y7aJXjrzXzPuugnHvVFPzAUjsvu0FAiE+m8EhfBiyy1+SjnMB838G3EwrqNW+sEZ6lXh637xensB2WJuH0lPooCgaeG6WCmYjVK9rblcOb3B0Pp8Vbhp5 al@lab.psick.io'
       - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCrsr0FKUXVE46b1q9grcuNkWZ2BpGN1UhazO2MGFmS8AMQGIJ6Hubh9vjVe3BgBu05vUQGAIHUnfizh6gTVKSfWsTW4dQdwEsikoAahHN45Z4rP3PkCq8z+onn/Mo2S6HCpShp0uifW9uOZKXx9iLjlBDvuIwXjPiUDfWfTvhiSwxGdjHd16EKAbF3QZ4PFvMnDkJlvdCi/4CN8hiwDyCMN7BlF4xH899OjRxe9ThfuiBa3Gm63K5rr7Qn7FRiVHqmzvsaSIOdCdJZrHqdz2RoutFqC7HV1UxMFWvrNNx3XM8QsL+FMmPIebva518kxFSgM0bGzHa5lOiGEH9mQEGqKyI85ADQRKdZSLOKZ1zmWh3cVCk3r2lIFPFrhl3iLc/lwwq+QTFU+OxZUa3FcpEAlsokv0ktct+VBBxqbt33z6fowoPNqkYhjOl/D9Td8b3nViD1K3hrF6QY5x37hAmzRAJrgt1OrsLIfIQSoe+NgITi3t4Zt3sQnl9SsfgJlM9XhZpWhIaLurPWWEC57FRKL6yHVin9xNlfwIYPrtP+y4/yySMFCAaiUANr0D6Hb3DxTYobYpvz5sgI7SIwFNhQ1g2cOSxiFOgQ5SRBf+BD5ie4B/nn6nV9cQ6UilsWC/PqyxScQaMXNIgNbwrICh0ppUYeF7qW6a1Y/sOff12PTw== al@example42.com'
+  root:
+    ensure: present
+    ssh_authorized_keys:
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCU+X4RieytauZFw1qIS7ZE0IhAp+yt3qd+oPDFd9cgthZoMfMqztKONJiNL9wFAyH66nw3sdGS0qQOitv+6dMiMuZumyx4H44VzH349fslnwbl23PGwP4tj5dCZOi2wArlDlRKJqs7VfL9jZaBHQXa7OAXRKyA3c1m6wL1FaRTYTIpZmSvGmeatYtc76QmAXrGy69zKsSkplgdyd9aklToZrcjAChn8YnON5laa5uYlnoZXr+ZQ6mlMLfHJ40rhUA/Fd8f6mTk+IFP0SC3pLOhZ/cpLR1PuyIGsR8+a3IhWoUOwX+GlDWNjVWkPOMM2fItSZJ9b2ICDJ4FswLPqcZUMsAAuOyi5+F7A4M9LSYYlHJs5pRHxOIZJUwjJ/Xytg5rf+dlollDcxQ1KTqrvbonaG3DVn5uDo+626keivvpZ2hUl7RgBGV60iIhC7qMQpt9f8KrIaZwG0Um9nt4yPPmawSRDFyC4362MXr3iD6F1k8sGS8wS1D3GSVSckkIixU= root@lab.psick.io'
 
 # Passwordless sudopowers for al on lab
 psick::sudo::directives:
   al:
     content: 'al ALL=(ALL) NOPASSWD:ALL'
-
-# Docker tp profile when used
-psick::docker::install_class: 'tp_profile::docker'
+  lab:
+    content: 'al ALL=(ALL) NOPASSWD:ALL'
 
 # OpenSSH
-psick::openssh::module: 'tp_profile'
+psick::openssh::module: 'psick'
 
-tp_profile::openssh::resources:
+psick::openssh::tp::resources:
   tp::conf:
     openssh:
       template: 'psick/generic/spaced.erb'
       options_hash:
         Protocol: 2
-        PermitRootLogin: 'no'
+        PermitRootLogin: 'without-password'
         Subsystem: 'sftp /usr/libexec/openssh/sftp-server'
         UsePAM: 'yes'
         TCPKeepAlive: 'yes'
-        PermitRootLogin: 'without-password'
-# Ansible
-psick::ansible::master: puppet.lab.psick.io
-psick::ansible::keyshare_method: storeconfigs
+#        GatewayPorts: 'yes'
+
+# Admin
+psick::admin::ensure: present
+psick::admin::master: puppet.lab.psick.io
+psick::admin::keyshare_method: storeconfigs
 
 # Bolt
-psick::bolt::master: puppet.lab.psick.io
+psick::bolt::master: lab.psick.io
 psick::bolt::keyshare_method: storeconfigs
 psick::bolt::ssh_user: bolt
 
@@ -318,32 +329,12 @@ psick::servers:
     host: icinga.lab.psick.io
     port: 5665
 
-
-# network settings tests
-#network::routes_legacy: false
-#network::interfaces_legacy: false
-#network::rules_legacy: false
-#network::tables_legacy: false
-#network::routing_tables_legacy: false
-
-network::mroutes_hash:
+psick::network::routes:
   eth1:
     routes:
       '10.42.50.0/24': '10.42.43.1'
       '10.42.100.0/24': '10.42.43.1'
       '10.42.251.0/24': '10.42.43.1'
-
-DISnetwork::config_file_per_interface: false
-
-# Choria
-choria::manage_package_repo: true
-choria::server: true
-amcollective::client: false
-amcollective::server: false
-amcollective_choria::client: false
-amcollective_choria::server: true
-amcollective_choria::config:
-        #  security.serializer: "json"
 
 # Disable ipv6 and ip forwarding by default
 psick::sysctl::settings_hash:
@@ -352,14 +343,10 @@ psick::sysctl::settings_hash:
   net.ipv6.conf.default.disable_ipv6: 1
 
 # Extra packages
-tp::install_hash:
-  sysdig:
-    ensure: present
-    auto_prereq: true
 psick::packages::packages_osfamily_hash:
   RedHat:
     - net-tools
-    - telnet
+#    - telnet
     - wget
   Debian:
     - net-tools
@@ -367,11 +354,11 @@ psick::packages::packages_osfamily_hash:
     - wget
 
 # General postfix configuration
-tp_profile::postfix::resources:
+psick_profile::postfix::resources:
   tp::conf:
     postfix:
-      template: 'psick/postfix/main.cf.erb'
-tp_profile::postfix::options:
+      template: 'psick_profile/postfix/main.cf.erb'
+psick_profile::postfix::options:
   'mydomain': "%{facts.domain}"
   'myhostname': "%{facts.hostname}"
   'inet_interfaces': '127.0.0.1'
@@ -393,10 +380,50 @@ psick::resources_defaults:
     ensure: stopped
     enable: false
 
-psick::resources:
+psick::resourcesA:
   service:
     firewalld:
       ensure: stopped
       enable: false
     rpcbind: {}
 
+atp::install_hash_merge_behaviour: deep
+atp::install_hash:
+  crowdsec_repo:
+    ensure: present
+  crowdsec:
+    ensure: present
+  crowdsec-firewall-bouncer-iptables:
+    ensure: present
+
+psick_profile::crowdsec::collections_hash:
+  'crowdsecurity/whitelist-good-actors': {}
+  'crowdsecurity/nginx': {}
+  'crowdsecurity/base-http-scenarios': {}
+  'crowdsecurity/http-cve': {}
+
+psick_profile::crowdsec::enroll_key: cl3pn87cg00000vmhypi7u47m
+
+# tp install Hashicorp
+tp::install_hashNO:
+  hashicorp_repo:
+    ensure: absent
+#  vagrant: {}
+  terraform:
+    ensure: absent
+  consul:
+    ensure: absent
+  vault:
+    ensure: absent
+  packer:
+    ensure: absent
+  nomad:
+    ensure: absent
+  boundary:
+    ensure: absent
+  waypoint:
+    ensure: absent
+#  sentinel: {}
+#  otto: {}
+  serf:
+    ensure: absent

@@ -1,0 +1,105 @@
+---
+psick::profiles::linux_classess:
+  admin: psick::admin
+
+psick::admin::ensure: absent
+
+psick::profiles:windows_classess:
+  admin: psick::admin
+
+psick::pre::darwin_classes:
+  homebrew: homebrew
+  puppet: psick::puppet
+psick::base::darwin_classes:
+  tp: tp
+psick::profiles::darwin_classess:
+  admin: psick::admin
+
+homebrew::user: al
+psick::homebrew::user: al
+puppet_enterprise::manage_symlinks: false
+
+
+tp::osfamily_install_hash_merge_behaviour: deep
+tp::osfamily_install_hash:
+  RedHat:
+    - docker
+    - code
+    - pdk
+    - git
+  Debian:
+    docker: {}
+    code:
+      settings_hash:
+        package_provider: snap
+    pdk: {}
+    git: {}
+  windows:
+    1password: {}
+  #  blender: {}
+    BlueJeansApp: {}
+    chocolateygui: {}
+  #  citrix-workspace: {}
+    discord: {}
+    docker-desktop: {}
+    dropbox: {}
+    Firefox: {}
+  #  git: {}
+    GoogleChrome: {}
+    powertoys: {}
+  #  microsoft-windows-terminal: {}
+    MobaXTerm: {}
+    obs-studio: {}
+    opera: {}
+  #  pdk: {}
+    Sysinternals: {}
+    Steam: {}
+  ##  twitch: {}
+  #  vscode: {}
+    webex-meetings: {}
+    zoom: {}
+  Darwin:
+    - 1password
+#    - docker
+    - pdk
+#   - citrix-workspace
+    - firefox
+    - google-chrome
+    - iterm2
+    - libreoffice
+    - streamlabs-obs
+    - opera
+    - pe-client-tools
+    - spotify
+    - visual-studio-code
+#   - puppetlabs/puppet/wash
+    - webex-meetings
+    - zoom
+#  -  git
+    - krateo
+
+tp::osfamily_install_defaults:
+  windows:
+    settings_hash:
+      package_provider: chocolatey
+  Darwin:
+    auto_prereq: true
+
+#  psick::windows::features::use_defaults: true
+psick::windows::features::install_failson10:
+  Microsoft-Windows-Subsystem-Linux:
+    ensure: present
+  Hyper-V:
+    ensure: present
+  Remote-Desktop-Services:
+    ensure: present
+  UpdateServices-RSAT:
+    ensure: present
+  UpdateServices-UI:
+    ensure: present
+
+psick::users::users_hash:
+  al:
+    homedir_source: puppet:///modules/profile/users/al
+    shell: '/bin/zsh'
+    ssh_authorized_keys: []

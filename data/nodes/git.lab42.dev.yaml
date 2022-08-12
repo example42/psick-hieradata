@@ -1,12 +1,13 @@
 ---
 psick::base::linux_classes:
   network: psick::network
-  tp: tp
 #  wazuh: psick::wazuh
 
 psick::network::interfaces:
+  'eth0':
+    ipv4_dhcp: true
   'ens18':
-    ipv4_address: '10.42.100.24'
+    ipv4_address: '10.42.100.26'
     ipv4_netmask: '255.255.255.0'
     ipv4_gateway: '10.42.100.1'
 

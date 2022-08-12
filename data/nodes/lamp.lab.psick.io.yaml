@@ -2,25 +2,25 @@
 psick::base::linux_classes:
   'git': psick::git
 psick::profiles::linux_classes:
-  'apache': tp_profile::apache
+  'apache': psick_profile::apache::tp
   'php': psick::php
-  'mysql': psick::mariadb
+  'mysql': psick_profile::mariadb
 
 # This node runs in noop mode by default
 psick::puppet::pe_agent::noop_setting: true
 
 # Always enforce changes on apache
-tp_profile::apache::noop_manage: true
-tp_profile::apache::noop_value: false
+psick_profile::apache::tp::noop_manage: true
+psick_profile::apache::tp::noop_value: false
 
 psick::git::extra_packages_list:
   - git-lfs
 
-tp_profile::apache::resources:
+psick_profile::apache::tp::resources:
   tp::conf:
     apache::openkills.info.conf:
       base_dir: conf
-      template: psick/apache/vhost.conf.erb
+      template: psick_profile/apache/vhost.conf.erb
       options_hash:
         ServerName: openskills.info
         ServerAlias:
@@ -30,10 +30,10 @@ tp_profile::apache::resources:
         AddDefaultCharset: ISO-8859-1
     apache::deny_git.conf:
       base_dir: conf
-      source: puppet:///modules/psick/apache/deny_git.conf
+      source: puppet:///modules/psick_profile/apache/deny_git.conf
     apache::abnormalia.com.conf:
       base_dir: conf
-      template: psick/apache/vhost.conf.erb
+      template: psick_profile/apache/vhost.conf.erb
       options_hash:
         ServerName: abnormalia.com
         ServerAlias:
@@ -47,6 +47,7 @@ tp_profile::apache::resources:
 #          RewriteRule: '^(.*)$ /route.php?url=$1 [L]'
   tp::dir:
     apache::openskills.info:
+      ensure: latest
       vcsrepo: git
       source: git@bitbucket.org:alvagante/openskills.info.git
       path: /var/www/html/openskills.info
@@ -59,21 +60,22 @@ tp_profile::apache::resources:
 psick::php::module_hash:
   mysql: {}
   gd: {}
+  yaml: {}
 
-psick::mariadb::user_hash:
+psick_profile::mariadb::user_hash:
   openskills:
     password: shouldbesecret
-psick::mariadb::grant_hash:
+psick_profile::mariadb::grant_hash:
   openskills:
     password: shouldbesecret
     db: openskills
     db_init_query_file: /root/openskills-data/openskills.sql
     require: 'Tp::Dir[mariadb::openskills-data]'
-tp_profile::mariadb::resources:
+psick_profile::mariadb::tp::resources:
   tp::dir:
     mariadb::openskills-data:
       vcsrepo: git
-      source: git@git.lab.psick.io:alvagante/openskills-data.git
+      source: git@bitbucket.org:alvagante/openskills-data.git
       path: /root/openskills-data
 
 psick::users::users_hash:
@@ -81,3 +83,26 @@ psick::users::users_hash:
     openssh_keygen:
       root:
         bits: 2048
+
+tp::conf_hash:
+  openssh::root_id_rsa:
+    path: '/root/.ssh/id_rsa'
+    mode: '0400'
+    source: puppet:///modules/profile/openssh/lamp.lab.psick.io/id_rsa
+    settings_hash:
+      validate_cmd: ~
+  openssh::root_id_rsa.pub:
+    path: '/root/.ssh/id_rsa.pub'
+    mode: '0644'
+    source: puppet:///modules/profile/openssh/lamp.lab.psick.io/id_rsa.pub
+    settings_hash:
+      validate_cmd: ~
+  openssh::root_id_rsa.pub_dir:
+    path: '/root/.ssh'
+    ensure: directory
+    before: Class[Psick_profile::Apache::Tp]
+    settings_hash:
+      validate_cmd: ~
+
+psick::openssh::keyscans_hash:
+  bitbucket.org: {}

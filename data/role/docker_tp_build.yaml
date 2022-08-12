@@ -1,21 +1,21 @@
 ---
 psick::profiles::linux_classes:
-  docker: '::psick::docker'
-  docker_builder: '::psick::docker::builder'
-  docker_examples: '::psick::docker::run_examples'
-  docker_build_examples: '::psick::docker::build_examples'
+  docker: '::psick_profile::docker'
+  docker_builder: '::psick_profile::docker::builder'
+  docker_examples: '::psick_profile::docker::run_examples'
+  docker_build_examples: '::psick_profile::docker::build_examples'
 
-psick::docker::username: example42
-psick::docker::install_class: '' # To allow operations from Mac. Docker has to be installed.
-psick::docker::run_examples::ensure: absent
-psick::docker::builder::maintainer: 'Example42 GmbH <info@example42.com>'
-psick::docker::builder::images:
+psick_profile::docker::username: example42
+psick_profile::docker::tp_class: '' # To allow operations from Mac. Docker has to be installed.
+psick_profile::docker::run_examples::ensure: absent
+psick_profile::docker::builder::maintainer: 'Example42 <info@example42.com>'
+psick_profile::docker::builder::images:
   apache:
     ensure: present
     conf_hash:
       apache::mysite:
         base_dir: 'conf'
-        template: 'psick/apache/vhost.conf.erb'
+        template: 'psick_profile/apache/vhost.conf.erb'
         options:
           ServerName: 'www.example42.com'
           ServerAliases:

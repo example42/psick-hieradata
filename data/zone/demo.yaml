@@ -9,7 +9,7 @@ psick::hosts::file::extra_hosts:
   - '10.42.45.103 cirunner cirunner.demo'
 
 # We actually want to install gitlab on Vagrant env
-psick::gitlab::manage_installation: true
+psick_profile::gitlab::manage_installation: true
 
 # In demo we leave DNS unmanaged
 psick::base::linux_classes:

@@ -1,14 +1,14 @@
 ---
 psick::profiles::linux_classes:
-  influxdb: psick::influxdb
+  influxdb: psick_profile::influxdb
 
-psick::influxdb::databases_hash:
+psick_profile::influxdb::databases_hash:
   example42:
     ensure: present
   example43:
     ensure: absent
 
-psick::influxdb::users_hash:
+psick_profile::influxdb::users_hash:
   example42:
     ensure: present
     password: s3cwr3
@@ -18,7 +18,7 @@ psick::influxdb::users_hash:
     password: s3cwr3
     database: example42
 
-psick::influxdb::grants_hash:
+psick_profile::influxdb::grants_hash:
   example42_example42:
     ensure: present
     database: example42

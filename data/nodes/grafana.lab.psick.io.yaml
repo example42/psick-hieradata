@@ -1,17 +1,11 @@
 ---
 psick::profiles::linux_classes:
-  grafana: psick::grafana
-  influxdb: tp_profile::influxdb
+  grafana: psick_profile::grafana
+  influxdb: psick_profile::influxdb::tp
 
-psick::grafana::plugins_hash:
+psick_profile::grafana::plugins_hash:
   cloudflare-app: {}
   raintank-worldping-app:
     ensure: absent
 
-psick::icinga2::manage: false
-network::config_file_notify: false
-network::confs_hash:
-  eth22:
-    content: '# Test9'
-    # config_file_notify: false
-    # config_file_notify: ~
+psick_profile::icinga2::manage: false

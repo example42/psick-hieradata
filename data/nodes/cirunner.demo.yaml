@@ -32,15 +32,9 @@ psick::puppet::pe_code_manager::puppet_user: 'gitlab-runner'
 psick::puppet::pe_code_manager::deploy_ssh_private_source: 'file:///home/gitlab-runner/.ssh/id_rsa'
 
 
-#  psick::ci::octocatalog::git_repo: 'git@git.demo:puppet/control-repo.git'
-# Options for psick::ci::octocatalog::template
-psick::ci::octocatalog::options:
-  puppetdb_url: 'https://puppet.demo:8081'
-  bootstrap_script: 'bin/puppet_install_puppetfile.sh'
-
 # Config for the GIT Runners
 # Tokens change at every gitlab installation
-psick::gitlab::runner::runners:
+psick_profile::gitlab::runner::runners:
   test_puppet:
     url: 'https://git.demo'
     token: 'K3k3nPCzGTDpZhMspgdg' # TO CHANGE AT EVERY GITLAB INSTALLATION
@@ -48,10 +42,10 @@ psick::gitlab::runner::runners:
     tls_ca_file: '/etc/puppetlabs/puppet/ssl/certs/ca.pem'
 
 # Configure the scripts used during Puppet CI
-psick::gitlab::ci::default_nodes:
+psick_profile::gitlab::ci::default_nodes:
   - puppet.demo
-psick::gitlab::ci::always_nodes:
+psick_profile::gitlab::ci::always_nodes:
   - git.demo
-psick::gitlab::ci::options:
+psick_profile::gitlab::ci::options:
   catalog_preview_default_nodes: 'git.demo,test.demo'
 

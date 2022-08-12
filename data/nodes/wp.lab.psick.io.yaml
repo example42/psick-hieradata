@@ -1,0 +1,37 @@
+---
+psick::base::linux_classes:
+  monitor_plugins: ''
+
+psick::base::linux_classes:
+  worpress: profile::wordpress
+
+psick::selinux::state: disabled
+
+psick::users::users_hash:
+  al:
+      groups:
+      - users
+      - --wheel
+
+psick::firewall::iptables::manage_firewalld: true
+
+psick::network::interfaces:
+  'eth1':
+    ipv4_address: '10.42.43.19'
+    ipv4_netmask: '255.255.255.0'
+    ipv4_gateway: '10.42.43.1'
+
+profile::wordpress::create_default_instance: false
+profile::wordpress::instances:
+  example42:
+    wordpress_sitename: example42.com
+    wordpress_alias: www.example42.com test.example42.com
+  alvagante:
+    wordpress_sitename: alvagante.com
+    wordpress_alias: www.alvagante.com test.alvagante.com
+    web_ssl: true
+tp::dir_hash:
+  apache::ssl:
+    path: /etc/httpd/ssl
+    source: puppet:///modules/profile/apache/ssl
+    recurse: true

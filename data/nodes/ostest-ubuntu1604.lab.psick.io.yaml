@@ -1,14 +1,6 @@
 ---
 # Network configs
-# Network v3 format
-network::interfaces_hash:
-  'eth0':
-    enable_dhcp: true
-  'eth1':
-    ipaddress: '10.42.43.125'
-    netmask: '255.255.255.0'
-# Network v4 format
-nonetwork::interfaces:
+psick::network::interfaces:
   'eth0':
     ipv4_dhcp: true
   'eth1':

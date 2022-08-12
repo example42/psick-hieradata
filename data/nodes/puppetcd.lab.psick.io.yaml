@@ -1,14 +1,18 @@
 ---
 psick::base::linux_classes:
-  firewall: psick::firewall::iptables
-psick::profiles::linux_classes_deprecated:
-  cd4pe: cd4pe
+  firewall: ''
+  monitor_plugins: ''
+
+#psick::profiles::linux_classes_deprecated:
+#  cd4pe: cd4pe
 
 psick::firewall::iptables::manage_firewalld: false
 psick::firewall::iptables::preserve_rules_on_restore: true
 psick::firewall::iptables::allow_tcp_ports:
   - 80
   - 443
+
+psick::selinux::state: disabled
 
 cd4pe::cd4pe_version: 3.12.4
 cd4pe::manage_pe_host_mapping: false
@@ -17,14 +21,7 @@ cd4pe::cd4pe_docker_extra_params:
   - --add-host puppet.lab.psick.io:10.42.43.101
   - --add-host git.lab.psick.io:10.42.43.102
 
-network::interfaces_hash:
-  'eth0':
-    enable_dhcp: true
-  'eth1':
-    ipaddress: '10.42.43.110'
-    netmask: '255.255.255.0'
-
-nonetwork::interfaces:
+psick::network::interfaces:
   'eth0':
     ipv4_dhcp: true
   'eth1':
@@ -34,4 +31,6 @@ nonetwork::interfaces:
 psick::sysctl::settings_hash:
   net.ipv4.conf.all.forwarding: 1
 
-
+psick::puppet::pe_agent::settings:
+  agent:
+    number_of_facts_soft_limit: 4096 

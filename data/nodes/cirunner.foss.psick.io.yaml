@@ -4,25 +4,20 @@ psick::pre::linux_classes:
 psick::profiles::linux_classes:
   vagrant: vagrant
   git: psick::git
-  docker: psick::docker
+  docker: psick_profile::docker
   puppet_pdk: psick::puppet::pdk
   puppet_ci: psick::puppet::ci
   buildgems: ''
-  jenkins: 'psick::jenkins'
+  jenkins: 'psick_profile::jenkins'
 # Explicit list of required gems for CI runners for puppet testing
 psick::puppet::gems::install_puppet_gems: false
 psick::puppet::gems::install_system_gems: false
 psick::puppet::gems::default_set: integration
 
-# Options for psick::ci::octocatalog::template
-psick::ci::octocatalog::options:
-  puppetdb_url: 'https://puppet.lab.psick.io:8081'
-  bootstrap_script: 'bin/puppet_install_puppetfile.sh'
-
 # Config for the GIT Runners
 # Tokens change at every gitlab installation
-psick::gitlab::runner::use_docker: true
-psick::gitlab::runner::runners:
+psick_profile::gitlab::runner::use_docker: true
+psick_profile::gitlab::runner::runners:
   test_puppet:
     url: 'https://git.lab.psick.io'
     token: 'ZHyUq1GQfKFU9Tkk6iU9' # TO CHANGE AT EVERY GITLAB INSTALLATION
@@ -35,18 +30,18 @@ psick::gitlab::runner::runners:
     tls_ca_file: '/etc/puppetlabs/puppet/ssl/certs/ca.pem'
 
 # Integration tests via docker
-psick::docker::allowed_users:
+psick_profile::docker::allowed_users:
   - gitlab-runner
   - jenkins
 psick::sysctl::settings_hash:
   net.ipv4.conf.all.forwarding: 1
 
 # Configure the scripts used during Puppet CI
-psick::gitlab::ci::default_nodes:
+psick_profile::gitlab::ci::default_nodes:
   - puppet.lab.psick.io
-psick::gitlab::ci::always_nodes:
+psick_profile::gitlab::ci::always_nodes:
   - git.lab.psick.io
-psick::gitlab::ci::options:
+psick_profile::gitlab::ci::options:
   catalog_preview_default_nodes: 'git.lab.psick.io,log.lab.psick.io'
 
 # Configure gitconfig for gitlab-runner to ignore
@@ -58,6 +53,6 @@ psick::git::configs_hash:
         sslVerify: false
 
 # Jenkins
-psick::jenkins::disable_setup_wizard: true
-psick::jenkins::admin_password: 'example42'
-psick::jenkins::module: jenkins
+psick_profile::jenkins::disable_setup_wizard: true
+psick_profile::jenkins::admin_password: 'example42'
+psick_profile::jenkins::module: jenkins

@@ -21,12 +21,10 @@ tp::osfamily_install_hash:
     - pdk
     - git
   darwin:
-    git:
-      settings_hash:
-        package_provider:  brew
+    git: {}
     visual-studio-code: {}
     docker: {}
-
+    pdk: {}
 
 tp::osfamily_install_defaults:
   windows:

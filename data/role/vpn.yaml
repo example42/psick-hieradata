@@ -1,6 +1,6 @@
 ---
 psick::profiles::linux_classes:
-  ipsec: 'psick::openswan'
+  ipsec: 'psick_profile::openswan'
 
 psick::sysctl::settings_hash:
   net.ipv4.ip_forward: 1

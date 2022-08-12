@@ -1,12 +1,12 @@
 ---
 psick::profiles::linux_classes:
-  grafana: psick::grafana
+  grafana: psick_profile::grafana
 
-psick::grafana::plugins_hash:
+psick_profile::grafana::plugins_hash:
   grafana-piechart-panel:
     version: '1.2.0'
 
-psick::grafana::datasources_hash:
+psick_profile::grafana::datasources_hash:
   InfluxDB:
     ensure: present
     type: influxdb
@@ -17,7 +17,7 @@ psick::grafana::datasources_hash:
     password: grafana
     url: http://localhost:8086
 
-psick::grafana::dashboards_hash:
+psick_profile::grafana::dashboards_hash:
   default:
     ensure: present
     type: 'file'

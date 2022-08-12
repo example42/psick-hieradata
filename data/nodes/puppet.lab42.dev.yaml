@@ -6,5 +6,8 @@ psick::profiles::linux_classes:
 
 puppet_enterprise::console_services::no_longer_reporting_cutoff: 220000
 
-puppet_enterprise::profile::puppetdb::whitelisted_certnames:
+puppet_enterprise::profile::puppetdb::allowlisted_certnames:
   - bestia.lab42.dev
+
+psick::repo::use_defaults: true
+psick::selinux::state: disabled

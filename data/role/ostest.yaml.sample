@@ -13,18 +13,6 @@
 psick::profiles::linux_classes:
   ostest: '::psick::ostest'
   
-# tp_profiles testing
-psick::ostest::tp_profiles_hash:
-  influxdb:
-    ensure: absent
-  elasticsearch:
-    ensure: absent
-  grafana:
-    ensure: present
-  mongodb:
-    ensure: present
-    upstream_repo: true
-            
 # Uncomment below to skip application of 
 # base classes, as defined via psick::base::$os_classes
 # and apply only what's defined by psick::profiles::$os_classes

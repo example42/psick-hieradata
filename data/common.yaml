@@ -50,12 +50,13 @@ psick::base::linux_classes:
   ssh: psick::openssh
   sudo: psick::sudo
   logs: psick::logs::rsyslog
-  time: psick::time
+  tp: tp
+##  time: psick::time
   sysctl: psick::sysctl
   update: psick::update
   motd: psick::motd
   profile: psick::profile
-  systat: psick::monitor::sar
+  systat: psick_profile::sar
 
 # PSICK classification for Windows nodes
 psick::pre::windows_classes:
@@ -65,7 +66,14 @@ psick::base::windows_classes:
   registry: psick::windows::registry
   services: psick::windows::services
   time: psick::time
-#   users: psick::users::ad
+  tp: tp
+
+# PSICK classification for Mac nodes
+psick::pre::darwin_classes:
+  users: psick::users
+
+psick::base::darwin_classes:
+  tp: tp
 
 # Repo settings
 psick::repo::add_defaults: true
@@ -84,3 +92,5 @@ psick::hostname::update_network_entry: false # Avoid resource duplication when p
 #psick::sysctl::settings_hash:
 #  net.ipv4.conf.all.forwarding: 0
 
+psick::network::noop_manage: true
+psick::network::noop_value: true

@@ -2,16 +2,16 @@
 # Used to for the images built with fab docker.multios_build command
 
 psick::profiles::linux_classes:
-  docker_builder: '::psick::docker::builder'
-  rocker_builder: '::psick::docker::rocker_builder'
+  docker_builder: '::psick_profile::docker::builder'
+  rocker_builder: '::psick_profile::docker::rocker_builder'
 
-psick::docker::username: example42
-psick::docker::install_class: ''
-psick::docker::builder::maintainer: 'Example42 GmbH <info@example42.com>'
-psick::docker::builder::workdir: '/var/tmp/dockerfiles'
-psick::docker::builder::always_build: true
-psick::docker::builder::push: false
-psick::docker::builder::images:
+psick_profile::docker::username: example42
+psick_profile::docker::tp_class: ''
+psick_profile::docker::builder::maintainer: 'Example42 <info@example42.com>'
+psick_profile::docker::builder::workdir: '/var/tmp/dockerfiles'
+psick_profile::docker::builder::always_build: true
+psick_profile::docker::builder::push: false
+psick_profile::docker::builder::images:
   puppet-agent:
     ensure: present
     append_lines:

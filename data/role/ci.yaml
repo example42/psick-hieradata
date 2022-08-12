@@ -1,4 +1,4 @@
 ---
 psick::profiles::linux_classes:
-  jenkins: psick::jenkins
-#  gitlab: psick::gitlab
+  jenkins: psick_profile::jenkins
+#  gitlab: psick_profile::gitlab

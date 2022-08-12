@@ -38,7 +38,7 @@ psick::users::users_hash:
       - users
 
 # OpenSSH
-tp_profile::openssh::resources:
+psick::openssh::tp::resources:
   tp::conf:
     openssh:
       template: 'psick/generic/spaced.erb'

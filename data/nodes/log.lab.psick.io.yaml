@@ -2,12 +2,9 @@
 psick::base::linux_classes:
   monitor_plugins: ''
 
-network::interfaces_hash:
+psick::network::interfaces:
   'eth0':
-    enable_dhcp: true
+    ipv4_dhcp: true
   'eth1':
-    ipaddress:
-      - '10.42.43.114'
-    netmask: '255.255.255.0'
-    gateway: '10.42.143.1'
-
+    ipv4_address: '10.42.43.114'
+    ipv4_netmask: '255.255.255.0'

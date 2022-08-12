@@ -1,6 +1,8 @@
 ---
 puppet_enterprise::master::static_catalogs: false
 puppet_enterprise::master::puppetserver::jruby_puppet_multithreaded: true
+puppet_enterprise::enable_system_metrics_collection: true
+puppet_enterprise::enable_database_maintenance: true
 
 psick::pre::linux_classes:
   buildgems: psick::ruby::buildgems
@@ -9,16 +11,17 @@ psick::profiles::linux_classes:
   pe_console: psick::puppet::pe_console
   pe_puppetdb: psick::puppet::pe_puppetdb
   pe_server: psick::puppet::pe_server
-  gitlab_cli: psick::gitlab::cli
-#  gitlab_ci: psick::gitlab::ci
+  gitlab_cli: psick_profile::gitlab::cli
+#  gitlab_ci: psick_profile::gitlab::ci
   puppet_ci: psick::puppet::ci
 #  pe_code_manager: psick::puppet::pe_code_manager
-  gitlab_runner: psick::gitlab::runner
-#  octocatalog: psick::ci::octocatalog
-  danger: psick::ci::danger
+#  gitlab_runner: psick_profile::gitlab::runner
+#  octocatalog: psick_profile::octocatalog
+#  danger: psick::ci::danger
   puppet_autosign: psick::puppet::autosign
-  choria_broker: choria::broker
+#  choria_broker: choria::broker
 #  hdm: hdm
+  dropsonde: dropsonde
 
 # Avoid duplicated tp::repo epel resource
 psick::repo::use_defaults: false
@@ -57,7 +60,7 @@ puppet_enterprise::profile::puppetdb::allowlisted_certnames:
   - cirunner.lab.psick.io
   - git.lab.psick.io
   - puppet.lab.psick.io
-  - icinga.lab.psick.io
+  - lab.psick.io
 puppet_enterprise::profile::console::allowlisted_certnames:
   - cirunner.lab.psick.io
   - git.lab.psick.io
@@ -77,6 +80,7 @@ puppet_enterprise::profile::console::java_args:
   Xms: 512m
   Xmx: 512m
 puppet_enterprise::master::puppetserver::jruby_max_active_instances: 1
+
 puppet_enterprise::profile::master::java_args:
   Xms: 512m
   Xmx: 512m
@@ -95,9 +99,10 @@ psick::puppet::gems::install_gems:
   - rake
 
 # Code manager setup
-puppet_enterprise::profile::master::r10k_remote: 'git@git.lab.psick.io:puppet/psick.git'
+puppet_enterprise::profile::master::r10k_remote: https://github.com/example42/psick.git
+puppet_enterprise::profile::master::r10k_private_key: /etc/puppetlabs/puppetserver/ssh/id_rsa
 puppet_enterprise::profile::master::code_manager_auto_configure: true
-puppet_enterprise::profile::master::r10k_private_key: '/etc/puppetlabs/ssh/id-control_repo.rsa'
+
 # setup code_manager to update classes in the console after environment code deployment
 puppet_enterprise::master::code_manager::post_environment_hooks:
   - url: 'https://puppet.lab.psick.io:4433/classifier-api/v1/update-classes'
@@ -107,10 +112,15 @@ psick::puppet::pe_code_manager::pe_password: 'deployme'   # PE user password. TO
 psick::puppet::pe_code_manager::lifetime: '5y'            # Adapt as preferred
 psick::puppet::pe_code_manager::generate_ssh_keys: true   # Default breaks on code manager configured PE from 2017.2.x
 
+# Postgres custom setting
+puppet_enterprise::profile::database::auto_explain_settings:
+  'max_locks_per_transaction': 320
+
+
 # Configure the scripts used during Gitlab CI of the control repo
-psick::gitlab::ci::default_nodes:
+psick_profile::gitlab::ci::default_nodes:
   - puppet.lab.psick.io
-psick::gitlab::ci::always_nodes:
+psick_profile::gitlab::ci::always_nodes:
   - git.lab.psick.io
   - cirunner.lab.psick.io
 psick::puppet::ci::default_nodes:
@@ -124,34 +134,36 @@ psick::puppet::ci::options:
     - puppet.lab.psick.io
 
 
-psick::ci::octocatalog::run_as_user: 'gitlab-runner'
-psick::ci::octocatalog::template: 'psick/ci/octocatalog/octocatalog-diff.cfg.rb.erb'
+psick_profile::octocatalog::run_as_user: 'gitlab-runner'
+psick_profile::octocatalog::template: 'psick_profile/octocatalog/octocatalog-diff.cfg.rb.erb'
 
 # Config for the GIT Runners for Puppet deployments
 # Tokens change at every gitlab installation
 # Check under your control-repo project settings - CI/CD - Specific runner token
-psick::gitlab::runner::runners:
+psick_profile::gitlab::runner::runners:
   deploy_puppet:
     url: 'https://git.lab.psick.io'
-    token: 'cycnwQxGbhv37PtaRUUj' # CI Runner token TO CHANGE AT EVERY INSTALLATION
+    token: CHANGEME
     tag_list: 'deploy_puppet'
     tls_ca_file: '/etc/puppetlabs/puppet/ssl/certs/ca.pem'
 
 # Manage puppet agent grants. PE User must be already existing
-# If using PE. it must have permission to trigger remote puppet agents
-psick::gitlab::runner::pe_user: 'deployer'       # A user you've created on PE
-psick::gitlab::runner::pe_password: 'deployer'   # PE user password.
-psick::gitlab::runner::pe_token_lifetime: '5y'            # Adapt as preferred
+# If using PE it must have permission to trigger remote puppet agents
+psick_profile::gitlab::runner::pe_user: 'deployer'
+# pe_user password:
+psick_profile::gitlab::runner::pe_password: CHANGEME
+# Lifetime of a token created with the above credentials
+psick_profile::gitlab::runner::pe_token_lifetime: '5y'
 
 # Config for gitlab cli. Tokens change at every gitlab installation
 # Use the Private token of a user with merge request and accept privileges
 # Settings to generate /etc/gitlab-cli.conf used by gitlab_create_merge_request.rb and gitlab_accept_merge_request.rb
-psick::gitlab::cli::config_hash:
+psick_profile::gitlab::cli::config_hash:
   private_token: 'qz9fZNFSaZLjVVzH_fag' # TO CHANGE AT EVERY INSTALLATION
   project_id: 1 # Control-repo project ID on GITLAB
   api_endpoint: 'https://git.lab.psick.io/api/v4'
 # Settings to generate /etc/gitlab-cli.yaml used by gitlab_multirepo_create_merge_request.rb and gitlab_multirepo_accept_merge_request.rb
-psick::gitlab::cli::multirepo_config_hash:
+psick_profile::gitlab::cli::multirepo_config_hash:
   psick:
     private_token: 'qz9fZNFSaZLjVVzH_fag' # TO CHANGE AT EVERY INSTALLATION
     project_id: 1 # Repo project ID on GITLAB
@@ -161,16 +173,16 @@ psick::gitlab::cli::multirepo_config_hash:
     project_id: 3 # Repo project ID on GITLAB
     api_endpoint: 'https://git.lab.psick.io/api/v4'
 
-psick::gitlab::cli::auto_prereq: false # Prevent Duplicate declaration: Tp::Install[ruby]"
+psick_profile::gitlab::cli::auto_prereq: false # Prevent Duplicate declaration: Tp::Install[ruby]"
 
 # Monitoring
-psick::sensu::checks_hash:
+psick_profile::sensu::checks_hash:
   'check_whois42':
     command: '/opt/sensu/embedded/bin/check-whois-domain-expiration-multi.rb -d example42.com,example42.de,example42.org,example42.info,example42.eu,example42.biz,example42.training,lab42.it -c 10 -w 90'
     interval: 86400
 
 psick::ci::danger::use_gitlab: true
-psick::ansible::is_master: true
+psick::admin::master_enable: true
 psick::bolt::is_master: true
 psick::bolt::node::create_ssh_user: false
 
@@ -198,19 +210,12 @@ mcollective::client: true
 #      topic: mcollective.broadcast.agent.discovery
 #      protocol: request
 #      workers: 10
-NEWnetwork::interfaces_hash:
+psick::network::interfaces:
   'eth0':
     ipv4_dhcp: true
   'eth1':
     ipv4_address: '10.42.43.101'
     ipv4_netmask: '255.255.255.0'
-
-network::interfaces_hash:
-  'eth0':
-    enable_dhcp: true
-  'eth1':
-    ipaddress: '10.42.43.101'
-    netmask: '255.255.255.0'
 
 hdm::prereq::packages:
   - sqlite-devel

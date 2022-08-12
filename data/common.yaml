@@ -50,6 +50,7 @@ psick::base::linux_classes:
   ssh: psick::openssh
   sudo: psick::sudo
   logs: psick::logs::rsyslog
+  tp: tp
 ##  time: psick::time
   sysctl: psick::sysctl
   update: psick::update
@@ -65,7 +66,14 @@ psick::base::windows_classes:
   registry: psick::windows::registry
   services: psick::windows::services
   time: psick::time
-#   users: psick::users::ad
+  tp: tp
+
+# PSICK classification for Mac nodes
+psick::pre::darwin_classes:
+  users: psick::users
+
+psick::base::darwin_classes:
+  tp: tp
 
 # Repo settings
 psick::repo::add_defaults: true

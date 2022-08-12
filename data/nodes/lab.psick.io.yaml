@@ -170,7 +170,7 @@ psick_profile::openvpn::module: 'openvpn'
 openvpn::client_defaults:
   port: '11142'
   server: 'lab.psick.io'
-  remote_host: "lab.psick.io"
+  remote_host: 'lab.psick.io'
 openvpn::client_specific_configs:
   busto:
     server: lab.psick.io
@@ -211,7 +211,7 @@ openvpn::servers:
     country: 'IT'
     province: 'VA'
     city: 'Busto Arsizio'
-    organization: 'example42'
+    organization: 'example42.com'
 #    key_cn: 'example42'
 #    key_name: 'example42'
 #    key_ou: 'example42'
@@ -237,7 +237,7 @@ openvpn::servers:
       - '10.42.48.0 255.255.255.0'
       - '10.42.49.0 255.255.255.0'
       - '10.42.100.0 255.255.255.0'
-    logfile: "/var/log/openvpn.log"
+    logfile: "/var/log/openvpn/lab.psick.io.log"
     custom_options:
       ifconfig: '10.42.251.1 255.255.255.0'
       route-gateway: '10.42.251.1'
@@ -245,7 +245,11 @@ openvpn::servers:
 openvpn::clients:
   'al': {}
   'busto': {}
+  'guest': {}
 
+openvpn::revokes:
+  'guest':
+    server: 'lab.psick.io'
 
 
 
@@ -258,3 +262,10 @@ psick::selinux::state: disabled
 psick::sudo::directives:
   lab:
     content: 'lab ALL=(ALL) NOPASSWD:/opt/puppetlabs/bin/puppet node purge'
+
+# To export apps listening on localhost
+pasick::openssh::tp::resources:
+  tp::conf:
+    openssh:
+      options_hash:
+        GatewayPorts: 'yes'

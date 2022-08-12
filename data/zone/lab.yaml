@@ -11,7 +11,7 @@ psick::base::linux_classes:
   selinux: psick::selinux
   limits: psick::limits
 #  sensu: psick_profile::sensu
-  admin: psick::admin
+##  admin: psick::admin
   bolt: psick::bolt
   puppet_postrun: psick::puppet::postrun
   packages: psick::packages
@@ -19,6 +19,10 @@ psick::base::linux_classes:
 # mcollective: mcollective
 #  mcollective_choria: mcollective_choria
 #  puppetagent: puppet_agent
+  crowdsec: psick_profile::crowdsec
+
+#psick::base::darwin_classes:
+#  crowdsec: psick_profile::crowdsec
 
 psick::base::windows_classes:
   windows_puppet_certificates: windows_puppet_certificates
@@ -68,13 +72,12 @@ psick::hostname::update_host_entry: false
 # Hosts file managed via Puppetdb query         
 psick::hosts::puppetdb::puppetdb_fact_address: 'networking.interfaces.eth1.ip'
 psick::hosts::puppetdb::puppethost: '10.42.43.101       puppet  puppet.lab.psick.io'
-psick::hosts::puppetdb::extra_hosts:
-  - '10.42.43.123       ostest-ubuntu1804 ostest-ubuntu1804.lab.psick.io'
 
 
 psick::dns::resolver::nameservers:
   - 10.42.43.1
   - 1.1.1.1
+
 
 # Hosts file managed via file resource
 psick::hosts::file::extra_hosts:
@@ -249,6 +252,7 @@ psick::timezone::timezone_windows: 'Central European Standard Time'
 
 # Users
 # psick::users::root_pw: hash_as_in_etc_shadow
+
 psick::users::delete_unmanaged: false
 psick::users::module: 'psick'
 psick::users::users_hash:
@@ -258,6 +262,7 @@ psick::users::users_hash:
     groups:
       - users
       - wheel
+    # Change these in custome environments!
     ssh_authorized_keys:
       - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC93uOkdIrvcA1ij6wxtL0wDKch7E2gFqID2xR1LnEVQRSP9OFmNQV+4B7fM/fAVpFs939qBDeDRabft1ZAP2hUIeKWxweNQ6wxxV3YhJbxt+g6RAqm37BI+/ynZnZ4vrQp3XHfxNFYGFqiaowiiQ3/0QLh8PHliDJroOUU7h2YNwKBWiqdgufLCrPgnalSZ3kfKa2Yd5sM+iyAYJ102sXcGIFjAXCmQU1y7aJXjrzXzPuugnHvVFPzAUjsvu0FAiE+m8EhfBiyy1+SjnMB838G3EwrqNW+sEZ6lXh637xensB2WJuH0lPooCgaeG6WCmYjVK9rblcOb3B0Pp8Vbhp5 al@lab.psick.io'
       - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCrsr0FKUXVE46b1q9grcuNkWZ2BpGN1UhazO2MGFmS8AMQGIJ6Hubh9vjVe3BgBu05vUQGAIHUnfizh6gTVKSfWsTW4dQdwEsikoAahHN45Z4rP3PkCq8z+onn/Mo2S6HCpShp0uifW9uOZKXx9iLjlBDvuIwXjPiUDfWfTvhiSwxGdjHd16EKAbF3QZ4PFvMnDkJlvdCi/4CN8hiwDyCMN7BlF4xH899OjRxe9ThfuiBa3Gm63K5rr7Qn7FRiVHqmzvsaSIOdCdJZrHqdz2RoutFqC7HV1UxMFWvrNNx3XM8QsL+FMmPIebva518kxFSgM0bGzHa5lOiGEH9mQEGqKyI85ADQRKdZSLOKZ1zmWh3cVCk3r2lIFPFrhl3iLc/lwwq+QTFU+OxZUa3FcpEAlsokv0ktct+VBBxqbt33z6fowoPNqkYhjOl/D9Td8b3nViD1K3hrF6QY5x37hAmzRAJrgt1OrsLIfIQSoe+NgITi3t4Zt3sQnl9SsfgJlM9XhZpWhIaLurPWWEC57FRKL6yHVin9xNlfwIYPrtP+y4/yySMFCAaiUANr0D6Hb3DxTYobYpvz5sgI7SIwFNhQ1g2cOSxiFOgQ5SRBf+BD5ie4B/nn6nV9cQ6UilsWC/PqyxScQaMXNIgNbwrICh0ppUYeF7qW6a1Y/sOff12PTw== al@example42.com'
@@ -269,6 +274,8 @@ psick::users::users_hash:
 # Passwordless sudopowers for al on lab
 psick::sudo::directives:
   al:
+    content: 'al ALL=(ALL) NOPASSWD:ALL'
+  lab:
     content: 'al ALL=(ALL) NOPASSWD:ALL'
 
 # OpenSSH
@@ -284,13 +291,15 @@ psick::openssh::tp::resources:
         Subsystem: 'sftp /usr/libexec/openssh/sftp-server'
         UsePAM: 'yes'
         TCPKeepAlive: 'yes'
+#        GatewayPorts: 'yes'
 
 # Admin
+psick::admin::ensure: present
 psick::admin::master: puppet.lab.psick.io
 psick::admin::keyshare_method: storeconfigs
 
 # Bolt
-psick::bolt::master: puppet.lab.psick.io
+psick::bolt::master: lab.psick.io
 psick::bolt::keyshare_method: storeconfigs
 psick::bolt::ssh_user: bolt
 
@@ -378,3 +387,43 @@ psick::resourcesA:
       enable: false
     rpcbind: {}
 
+atp::install_hash_merge_behaviour: deep
+atp::install_hash:
+  crowdsec_repo:
+    ensure: present
+  crowdsec:
+    ensure: present
+  crowdsec-firewall-bouncer-iptables:
+    ensure: present
+
+psick_profile::crowdsec::collections_hash:
+  'crowdsecurity/whitelist-good-actors': {}
+  'crowdsecurity/nginx': {}
+  'crowdsecurity/base-http-scenarios': {}
+  'crowdsecurity/http-cve': {}
+
+psick_profile::crowdsec::enroll_key: cl3pn87cg00000vmhypi7u47m
+
+# tp install Hashicorp
+tp::install_hashNO:
+  hashicorp_repo:
+    ensure: absent
+#  vagrant: {}
+  terraform:
+    ensure: absent
+  consul:
+    ensure: absent
+  vault:
+    ensure: absent
+  packer:
+    ensure: absent
+  nomad:
+    ensure: absent
+  boundary:
+    ensure: absent
+  waypoint:
+    ensure: absent
+#  sentinel: {}
+#  otto: {}
+  serf:
+    ensure: absent

@@ -1,7 +1,6 @@
 ---
 psick::base::linux_classes:
   network: psick::network
-  tp: tp
 #  wazuh: psick::wazuh
 
 psick::network::interfaces:

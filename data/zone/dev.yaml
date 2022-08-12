@@ -3,12 +3,13 @@
 psick::pre::linux_classes:
   puppet: psick::puppet
   hosts: psick::hosts::puppetdb
-  tp: tp
 psick::base::linux_classes:
+  tp: tp
   selinux: psick::selinux
   limits: psick::limits
   packages: psick::packages
   pe_status: pe_status_check
+  crowdsec: psick_profile::crowdsec
 
 psick::pre::windows_classes:
   chocolatey: chocolatey
@@ -24,6 +25,7 @@ psick::pre::darwin_classes:
   puppet: psick::puppet
 psick::base::darwin_classes:
   tp: tp
+#  crowdsec: psick_profile::crowdsec
 
 # Disabled unwanted services
 psick::resources_defaults:
@@ -33,6 +35,10 @@ psick::resources_defaults:
 
 psick::dns::resolver::nameservers:
   - 10.42.100.2
+  - 10.42.100.3
+
+psick::dns::resolver::options:
+  - 'rotate'
 
 psick::packages::packages_osfamily_hash:
   RedHat:
@@ -72,7 +78,7 @@ psick::puppet::external_facts:
 psick::hostname::update_host_entry: false
 
 # psick::hosts::puppetdb::puppetdb_fact_address: 'networking.interfaces.eth1.ip'
-psick::hosts::puppetdb::puppethost: '10.42.100.9       puppet  puppet.lab42.dev'
+psick::hosts::puppetdb::puppethost: '10.42.43.101       puppet  puppet.lab42.dev'
 
 
 # Enable automatic updates on lab nodes and set schedule:
@@ -195,6 +201,7 @@ tp::osfamily_install_hash:
     <<: *linux_tp_install
   Debian:
     <<: *linux_tp_install
+
 
 ssl_settings: &ssl_settings
   ssl.certificate_authorities: ["/etc/puppetlabs/puppet/ssl/certs/ca.pem"]

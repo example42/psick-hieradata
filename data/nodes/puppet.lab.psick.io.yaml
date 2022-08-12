@@ -21,6 +21,7 @@ psick::profiles::linux_classes:
   puppet_autosign: psick::puppet::autosign
 #  choria_broker: choria::broker
 #  hdm: hdm
+  dropsonde: dropsonde
 
 # Avoid duplicated tp::repo epel resource
 psick::repo::use_defaults: false
@@ -111,7 +112,9 @@ psick::puppet::pe_code_manager::pe_password: 'deployme'   # PE user password. TO
 psick::puppet::pe_code_manager::lifetime: '5y'            # Adapt as preferred
 psick::puppet::pe_code_manager::generate_ssh_keys: true   # Default breaks on code manager configured PE from 2017.2.x
 
-# PE tunings
+# Postgres custom setting
+puppet_enterprise::profile::database::auto_explain_settings:
+  'max_locks_per_transaction': 320
 
 
 # Configure the scripts used during Gitlab CI of the control repo

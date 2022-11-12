@@ -116,7 +116,8 @@ psick::openssh::tp::resources:
 # Nginx
 psick_profile::nginx::tp::resources:
   tp::conf:
-    nginx::.htpasswd:
+    nginx::htpasswd:
+      path: /etc/nginx/.htpasswd
       template: profile/nginx/htpasswd.erb
       validate_syntax: false
     nginx::auth.conf:
@@ -215,7 +216,7 @@ openvpn::servers:
 #    key_cn: 'example42'
 #    key_name: 'example42'
 #    key_ou: 'example42'
-#    crl_days: 3650
+    crl_days: 3650
     email: 'info@lab42.it'
     server: "10.42.251.0 255.255.255.0"
     local: "%{ipaddress}"
@@ -252,7 +253,6 @@ openvpn::revokes:
     server: 'lab.psick.io'
 
 
-
 # Selinux disabled here:
 psick::selinux::state: disabled
 
@@ -269,3 +269,15 @@ pasick::openssh::tp::resources:
     openssh:
       options_hash:
         GatewayPorts: 'yes'
+
+tp::install_hash:
+  terraform:
+    auto_prereq: true
+    ensure: present
+  azure-cli:
+    ensure: present
+  packer:
+    ensure: present
+  docker:
+    ensure: present
+

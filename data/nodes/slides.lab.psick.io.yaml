@@ -1,17 +1,19 @@
 ---
 psick::profiles::linux_classes:
-  # nodejs: psick::nodejs
+  nodejs: psick::nodejs
   nginx: psick_profile::nginx::tp
   puppi: puppi
 
+psick::nodejs::package_manage: true
 psick::nodejs::nvm_manage: true
 psick::nodejs::nvm_installs:
-  al:
+  root:
     node_instance_default: '8.12.0'
     npm_packages:
       yarn: {}
       pm2:
         version: 2.10.4
+      asciinema-player: {}
 
 psick::network::interfaces:
   'enp0s3':

@@ -34,5 +34,3 @@ psick::puppet::osp_agent::settings:
     environment: production
 
 psick::openssh::module: psick
-
-tp::ruby_path: '/usr/bin/env ruby'

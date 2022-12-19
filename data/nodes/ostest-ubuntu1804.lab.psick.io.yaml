@@ -1,6 +1,4 @@
 ---
-psick::profiles::linux_classes:
-  monit: monit
 
 # Network configs
 psick::network::interfaces:

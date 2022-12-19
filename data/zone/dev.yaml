@@ -7,16 +7,14 @@ psick::base::linux_classes:
   tp: tp
   selinux: psick::selinux
   limits: psick::limits
-  packages: psick::packages
   pe_status: pe_status_check
-  crowdsec: psick_profile::crowdsec
+#  crowdsec: psick_profile::crowdsec
 
 psick::pre::windows_classes:
   chocolatey: chocolatey
   tp: tp
   puppet: psick::puppet
 psick::base::windows_classes:
-  packages: psick::packages
   features_class: psick::windows::features
   pe_status: pe_status_check
 
@@ -39,16 +37,6 @@ psick::dns::resolver::nameservers:
 
 psick::dns::resolver::options:
   - 'rotate'
-
-psick::packages::packages_osfamily_hash:
-  RedHat:
-    - net-tools
-    - telnet
-    - wget
-  Debian:
-    - net-tools
-    - telnet
-    - wget
 
 ### Noop management
 # Noop configuration on PE clients

@@ -2,20 +2,15 @@
 psick::pre::windows_classes:
   chocolatey: chocolatey
 psick::base::windows_classes:
-  packages: psick::packages
   features: psick::windows::features
   registry: psick::windows::registry
   services: psick::windows::services
   puppet: psick::puppet::pe_agent
   reboot: psick::reboot
-  packages: psick::packages
   users: psick::windows::users
 #  firewall: windows_firewall
 psick::profile::windows_classes:
   webserver: psick_profile::iis
-
-psick::packages::resource_default_arguments:
-  provider: chocolatey
 
 psick::reboot::apply: immediately
 psick::reboot::when: refreshed
@@ -24,17 +19,6 @@ psick::reboot::refresh_reboot: false
 #psick::reboot::retries: 1
 #psick::reboot::retries_interval: 24
 psick::schedule::repeat: 2
-psick::packages::packages_list:
-  - "chocolatey"
-  - "firefox"
-  - "flashplayerplugin"
-  - "putty.install"
-  - "7zip.install"
-  - "tortoisesvn"
-  - "vlc"
-  - "chocolatey-core.extension"
-  - "sharex"
-  - "vcxsrv"
 
 # Useful registry keys: http://www.jasinskionline.com/TechnicalWiki/Useful-Windows-Registry-Keys.ashx?AspxAutoDetectCookieSupport=1
 # Windows registry: http://www.forensicswiki.org/wiki/Windows_Registry

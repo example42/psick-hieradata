@@ -7,4 +7,8 @@ psick::network::interfaces:
     ipv4_address: '10.42.43.129'
     ipv4_netmask: '255.255.255.0'
 
-psick::network::hostname: ostest-suse11.lab.psick.io
+psick::base::linux_classes:
+  network: ''
+
+#psick::network::hostname: ostest-suse11.lab.psick.io
+#psick::network::manage: false 

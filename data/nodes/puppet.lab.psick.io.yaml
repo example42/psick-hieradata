@@ -22,6 +22,7 @@ psick::profiles::linux_classes:
 #  choria_broker: choria::broker
 #  hdm: hdm
   dropsonde: dropsonde
+#  service_now: servicenow_cmdb_integration
 
 # Avoid duplicated tp::repo epel resource
 psick::repo::use_defaults: false
@@ -224,4 +225,7 @@ hdm::nginx::nginx_package_manage: true
 hdm::nginx::config_options:
   listen: '8042 default_server'
 
-
+servicenow_cmdb_integration::instance: dev103845.service-now.com
+servicenow_cmdb_integration::user: 'admin'
+servicenow_cmdb_integration::password: 'qi!MlGsR5@T6'
+servicenow_cmdb_integration::proxy: 'http://127.0.0.1:3128'

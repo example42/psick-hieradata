@@ -1,0 +1,10 @@
+---
+
+
+# Override lab defaults. On Ubuntu 1804 wheel group is admin
+psick::users::users_hash:
+  al:
+    groups:
+      - users
+      - admin
+      - --wheel

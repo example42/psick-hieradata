@@ -1,4 +1,5 @@
 ---
+## GENERAL SETTINGS
 ## General settings for psick module.
 # These are the default values.
 # If to actually manage the resource of a class
@@ -26,9 +27,10 @@ psick::tp:
   test_enable: true
   data_module: tinydata
 
-# We want to purge unmanageged files for tp
+# We want to purge unmanaged files for tp
 tp::purge_dirs: true
 
+## CLASSIFICATION
 # First run optional settings. Here first run mode is disabled
 psick::enable_firstrun: false
 psick::firstrun::linux_classes:
@@ -36,29 +38,20 @@ psick::firstrun::linux_classes:
 psick::firstrun::windows_classes:
   hostname: psick::hostname
 
-# PSICK classification for Linux nodes
+# Classification for Linux nodes
 # We define the classes we want in pre phase (applied before all the others)
 # and in the base phase (common baseline, applied to all nodes)
 psick::pre::linux_classes:
-  puppet: psick::puppet
   hostname: psick::hostname
-  hosts: psick::hosts::resource
-  dns: psick::dns::resolver
   repo: psick::repo
   users: psick::users
 psick::base::linux_classes:
   ssh: psick::openssh
   sudo: psick::sudo
-  logs: psick::logs::rsyslog
   tp: tp
-##  time: psick::time
   sysctl: psick::sysctl
-  update: psick::update
-  motd: psick::motd
-  profile: psick::profile
-  systat: psick_profile::sar
 
-# PSICK classification for Windows nodes
+# Classification Windows nodes
 psick::pre::windows_classes:
   hosts: psick::hosts::resource
 psick::base::windows_classes:
@@ -68,13 +61,14 @@ psick::base::windows_classes:
   time: psick::time
   tp: tp
 
-# PSICK classification for Mac nodes
+# Classification for Mac nodes
 psick::pre::darwin_classes:
   users: psick::users
-
 psick::base::darwin_classes:
   tp: tp
 
+
+## SETTINGS
 # Repo settings
 psick::repo::add_defaults: true
 

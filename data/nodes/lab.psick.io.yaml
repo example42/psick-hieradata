@@ -7,6 +7,10 @@ psick::profiles::linux_classes:
   network: ''
   pdk: psick::puppet::pdk
 
+tp::installs:
+  - asciinema
+
+
 psick::users::users_hash:
   al:
     ssh_authorized_keys:

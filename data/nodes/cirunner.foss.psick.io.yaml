@@ -2,7 +2,6 @@
 psick::pre::linux_classes:
   buildgems: psick::ruby::buildgems
 psick::profiles::linux_classes:
-  vagrant: vagrant
   git: psick::git
   docker: psick_profile::docker
   puppet_pdk: psick::puppet::pdk

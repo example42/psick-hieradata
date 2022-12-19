@@ -1,9 +1,27 @@
 ---
-### Classification
+
+## CLASSIFICATION
+### Classification Linux nodes
 psick::pre::linux_classes:
   puppet: psick::puppet
   hosts: psick::hosts::puppetdb
+  hostname: psick::hostname
+  hosts: psick::hosts::resource
+  dns: psick::dns::resolver
+  repo: psick::repo
+  users: psick::users
+
 psick::base::linux_classes:
+  ssh: psick::openssh
+  sudo: psick::sudo
+  logs: psick::logs::rsyslog
+  tp: tp
+#  time: psick::time
+  sysctl: psick::sysctl
+  update: psick::update
+  motd: psick::motd
+  profile: psick::profile
+  systat: psick_profile::sar
   mail: psick_profile::postfix
 #  icinga: psick_profile::icinga2
 #  monitor_plugins: psick_profile::nagiosplugins
@@ -11,21 +29,32 @@ psick::base::linux_classes:
   selinux: psick::selinux
   limits: psick::limits
 #  sensu: psick_profile::sensu
-##  admin: psick::admin
   bolt: psick::bolt
   puppet_postrun: psick::puppet::postrun
-  packages: psick::packages
-#  choria: choria
-# mcollective: mcollective
-#  mcollective_choria: mcollective_choria
 #  puppetagent: puppet_agent
   crowdsec: psick_profile::crowdsec
 
-#psick::base::darwin_classes:
-#  crowdsec: psick_profile::crowdsec
+### Classification Windows nodes
+psick::pre::windows_classes:
+  hosts: psick::hosts::resource
 
 psick::base::windows_classes:
-  windows_puppet_certificates: windows_puppet_certificates
+  features: psick::windows::features
+  registry: psick::windows::registry
+  services: psick::windows::services
+  time: psick::time
+  tp: tp
+#  windows_puppet_certificates: windows_puppet_certificates
+
+### Classification Mac nodes
+psick::pre::darwin_classes:
+  users: psick::users
+psick::base::darwin_classes:
+  tp: tp
+
+
+
+## SETTINGS OF THE CLASSIFIED CLASSES
 
 # Avoid epel repo duplicated resource
 psick_profile::nagiosplugins::auto_prereq: false
@@ -261,7 +290,6 @@ psick::users::users_hash:
     comment: 'Al'
     groups:
       - users
-      - wheel
     # Change these in custome environments!
     ssh_authorized_keys:
       - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC93uOkdIrvcA1ij6wxtL0wDKch7E2gFqID2xR1LnEVQRSP9OFmNQV+4B7fM/fAVpFs939qBDeDRabft1ZAP2hUIeKWxweNQ6wxxV3YhJbxt+g6RAqm37BI+/ynZnZ4vrQp3XHfxNFYGFqiaowiiQ3/0QLh8PHliDJroOUU7h2YNwKBWiqdgufLCrPgnalSZ3kfKa2Yd5sM+iyAYJ102sXcGIFjAXCmQU1y7aJXjrzXzPuugnHvVFPzAUjsvu0FAiE+m8EhfBiyy1+SjnMB838G3EwrqNW+sEZ6lXh637xensB2WJuH0lPooCgaeG6WCmYjVK9rblcOb3B0Pp8Vbhp5 al@lab.psick.io'
@@ -276,7 +304,7 @@ psick::sudo::directives:
   al:
     content: 'al ALL=(ALL) NOPASSWD:ALL'
   lab:
-    content: 'al ALL=(ALL) NOPASSWD:ALL'
+    content: 'lab ALL=(ALL) NOPASSWD:ALL'
 
 # OpenSSH
 psick::openssh::module: 'psick'
@@ -291,6 +319,8 @@ psick::openssh::tp::resources:
         Subsystem: 'sftp /usr/libexec/openssh/sftp-server'
         UsePAM: 'yes'
         TCPKeepAlive: 'yes'
+        ClientAliveInterval: 10000
+        ClientAliveCountMax: 0
 #        GatewayPorts: 'yes'
 
 # Admin
@@ -342,17 +372,6 @@ psick::sysctl::settings_hash:
   net.ipv6.conf.all.disable_ipv6: 1
   net.ipv6.conf.default.disable_ipv6: 1
 
-# Extra packages
-psick::packages::packages_osfamily_hash:
-  RedHat:
-    - net-tools
-#    - telnet
-    - wget
-  Debian:
-    - net-tools
-    - telnet
-    - wget
-
 # General postfix configuration
 psick_profile::postfix::resources:
   tp::conf:
@@ -387,14 +406,6 @@ psick::resourcesA:
       enable: false
     rpcbind: {}
 
-atp::install_hash_merge_behaviour: deep
-atp::install_hash:
-  crowdsec_repo:
-    ensure: present
-  crowdsec:
-    ensure: present
-  crowdsec-firewall-bouncer-iptables:
-    ensure: present
 
 psick_profile::crowdsec::collections_hash:
   'crowdsecurity/whitelist-good-actors': {}

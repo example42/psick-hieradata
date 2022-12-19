@@ -1,0 +1,7 @@
+---
+psick::puppet::pe_agent::manage_service: false
+puppet_enterprise::profile::agent::pxp_enabled: false
+
+tp::osfamily_resources:
+  Debian:
+    repo: []

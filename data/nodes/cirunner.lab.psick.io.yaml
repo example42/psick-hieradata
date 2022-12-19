@@ -13,7 +13,7 @@ psick::users::users_hash:
       - --wheel
 
 psick::profiles::linux_classes:
-  vagrant: vagrant
+  vagrant: psick_profile::vagrant
   docker: psick_profile::docker
   pe_client_tools: psick::puppet::pe_client_tools
 #  bind: profile::bind
@@ -55,6 +55,8 @@ psick_profile::gitlab::ci::always_nodes:
 psick_profile::gitlab::ci::options:
   catalog_preview_default_nodes: 'git.lab.psick.io,log.lab.psick.io'
 
+psick_profile::vagrant::version: 'latest'
+
 # Configure gitconfig for gitlab-runner to ignore
 # self signed certificate (on gitlab server)
 psick::git::configs_hash:
@@ -71,3 +73,5 @@ psick::network::interfaces:
     ipv4_address: '10.42.43.104'
     ipv4_netmask: '255.255.255.0'
 
+psick::puppet::modules:
+  - example42/tp

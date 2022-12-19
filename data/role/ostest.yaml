@@ -1,1 +1,79 @@
-ostest.yaml.sample
+---
+# Sample role data used for tinydata testing
+# Use ::psick::ostest for testing Puppet code
+# Add profiles to the list below to test whole profiles
+psick::base::linux_classes:
+  logs: ''
+  crowdsec: ''
+  mail: ''
+  packages: ''
+  selinux: ''
+psick::profiles::linux_classes:
+  ostest: '::psick::ostest'
+  crowdsec: ''
+
+psick::base::windows_classes:
+  time: ''
+psick::logs::rsyslog::manage: false
+
+
+# Uncomment below to skip application of base classes, as defined via psick::base::$os_classes
+# and apply only what's defined by psick::profiles::$os_classes
+psick::base::manage: true
+
+# TP4 Entrypoints
+tp::data_module: 'tinydata'
+
+tp::repos: []
+tp::installs: []
+tp::uninstalls: []
+tp::sources: []
+#tp::images: []
+tp::confs: {}
+tp::dirs: {}
+
+tp::osfamily_resources:
+  RedHat:
+    repo:
+      - epel
+      - hashicorp_repo
+      - microsoft_repo
+    install:
+      - asciinema
+  Debian:
+    repo:
+      - epel
+      - hashicorp_repo
+      - microsoft_repo
+    uninstall:
+      - asciinema
+  Suse:
+    repo:
+      - puppet_repo
+    install:
+      - pdk
+  Darwin:
+    install:
+      - asciinema
+      - microsoft_repo
+  windows:
+    install:
+      - microsoft_repo
+      - obs-studio
+
+tp::merge_beahaviors:
+  install: 'unique'
+  conf: 'deep'
+  dirs: 'deep'
+
+tp::defaults:
+  install:
+    ensure: present
+    data_module: 'tinydata'
+  conf:
+    - 'force'
+    - 'purge'
+    - 'upgrade'
+
+# To use custom tinydata module change this:
+tp::data_module: 'tinydata'

@@ -76,7 +76,6 @@ tp::osfamily_install_hash:
     - webex-meetings
     - zoom
 #  -  git
-    - krateo
 
 tp::osfamily_install_defaults:
   windows:

@@ -7,29 +7,160 @@ psick::base::linux_classes:
   crowdsec: ''
   mail: ''
   packages: ''
-  selinux: ''
 psick::profiles::linux_classes:
   ostest: '::psick::ostest'
   crowdsec: ''
 
 psick::base::windows_classes:
   time: ''
+  chocolatey: chocolatey
 psick::logs::rsyslog::manage: false
 
+
+psick::puppet::pe_agent::service_ensure: 'stopped'
+psick::puppet::pe_agent::service_enable: false
 
 # Uncomment below to skip application of base classes, as defined via psick::base::$os_classes
 # and apply only what's defined by psick::profiles::$os_classes
 psick::base::manage: true
 
+psick::selinux::state: disabled
+
+tp::settings_hash: {}
 # TP4 Entrypoints
 tp::data_module: 'tinydata'
 
+# Use tp4
+tp::conf_hash: {}
+tp::use_v4: true
+tp::on_missing_data: 'ignore'
 tp::repos: []
-tp::installs: []
+tp::installs:
+  snmp:
+    ensure: present
+  nuclei:
+    ensure: present
+#    install_method: image
+    auto_prereq: true
+  unzip:
+    ensure: present
+  git: 
+    ensure: present
+  wget: 
+    ensure: present
+#  docker: 
+#    ensure: absent
+  prometheus:
+    ensure: absent
+#    install_method: image
+  nats-server: 
+    ensure: absent
+#    install_method: image
+  spiderfoot: 
+    ensure: absent
+#    version: 'v3.5'
+  sysdig:
+    ensure: present
+    auto_prereq: true
+  elasticsearch: 
+    ensure: absent
+    auto_prereq: true
+  icinga2: 
+    ensure: absent
+  rsyslog: 
+    ensure: present
+  blender: 
+    ensure: present
+    install_method: release
+  mgmt:
+    ensure: absent
+    install_method: release    
+  surfex:
+    ensure: present
+#    install_method: release
+    auto_prereq: true
+#    my_settings: {}
+  nix:
+    ensure: present
+    auto_prereq: true
+    manage_package: false
+    manage_service: false
+
+# Example with custom image
+#  spiderfoot:
+#    ensure: present
+#    install_method: image
+#    my_settings:
+#      image:
+#        name: 'dtagdevsec/spiderfoot:2204'
+#        ports: 8080
+  # powershell:
+  #   ensure: absent
+  # packer:
+  #   ensure: absent
+  # terraform:
+  #   ensure: absent
+  # azure-cli:
+  #   ensure: absent
+       
 tp::uninstalls: []
+tp::sources_defaults:
+  ensure: absent
 tp::sources: []
+#  - 'prqometheus'
+#  - 'spiderfoot'
+#  - auditbeat
+#  - boundary
+#  - powershell
+#  - prometheus
+#  - ceph
+#  - hdm
+#  - postfix
+#  - powertoys
+#  - libreoffice
+#  - activemq
+#  - python-pip
+#  - bolt
+#  - bind-utils
+#  - bzip2
+#  - vault
+#  - autofs
+#  - ceilometer
+#  - twitch
+#  - obs-studio
+#  - bind
+#  - apache
+#  - apparmor
+#  - ansible
+#  - bacula-client
+#  - bash
+#  - vscode
+#  - scx
+#  - sysinternals
+#  - telegram-desktop
+#  - sysmon
+#  - procdump
+#  - omi
+#  - git
+#  - vagrant
+#  - bird
+#  - webex-meetings
+#  - azure-cli
+
 #tp::images: []
-tp::confs: {}
+# Quick fix for testos-rhe8 compiler
+psick_profile::gitlab::cli::manage: false
+
+tp::confs:
+  snmp:
+    template: 'profile/snmp/snmpd.conf.epp'
+    my_options:
+      rocommunity: 'secret'
+  snmp::init:
+    base_file: 'init'
+    #template: 'profile/snmp/snmpd.init.epp'
+    my_options:
+      rocommunity: 'secret'
 tp::dirs: {}
 
 tp::osfamily_resources:
@@ -45,6 +176,8 @@ tp::osfamily_resources:
       - epel
       - hashicorp_repo
       - microsoft_repo
+    install:
+      - prometheus
     uninstall:
       - asciinema
   Suse:
@@ -75,5 +208,3 @@ tp::defaults:
     - 'purge'
     - 'upgrade'
 
-# To use custom tinydata module change this:
-tp::data_module: 'tinydata'

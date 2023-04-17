@@ -156,6 +156,7 @@ psick_profile::gitlab::runner::pe_password: CHANGEME
 # Lifetime of a token created with the above credentials
 psick_profile::gitlab::runner::pe_token_lifetime: '5y'
 
+psick_profile::gitlab::cli::manage: false
 # Config for gitlab cli. Tokens change at every gitlab installation
 # Use the Private token of a user with merge request and accept privileges
 # Settings to generate /etc/gitlab-cli.conf used by gitlab_create_merge_request.rb and gitlab_accept_merge_request.rb
@@ -229,3 +230,6 @@ servicenow_cmdb_integration::instance: dev103845.service-now.com
 servicenow_cmdb_integration::user: 'admin'
 servicenow_cmdb_integration::password: 'qi!MlGsR5@T6'
 servicenow_cmdb_integration::proxy: 'http://127.0.0.1:3128'
+
+psick::openssh::hostkeys::hostkey_collect: true
+psick::openssh::hostkeys::knownhosts_manage: false

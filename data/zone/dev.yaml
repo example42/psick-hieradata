@@ -2,7 +2,7 @@
 ### Classification
 psick::pre::linux_classes:
   puppet: psick::puppet
-  hosts: psick::hosts::puppetdb
+  hosts: psick::hosts::file
 psick::base::linux_classes:
   tp: tp
   selinux: psick::selinux
@@ -66,7 +66,7 @@ psick::puppet::external_facts:
 psick::hostname::update_host_entry: false
 
 # psick::hosts::puppetdb::puppetdb_fact_address: 'networking.interfaces.eth1.ip'
-psick::hosts::puppetdb::puppethost: '10.42.43.101       puppet  puppet.lab42.dev'
+psick::hosts::puppetdb::puppethost: '10.42.43.101       puppet  puppet.lab.psick.io'
 
 
 # Enable automatic updates on lab nodes and set schedule:
@@ -96,8 +96,16 @@ psick::sudo::directives:
   al:
     content: 'al ALL=(ALL) NOPASSWD:ALL'
 
+# Hosts file managed via file resource
+psick::hosts::file::extra_hosts:
+  - '10.42.43.101 puppet puppet.lab.psick.io'
+  - '10.42.43.102 git git.lab.psick.io'
+  - '10.42.43.103 cirunner cirunner.lab.psick.io'
+  - '10.42.43.110 puppetcd puppetcd.lab.psick.io'
+  - '10.42.43.119 lamp lamp.lab.psick.io'
+
 # OpenSSH
-psick::openssh::module: 'psick_profile'
+psick::openssh::module: 'psick'
 
 psick::openssh::tp::resources:
   tp::conf:

@@ -4,7 +4,6 @@
 ### Classification Linux nodes
 psick::pre::linux_classes:
   puppet: psick::puppet
-  hosts: psick::hosts::puppetdb
   hostname: psick::hostname
   hosts: psick::hosts::resource
   dns: psick::dns::resolver
@@ -33,6 +32,7 @@ psick::base::linux_classes:
   puppet_postrun: psick::puppet::postrun
 #  puppetagent: puppet_agent
   crowdsec: psick_profile::crowdsec
+  hostkeys: psick::openssh::hostkeys
 
 ### Classification Windows nodes
 psick::pre::windows_classes:
@@ -44,6 +44,7 @@ psick::base::windows_classes:
   services: psick::windows::services
   time: psick::time
   tp: tp
+  chocolatey: chocolatey
 #  windows_puppet_certificates: windows_puppet_certificates
 
 ### Classification Mac nodes
@@ -52,7 +53,8 @@ psick::pre::darwin_classes:
 psick::base::darwin_classes:
   tp: tp
 
-
+tp::use_v4: true
+tp::on_missing_data: ignore
 
 ## SETTINGS OF THE CLASSIFIED CLASSES
 
@@ -74,7 +76,8 @@ psick::puppet::pe_agent::noop_value: false
 psick::puppet::agent_class: psick::puppet::pe_agent
 psick::puppet::pe_agent::manage_environment: true
 psick::puppet::pe_agent::environment_setting: host
-
+psick::puppet::pe_agent::manage_exclude_unchanged_resources: true
+psick::puppet::pe_agent::exclude_unchanged_resources_setting: true
 psick::puppet::pe_agent::manage_service: true
 
 # Postrun command management
@@ -365,7 +368,11 @@ psick::network::routes:
       '10.42.50.0/24': '10.42.43.1'
       '10.42.100.0/24': '10.42.43.1'
       '10.42.251.0/24': '10.42.43.1'
-
+  enp0s8:
+    routes:
+      '10.42.50.0/24': '10.42.43.1'
+      '10.42.100.0/24': '10.42.43.1'
+      '10.42.251.0/24': '10.42.43.1'
 # Disable ipv6 and ip forwarding by default
 psick::sysctl::settings_hash:
   net.ipv4.conf.all.forwarding: 0
@@ -438,3 +445,8 @@ tp::install_hashNO:
 #  otto: {}
   serf:
     ensure: absent
+
+
+psick::openssh::hostkeys::hostkey_export: true
+psick::openssh::hostkeys::knownhosts_manage: true
+psick::openssh::hostkeys::knownhosts_template: '/etc/ssh/ssh_known_hosts'

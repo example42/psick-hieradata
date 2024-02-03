@@ -16,13 +16,13 @@ psick_profile::gitlab::manage_inline_configuration: true
 
 psick_profile::gitlab::options_hash:
 #  gitlab_rails['enable_jemalloc']: false # https://gitlab.com/gitlab-org/omnibus-gitlab/issues/3313
-  pages_external_url: "http://pages.%{::domain}/"
+  pages_external_url: "http://pages.%{facts.networking.domain}/"
 #  gitlab_pages['enable']: true
   pages_nginx['enable']: true
   registry['enabled']: true
-  registry['host']: "git.%{::domain}"
+  registry['host']: "git.%{facts.networking.domain}"
   registry['port']: 5000
   letsencrypt['enable']: false
   nginx['redirect_http_to_https']: true
   nginx['redirect_http_to_https_port']: 80 
-#  registry_external_url: "https://git.%{::domain}:5000/"
+#  registry_external_url: "https://git.%{facts.networking.domain}:5000/"

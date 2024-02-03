@@ -16,9 +16,9 @@ psick::base::windows_classes:
   chocolatey: chocolatey
 psick::logs::rsyslog::manage: false
 
-
-psick::puppet::pe_agent::service_ensure: 'stopped'
-psick::puppet::pe_agent::service_enable: false
+psick_profile::crowdsec::manage: false
+psick::puppet::pe_agent::service_ensure: 'running'
+psick::puppet::pe_agent::service_enable: true
 
 # Uncomment below to skip application of base classes, as defined via psick::base::$os_classes
 # and apply only what's defined by psick::profiles::$os_classes
@@ -36,10 +36,16 @@ tp::use_v4: true
 tp::on_missing_data: 'ignore'
 tp::repos: []
 tp::installs:
+  fail2ban:
+    ensure: present
+    auto_prereq: true
+  crowdsec:
+    ensure: present
+    auto_prereq: true
   snmp:
-    ensure: present
+    ensure: absent
   nuclei:
-    ensure: present
+    ensure: absent
 #    install_method: image
     auto_prereq: true
   unzip:
@@ -56,33 +62,33 @@ tp::installs:
   nats-server: 
     ensure: absent
 #    install_method: image
-  spiderfoot: 
-    ensure: absent
+#  spiderfoot: 
+#    ensure: absent
 #    version: 'v3.5'
   sysdig:
-    ensure: present
-    auto_prereq: true
+    ensure: absent
+   # auto_prereq: true
   elasticsearch: 
     ensure: absent
-    auto_prereq: true
+   # auto_prereq: true
   icinga2: 
     ensure: absent
   rsyslog: 
     ensure: present
   blender: 
-    ensure: present
+    ensure: absent
     install_method: release
   mgmt:
     ensure: absent
     install_method: release    
   surfex:
-    ensure: present
+    ensure: absent
 #    install_method: release
-    auto_prereq: true
+    #auto_prereq: true
 #    my_settings: {}
   nix:
-    ensure: present
-    auto_prereq: true
+    ensure: absent
+    #auto_prereq: true
     manage_package: false
     manage_service: false
 
@@ -151,7 +157,7 @@ tp::sources: []
 # Quick fix for testos-rhe8 compiler
 psick_profile::gitlab::cli::manage: false
 
-tp::confs:
+tp::confsNO:
   snmp:
     template: 'profile/snmp/snmpd.conf.epp'
     my_options:
@@ -163,7 +169,7 @@ tp::confs:
       rocommunity: 'secret'
 tp::dirs: {}
 
-tp::osfamily_resources:
+tp::osfamily_resourcesNO:
   RedHat:
     repo:
       - epel

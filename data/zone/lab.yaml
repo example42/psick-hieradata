@@ -21,7 +21,7 @@ psick::base::linux_classes:
   motd: psick::motd
   profile: psick::profile
   systat: psick_profile::sar
-  mail: psick_profile::postfix
+#  mail: psick_profile::postfix
 #  icinga: psick_profile::icinga2
 #  monitor_plugins: psick_profile::nagiosplugins
   network: psick::network
@@ -33,6 +33,7 @@ psick::base::linux_classes:
 #  puppetagent: puppet_agent
   crowdsec: psick_profile::crowdsec
   hostkeys: psick::openssh::hostkeys
+  facter: psick::puppet::facter
 
 ### Classification Windows nodes
 psick::pre::windows_classes:
@@ -53,7 +54,7 @@ psick::pre::darwin_classes:
 psick::base::darwin_classes:
   tp: tp
 
-tp::use_v4: true
+# tp::use_v4: false
 tp::on_missing_data: ignore
 
 ## SETTINGS OF THE CLASSIFIED CLASSES
@@ -77,7 +78,7 @@ psick::puppet::agent_class: psick::puppet::pe_agent
 psick::puppet::pe_agent::manage_environment: true
 psick::puppet::pe_agent::environment_setting: host
 psick::puppet::pe_agent::manage_exclude_unchanged_resources: true
-psick::puppet::pe_agent::exclude_unchanged_resources_setting: true
+psick::puppet::pe_agent::exclude_unchanged_resources_setting: false
 psick::puppet::pe_agent::manage_service: true
 
 # Postrun command management
@@ -450,3 +451,18 @@ tp::install_hashNO:
 psick::openssh::hostkeys::hostkey_export: true
 psick::openssh::hostkeys::knownhosts_manage: true
 psick::openssh::hostkeys::knownhosts_template: '/etc/ssh/ssh_known_hosts'
+
+psick::puppet::facter::blocklist:
+  - 'desktop management interface'
+  - 'system profiler'
+
+psick::puppet::facter::ttls:
+  - disks: 1d
+  - processor: 1d
+  - operating system: 1d
+  - networking: 1d
+
+psick::puppet::facter::cli_settings:
+  debug: false
+  trace: true
+  verbose: false

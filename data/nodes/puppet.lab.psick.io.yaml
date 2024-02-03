@@ -49,7 +49,7 @@ psick::puppet::pe_server::extra_authorization_rules:
     sort_order: 500
 
 psick::puppet::autosign::autosign: 'on'
-psick::puppet::autosign::autosign_match: "*.%{::domain}"
+psick::puppet::autosign::autosign_match: "*.%{facts.networking.domain}"
 
 psick::hosts::file::extra_hosts:
   - '::1         localhost localhost.localdomain localhost6 localhost6.localdomain6'

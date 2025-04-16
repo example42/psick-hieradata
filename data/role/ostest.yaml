@@ -36,18 +36,21 @@ tp::use_v4: true
 tp::on_missing_data: 'ignore'
 tp::repos: []
 tp::installs:
+  kubernetes:
+    ensure: present
+    auto_prereq: true
   fail2ban:
-    ensure: present
+    ensure: absent
     auto_prereq: true
-  crowdsec:
-    ensure: present
-    auto_prereq: true
+#  crowdsec:
+#    ensure: absent
+#    auto_prereq: true
   snmp:
-    ensure: absent
-  nuclei:
-    ensure: absent
+    ensure: present
+#  nuclei:
+#    ensure: absent
 #    install_method: image
-    auto_prereq: true
+#    auto_prereq: true
   unzip:
     ensure: present
   git: 
@@ -56,9 +59,12 @@ tp::installs:
     ensure: present
 #  docker: 
 #    ensure: absent
+  powershell:
+    ensure: present
+    auto_prereq: true
   prometheus:
-    ensure: absent
-#    install_method: image
+    ensure: present
+    install_method: image
   nats-server: 
     ensure: absent
 #    install_method: image
@@ -66,7 +72,7 @@ tp::installs:
 #    ensure: absent
 #    version: 'v3.5'
   sysdig:
-    ensure: absent
+    ensure: present
    # auto_prereq: true
   elasticsearch: 
     ensure: absent
@@ -80,7 +86,7 @@ tp::installs:
     install_method: release
   mgmt:
     ensure: absent
-    install_method: release    
+#    install_method: release    
   surfex:
     ensure: absent
 #    install_method: release

@@ -54,7 +54,7 @@ psick::pre::darwin_classes:
 psick::base::darwin_classes:
   tp: tp
 
-# tp::use_v4: false
+tp::use_v4: true
 tp::on_missing_data: ignore
 
 ## SETTINGS OF THE CLASSIFIED CLASSES

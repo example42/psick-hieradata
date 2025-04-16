@@ -3,7 +3,7 @@ psick::profiles::linux_classes:
   web: psick_profile::nginx::tp
 #  ipsec: psick_profile::openswan
   firewall: psick::firewall::iptables
-  openvpn: psick_profile::openvpn
+#  openvpn: psick_profile::openvpn
   network: ''
   pdk: psick::puppet::pdk
 
@@ -86,7 +86,7 @@ psick::sysctl::settings_hash:
 
 # Firewalling
 psick::firewall::iptables::nat_rules:
-  - "-A POSTROUTING ! -d 10.42.0.0/16 -j SNAT --to %{ipaddress}"
+  - "-A POSTROUTING ! -d 10.42.0.0/16 -j SNAT --to %{facts.networking.ip}"
 
 #psick::firewall::iptables::mangle_rules:
 #  - '-A FORWARD -o vti01 -p tcp -m tcp --tcp-flags SYN,RST SYN -m tcpmss --mss 1361:1536 -j TCPMSS --set-mss 1360'
@@ -233,7 +233,6 @@ openvpn::servers:
       - '10.42.40.0 255.255.255.0'
       - '10.42.41.0 255.255.255.0'
       - '10.42.42.0 255.255.255.0'
-      - '10.42.43.0 255.255.255.0'
       - '10.42.44.0 255.255.255.0'
       - '10.42.45.0 255.255.255.0'
       - '10.42.46.0 255.255.255.0'

@@ -1,5 +1,5 @@
 ---
-psick::hosts::file::ipaddress: "%{::ipaddress}"
+psick::hosts::file::ipaddress: "%{facts.networking.ip}"
 psick::hosts::file::extra_hosts:
   - '10.42.45.101 puppet puppet.lab.psick.io'
   - '10.42.45.102 git git.demo'

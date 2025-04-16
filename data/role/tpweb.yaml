@@ -7,7 +7,7 @@ rails::web_class: '::rails::web::nginx_passenger'
 rails::deploy_class: '::rails::deploy::tpweb'
 
 rails::web::nginx_passenger::nginx_options:
-  server_name: "tpweb.%{::domain}"
+  server_name: "tpweb.%{facts.networking.domain}"
   root: '/opt/tpweb/public'
 
 rails::deploy::tpweb::auto_prerequisites: false

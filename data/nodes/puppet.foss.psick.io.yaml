@@ -19,7 +19,7 @@ psick::puppet::foss_server_metrics::graphite_server: 'grafana.foss.psick.io'
 psick_profile::puppetserver::r10k_remote_repo: https://github.com/example42/psick.git
 psick_profile::puppetserver::r10k_configure_webhook: false
 # psick_profile::puppetserver::git_remote_repo: https://github.com/example42/psick.git
-psick_profile::puppetserver::dns_alt_names: "puppet, puppet.%{::domain}"
+psick_profile::puppetserver::dns_alt_names: "puppet, puppet.%{facts.networking.domain}"
 psick_profile::puppetserver::remove_global_hiera_yaml: true
 
 psick_profile::puppetdb::postgresql_class: 'psick_profile::postgresql::tp'

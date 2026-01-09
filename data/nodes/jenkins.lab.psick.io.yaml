@@ -102,7 +102,7 @@ psick::openssh::configs_hash:
   jenkins:
     path: /var/lib/jenkins/.ssh/config
     create_ssh_dir: true
-    options_hash:
+    my_options:
       Host puppet.lab.psick.io:
         StrictHostKeyChecking: no
         UserKnownHostsFile: /dev/null

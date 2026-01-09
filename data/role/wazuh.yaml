@@ -66,7 +66,7 @@ tp::osfamily_install_hash:
 tp::osfamily_conf_hash_merge_behaviour: 'deep'
 linux_tp_conf: &linux_tp_conf
   elasticsearch:
-    options_hash:
+    my_options:
       node.name: "%{fqdn}"
       path.data: /var/lib/elasticsearch
       path.logs: /var/log/elasticsearch
@@ -83,7 +83,7 @@ linux_tp_conf: &linux_tp_conf
       xpack.security.transport.ssl.certificate: "/etc/elasticsearch/ssl/puppet_%{clientcert}.pem"
       xpack.security.transport.ssl.certificate_authorities: "/etc/elasticsearch/ssl/puppet_ca.pem"
   elasticsearch::role_mapping.yml:
-    options_hash:
+    my_options:
       admin:
         cluster: all
         indices:
@@ -99,7 +99,7 @@ linux_tp_conf: &linux_tp_conf
     group: elasticsearch
     mode: '0660'
   kibana:
-    options_hash:
+    my_options:
       elasticsearch.hosts:
         - "https://wazuh.lab42.dev:9200"
       server.host: wazuh.lab42.dev

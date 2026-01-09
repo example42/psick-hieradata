@@ -54,8 +54,6 @@ psick_profile::openswan::connections:
       rightmodecfgclient: 'yes'
       modecfgpull: 'yes'
       #configure pam via /etc/pam.d/pluto
-      xauthby: pam
-      # xauthby: alwaysok MUST NOT be used with PSK
       # Can be played with below
       #dpddelay: 30
       #dpdtimeout: 120

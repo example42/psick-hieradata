@@ -1,0 +1,46 @@
+---
+zone: office
+
+psick::profiles::linux_classes:
+  git: psick::git
+  puppet_autosign: psick::puppet::autosign
+
+psick::puppet::autosign::autosign: 'on'
+psick::puppet::autosign::autosign_match: "*.%{facts.networking.domain}"
+
+# puppet infra tune
+puppet_enterprise::profile::database::shared_buffers: 3114MB
+puppet_enterprise::puppetdb::command_processing_threads: 2
+puppet_enterprise::profile::puppetdb::java_args:
+  Xms: 1557m
+  Xmx: 1557m
+puppet_enterprise::profile::orchestrator::jruby_max_active_instances: 2
+puppet_enterprise::profile::orchestrator::java_args:
+  Xms: 1557m
+  Xmx: 1557m
+puppet_enterprise::profile::console::java_args:
+  Xms: 1024m
+  Xmx: 1024m
+puppet_enterprise::master::host_action_collector::java_args:
+  Xms: 389m
+  Xmx: 389m
+puppet_enterprise::master::puppetserver::jruby_max_active_instances: 4
+puppet_enterprise::profile::master::java_args:
+  Xms: 3072m
+  Xmx: 3072m
+puppet_enterprise::master::puppetserver::reserved_code_cache: 384m
+puppet_infrastructure_tune::metadata:
+  pe_version: 2025.3.0
+  tune_date: '2025-05-21'
+
+puppet_enterprise::console_services::no_longer_reporting_cutoff: 22000000
+
+# Puppet Enterprise Console idle timeout (minutes)
+puppet_enterprise::profile::console::rbac_session_timeout: 600
+
+# Allow Bolt queries on tPuppetDB
+puppet_enterprise::profile::puppetdb::allowlisted_certnames:
+  - 'spark.office.lab42'
+  - 'pabawi'
+psick::bolt::is_master: true
+psick::bolt::is_node: false

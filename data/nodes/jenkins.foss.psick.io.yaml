@@ -64,7 +64,7 @@ psick_profile::jenkins::plugins:
 
 # Jenkins configuration as code pluugin template and options
 #psick_profile::jenkins::jcasc::config_template: 'profile/jenkins/jcasc/jenkins.yaml.erb'
-#  psick_profile::jenkins::jcasc::options_hash:
+#  psick_profile::jenkins::jcasc::my_options:
 #    privateKey: 'crypted_data'
 
 # Install gems needed for Ci tests only in Puppet environment.
@@ -104,7 +104,7 @@ DISABLEpsick::openssh::configs_hash:
   jenkins:
     path: /var/lib/jenkins/.ssh/config
     create_ssh_dir: false
-    options_hash:
+    my_options:
       Host puppet.foss.psick.io:
         StrictHostKeyChecking: no
         UserKnownHostsFile: /dev/null

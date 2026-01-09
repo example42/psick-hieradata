@@ -1,8 +1,6 @@
 ---
 psick::base::linux_classes:
   monitor_plugins: ''
-
-psick::base::linux_classes:
   worpress: profile::wordpress
 
 psick::selinux::state: disabled

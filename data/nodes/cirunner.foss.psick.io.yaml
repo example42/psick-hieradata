@@ -47,7 +47,7 @@ psick_profile::gitlab::ci::options:
 # self signed certificate (on gitlab server)
 psick::git::configs_hash:
   gitlab-runner:
-    options_hash:
+    my_options:
       http:
         sslVerify: false
 

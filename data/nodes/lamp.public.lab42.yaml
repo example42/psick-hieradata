@@ -31,36 +31,35 @@ psick_profile::apache::tp::resources:
     apache::deny_git.conf:
       base_dir: conf
       source: puppet:///modules/psick_profile/apache/deny_git.conf
-    apache::abnormalia.com.conf:
-      base_dir: conf
-      template: psick_profile/apache/vhost.conf.erb
-      my_options:
-        ServerName: abnormalia.com
-        ServerAlias:
-          - www.abnormalia.com
-        AddDefaultCharset: ISO-8859-1
-        extra:
-          ErrorDocument: '404 /index.php'
-#          RewriteEngine: 'on'
-#          RewriteCond: "%{literal('%')}{REQUEST_URI} !abnomini"
-#          RewriteCond: "%{literal('%')}{REQUEST_URI} !/route.php"
-#          RewriteRule: '^(.*)$ /route.php?url=$1 [L]'
-  tp::dir:
-    apache::openskills.info:
-      ensure: latest
-      vcsrepo: git
-      source: git@bitbucket.org:alvagante/openskills.info.git
-      path: /var/www/html/openskills.info
-    apache::abnormalia.com:
-      ensure: latest
-      vcsrepo: git
-      source: git@bitbucket.org:alvagante/abnormalia.com.git
-      path: /var/www/html/abnormalia.com
+#    apache::abnormalia.com.conf:
+#      base_dir: conf
+#      template: psick_profile/apache/vhost.conf.erb
+#      my_options:
+#        ServerName: abnormalia.com
+#        ServerAlias:
+#          - www.abnormalia.com
+#        AddDefaultCharset: ISO-8859-1
+#        extra:
+#          ErrorDocument: '404 /index.php'
+##          RewriteEngine: 'on'
+##          RewriteCond: "%{literal('%')}{REQUEST_URI} !abnomini"
+##          RewriteCond: "%{literal('%')}{REQUEST_URI} !/route.php"
+##          RewriteRule: '^(.*)$ /route.php?url=$1 [L]'
+#  tp::dir:
+#   apache::openskills.info:
+#     ensure: latest
+#     vcsrepo: git
+#     source: git@github.com:alvagante/openskills.info.git
+#     path: /var/www/html/openskills.info
+#    apache::abnormalia.com:
+#      ensure: latest
+#      vcsrepo: git
+#      source: git@github.com:alvagante/abnormalia.com.git
+#      path: /var/www/html/abnormalia.com
 
 psick::php::module_hash:
-  mysql: {}
+  mysqlnd: {}
   gd: {}
-  yaml: {}
 
 psick_profile::mariadb::user_hash:
   openskills:
@@ -70,12 +69,12 @@ psick_profile::mariadb::grant_hash:
     password: shouldbesecret
     db: openskills
     db_init_query_file: /root/openskills-data/openskills.sql
-    require: 'Tp::Dir[mariadb::openskills-data]'
-psick_profile::mariadb::tp::resources:
+#    require: 'Tp::Dir[mariadb::openskills-data]'
+psick_profile::mariadb::tp::resourcesONLYBOOT:
   tp::dir:
     mariadb::openskills-data:
       vcsrepo: git
-      source: git@bitbucket.org:alvagante/openskills-data.git
+      source: git@github.com:alvagante/openskills-data.git
       path: /root/openskills-data
 
 psick::users::users_hash:
@@ -84,7 +83,7 @@ psick::users::users_hash:
       root:
         bits: 2048
 
-tp::conf_hash:
+tp::conf_hash_disabled:
   openssh::root_id_rsa:
     path: '/root/.ssh/id_rsa'
     mode: '0400'
@@ -100,9 +99,11 @@ tp::conf_hash:
   openssh::root_id_rsa.pub_dir:
     path: '/root/.ssh'
     ensure: directory
-    before: Class[Psick_profile::Apache::Tp]
+#    before: Class[Psick_profile::Apache::Tp]
     my_settings:
       validate_cmd: ~
 
 psick::openssh::keyscans_hash:
-  bitbucket.org: {}
+  github.com: {}
+
+puppet_enterprise::profile::agent::pxp_enabled: false

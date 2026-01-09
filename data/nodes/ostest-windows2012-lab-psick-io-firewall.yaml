@@ -7,12 +7,6 @@ psick::base::windows_classes:
   hosts_class: psick::hosts::resource
   services_class: psick::windows::services
   firewall_class: windows_firewall
-psick::windows::features::use_defaults: true
-psick::windows::features::install:
-  UpdateServices-RSAT:
-    ensure: present
-  UpdateServices-UI:
-    ensure: present
 
 # Useful registry keys: http://www.jasinskionline.com/TechnicalWiki/Useful-Windows-Registry-Keys.ashx?AspxAutoDetectCookieSupport=1
 # Windows registry: http://www.forensicswiki.org/wiki/Windows_Registry
